@@ -99,9 +99,10 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     neovim
+    alsa-utils
     git
     wget
-    clash-verge-rev
+    clash-nyanpasu
     fishPlugins.done
     fishPlugins.fzf-fish
     fishPlugins.forgit
