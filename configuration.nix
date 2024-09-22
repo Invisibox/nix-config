@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports =
@@ -42,6 +42,17 @@
     LC_TIME = "zh_CN.UTF-8";
   };
 
+   i18n.inputMethod = {
+   enabled = "fcitx5";
+   fcitx5.addons = with pkgs; [
+     fcitx5-mozc
+     fcitx5-gtk
+     fcitx5-nord
+     fcitx5-chinese-addons
+   ];
+ };
+
+
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
@@ -61,7 +72,6 @@
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
-  sound.enable = true;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -69,7 +79,7 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+    jack.enable = true;
 
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
@@ -102,6 +112,8 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     neovim
+    lunarvim
+    zed-editor
     alsa-utils
     git
     wget
@@ -113,6 +125,8 @@
     fzf
     fishPlugins.grc
     grc
+    neofetch
+    inputs.ayugram-desktop.packages.${pkgs.system}.default
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -143,7 +157,7 @@
 
   fonts = {
     packages = with pkgs; [
-#      fira-code-nerdfont
+      fira-code-nerdfont
       sarasa-gothic
       noto-fonts-emoji
     ];
@@ -179,6 +193,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
 
 }
