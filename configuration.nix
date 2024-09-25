@@ -127,6 +127,8 @@
     grc
     neofetch
     inputs.ayugram-desktop.packages.${pkgs.system}.default
+    wechat-uos
+    qq
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
