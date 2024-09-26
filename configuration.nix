@@ -112,28 +112,21 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     neovim
-    lunarvim
     zed-editor
     alsa-utils
     git
     wget
     clash-nyanpasu
-    fishPlugins.done
-    fishPlugins.fzf-fish
-    fishPlugins.forgit
-    fishPlugins.hydro
     fzf
-    fishPlugins.grc
     grc
     neofetch
-    inputs.ayugram-desktop.packages.${pkgs.system}.default
-    wechat-uos
     qq
+    zsh
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   environment.variables.EDITOR = "neovim";
-  programs.fish.enable = true;
+  programs.zsh.enable = true;
 
   nix.settings = {
     # given the users in this list the right to specify additional substituters via:
