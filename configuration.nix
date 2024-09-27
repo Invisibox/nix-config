@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports =
@@ -15,7 +15,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless suppoirt via wpa_supplicant.
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -41,23 +41,25 @@
     LC_TELEPHONE = "zh_CN.UTF-8";
     LC_TIME = "zh_CN.UTF-8";
   };
-  
-  i18n.inputMethod = {
+
+   i18n.inputMethod = {
    enabled = "fcitx5";
    fcitx5.addons = with pkgs; [
      fcitx5-mozc
      fcitx5-gtk
      fcitx5-nord
      fcitx5-chinese-addons
-    ];
-  };
+   ];
+ };
+
 
   # Enable the X11 windowing system.
+  # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
 
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  # Enable the KDE Plasma Desktop Environment.
+  services.displayManager.sddm.enable = true;
+  services.desktopManager.plasma6.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -84,6 +86,8 @@
     #media-session.enable = true;
   };
 
+  services.pipewire.wireplumber.enable = true;
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -93,6 +97,7 @@
     description = "admin";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
+      kdePackages.kate
     #  thunderbird
     ];
   };
@@ -103,24 +108,60 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    git
     neovim
+    zed-editor
+    alsa-utils
+    git
     wget
-    curl
+    clash-nyanpasu
     fzf
     grc
-    zed-editor
+    fastfetch
+    qq
     zsh
-    clash-nyanpasu
   ];
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   environment.variables.EDITOR = "neovim";
   programs.zsh.enable = true;
+
+  nix.settings = {
+    # given the users in this list the right to specify additional substituters via:
+    #    1. `nixConfig.substituters` in `flake.nix`
+    #    2. command line args `--options substituters http://xxx`
+    trusted-users = ["admin"];
+
+    substituters = [
+      # cache mirror located in China
+      # status: https://mirror.sjtu.edu.cn/
+      "https://mirror.sjtu.edu.cn/nix-channels/store"
+      # status: https://mirrors.ustc.edu.cn/status/
+      # "https://mirrors.ustc.edu.cn/nix-channels/store"
+
+      "https://cache.nixos.org"
+    ];
+
+    trusted-public-keys = [
+      # the default public key of cache.nixos.org, it's built-in, no need to add it here
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    ];
+  };
+
+  fonts = {
+    packages = with pkgs; [
+      fira-code-nerdfont
+      sarasa-gothic
+      noto-fonts-emoji
+    ];
+    fontconfig = {
+      antialias = true;
+      hinting.enable = true;
+    };
+  };
+    
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -141,47 +182,11 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  nix.settings = {
-    # given the users in this list the right to specify additional substituters via:
-    #    1. `nixConfig.substituters` in `flake.nix`
-    #    2. command line args `--options substituters http://xxx`
-    trusted-users = ["admin"];
-
-
-  substituters = [
-      # cache mirror located in China
-      # status: https://mirror.sjtu.edu.cn/
-      "https://mirror.sjtu.edu.cn/nix-channels/store"
-      # status: https://mirrors.ustc.edu.cn/status/
-      # "https://mirrors.ustc.edu.cn/nix-channels/store"
-
-      "https://cache.nixos.org"
-    ];
-
-    trusted-public-keys = [
-      # the default public key of cache.nixos.org, it's built-in, no need to add it here
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-    ];
-  };
-
-  fonts = {
-    packages = with pkgs; [
-      sarasa-gothic
-      noto-fonts-emoji
-    ];
-    fontconfig = {
-      antialias = true;
-      hinting.enable = true;
-    };
-  };
-
-
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
 
 }
