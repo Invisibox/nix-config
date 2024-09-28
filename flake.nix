@@ -22,14 +22,15 @@
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
       # FIXME replace with your hostname
-      NixOS = nixpkgs.lib.nixosSystem {
+      nixos = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
         specialArgs = {inherit inputs outputs;};
         modules = [
           {networking.hostName = "NixOS";}
 
           ./nixos/configuration.nix
 
-          ../modules/i18n.nix
+          ./modules/i18n.nix
         ];
       };
     };
@@ -40,7 +41,7 @@
       # FIXME replace with your username@hostname
       "admin@NixOS" = home-manager.lib.homeManagerConfiguration {
         modules = [./home-manager/home.nix];
-        pkgs = pkgsFor.x86_64-linux; # Home-manager requires 'pkgs' instance
+        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
         extraSpecialArgs = {
           inherit inputs outputs;
         };
