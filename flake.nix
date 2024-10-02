@@ -24,13 +24,7 @@
       # FIXME replace with your hostname
       nixos = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
-        modules = [
-          ./hosts/laptop/default.nix
-
-          ./modules/i18n.nix
-          ./modules/networking.nix
-          ./modules/pipewire.nix
-        ];
+        modules = [./hosts/laptop/default.nix];
       };
     };
 
@@ -38,8 +32,8 @@
     # Available through 'home-manager --flake .#your-username@your-hostname'
     homeConfigurations = {
       # FIXME replace with your username@hostname
-      "admin@NixOS" = home-manager.lib.homeManagerConfiguration {
-        modules = [./home-manager/admin/nixpkgs.nix];
+      "admin@nixos" = home-manager.lib.homeManagerConfiguration {
+        modules = [./home-manager/admin/default.nix ./home-manager/admin/nixpkgs.nix];
         pkgs = nixpkgs.lefacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
         extraSpecialArgs = {
           inherit inputs outputs;

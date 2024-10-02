@@ -2,28 +2,17 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ../../modules/default.nix
     ];
-  boot.loader = {
-    grub = {
-      enable = true;
-      device = "nodev";
-      efiSupport = true;
-    };
-    efi = {
-      canTouchEfiVariables = true;
-      efiSysMountPoint = "/boot";
-    };
-  };
-
+  
   networking = {
     hostName = "nixos";
-    networkmanager.enable = true;
   };
 
   services.libinput.enable = true;
@@ -48,6 +37,8 @@
       hinting.enable = true;
     };
   };
+
+  hardware.graphics.enable = true;
 
   environment.variables.EDITOR = "neovim";
 
