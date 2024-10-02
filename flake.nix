@@ -25,7 +25,7 @@
       nixos = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
         modules = [
-          ./nixos/configuration.nix
+          ./hosts/laptop/default.nix
 
           ./modules/i18n.nix
           ./modules/networking.nix
