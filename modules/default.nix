@@ -7,7 +7,6 @@
     ./network.nix
     ./pipewire.nix
     ./services.nix
-    ./user.nix
     ./wayland.nix
     ./i18n.nix
   ];

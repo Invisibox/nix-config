@@ -15,9 +15,7 @@
     };
   };
 
-  outputs = {self, nixpkgs, home-manager, ...} @ inputs: 
-  let
-    username = "admin";
+  outputs = {self, nixpkgs, home-manager, ...} @ inputs: let
     inherit (self) outputs;
   in {
     # NixOS configuration entrypoint
