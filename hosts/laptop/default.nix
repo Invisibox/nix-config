@@ -38,9 +38,9 @@
     };
   };
 
-  users.users.ryan = {
+  users.users.admin = {
     isNormalUser = true;
-    description = "ryan";
+    description = "admin";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
