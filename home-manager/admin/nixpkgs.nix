@@ -11,15 +11,19 @@ in {
     settings = {
       substituters = [
         "https://mirror.sjtu.edu.cn/nix-channels/store"
+        "https://mirrors.ustc.edu.cn/nix-channels/store"
+        "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
         
-	"https://cache.nixos.org"
-	];
+	      #"https://cache.nixos.org"
+	    ];
       
       experimental-features = [
         "nix-command"
         "flakes"
         "ca-derivations"
       ];
+
+      builders-use-substitutes = true;
 
       warn-dirty = false;
       flake-registry = ""; # Disable global flake registry
