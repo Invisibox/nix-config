@@ -38,6 +38,16 @@
     };
   };
 
+  users.users.ryan = {
+    isNormalUser = true;
+    description = "ryan";
+    extraGroups = [ "networkmanager" "wheel" ];
+    packages = with pkgs; [
+      firefox
+    #  thunderbird
+    ];
+  };
+
   hardware.graphics.enable = true;
 
   environment.variables.EDITOR = "neovim";
