@@ -54,6 +54,8 @@
     fcitx5.addons = with pkgs; [
       fcitx5-chinese-addons
       fcitx5-configtool
+      fcitx5-pinyin-zhwiki
+      fcitx5-pinyin-moegirl
       fcitx5-gtk
     ];
   };
@@ -108,12 +110,12 @@
       kdePackages.kate
       sarasa-gothic
       qq
-      # nerdfonts
       vscode
       clash-verge-rev
-      wpsoffice
+      libreoffice-qt6-fresh
       wechat-uos
       telegram-desktop
+      inputs.zen-browser.packages."${system}".specific
     #  thunderbird
     ];
   };

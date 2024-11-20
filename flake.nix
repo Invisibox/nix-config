@@ -3,11 +3,11 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    ayugram-desktop.url = "github:/ayugram-port/ayugram-desktop/release?submodules=1";
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
 #     hardware.url = "github:nixos/nixos-hardware";
   };
 
-  outputs = { self, nixpkgs, ayugram-desktop, ... }@inputs: {
+  outputs = { self, nixpkgs, ... }@inputs: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
