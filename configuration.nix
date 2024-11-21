@@ -115,7 +115,7 @@
       libreoffice-qt6-fresh
       wechat-uos
       telegram-desktop
-      inputs.zen-browser.packages."${system}".specific
+      # inputs.zen-browser.packages."${system}".specific
     #  thunderbird
     ];
   };
@@ -136,13 +136,13 @@
       "https://mirrors.ustc.edu.cn/nix-channels/store"
       "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
       "https://mirror.sjtu.edu.cn/nix-channels/store"
-      "https://cache.garnix.io"
+      # "https://cache.garnix.io"
       "https://cache.nixos.org"
     ];
 
     trusted-public-keys = [
       # the default public key of cache.nixos.org, it's built-in, no need to add it here
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+      # "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
     ];
   };
 
