@@ -5,10 +5,15 @@
 { config, pkgs, inputs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # inputs.hardware.nixosModules.common-cpu-amd
+    # inputs.hardware.nixosModules.common-gpu-amd
+    # inputs.hardware.nixosModules.common-pc-ssd
+
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./i18n.nix
+  ];
 
   # Bootloader.
   # boot.loader.systemd-boot.enable = true;
@@ -32,33 +37,6 @@
 
   # Set your time zone.
   time.timeZone = "Asia/Shanghai";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "zh_CN.UTF-8";
-    LC_IDENTIFICATION = "zh_CN.UTF-8";
-    LC_MEASUREMENT = "zh_CN.UTF-8";
-    LC_MONETARY = "zh_CN.UTF-8";
-    LC_NAME = "zh_CN.UTF-8";
-    LC_NUMERIC = "zh_CN.UTF-8";
-    LC_PAPER = "zh_CN.UTF-8";
-    LC_TELEPHONE = "zh_CN.UTF-8";
-    LC_TIME = "zh_CN.UTF-8";
-  };
-
-  i18n.inputMethod = {
-    type = "fcitx5";
-    enable = true;
-    fcitx5.addons = with pkgs; [
-      fcitx5-chinese-addons
-      fcitx5-configtool
-      fcitx5-pinyin-zhwiki
-      fcitx5-pinyin-moegirl
-      fcitx5-gtk
-    ];
-  };
 
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
@@ -111,6 +89,7 @@
       sarasa-gothic
       qq
       vscode
+      obsidian
       clash-verge-rev
       libreoffice-qt6-fresh
       jetbrains.clion
@@ -138,7 +117,11 @@
       "https://mirrors.ustc.edu.cn/nix-channels/store"
       "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
       "https://mirror.sjtu.edu.cn/nix-channels/store"
+
+      # cache mirror contains some packages that are not in the official channels
       "https://cache.garnix.io"
+
+      # the default cache.nixos.org
       "https://cache.nixos.org"
     ];
 
