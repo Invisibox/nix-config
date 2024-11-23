@@ -113,9 +113,11 @@
       vscode
       clash-verge-rev
       libreoffice-qt6-fresh
+      jetbrains.clion
       wechat-uos
       telegram-desktop
-      # inputs.zen-browser.packages."${system}".specific
+      kde-rounded-corners
+      inputs.zen-browser.packages."${system}".specific
     #  thunderbird
     ];
   };
@@ -136,15 +138,17 @@
       "https://mirrors.ustc.edu.cn/nix-channels/store"
       "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
       "https://mirror.sjtu.edu.cn/nix-channels/store"
-      # "https://cache.garnix.io"
+      "https://cache.garnix.io"
       "https://cache.nixos.org"
     ];
 
     trusted-public-keys = [
       # the default public key of cache.nixos.org, it's built-in, no need to add it here
-      # "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
     ];
   };
+
+  programs.nix-ld.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -158,6 +162,9 @@
   openssh
   gcc
   bun
+  uv
+  ruff
+  gdb
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
