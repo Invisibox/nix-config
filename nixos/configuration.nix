@@ -26,8 +26,6 @@
   };
   boot.loader.efi.canTouchEfiVariables = true;
 
-
-
   # Set your time zone.
   time.timeZone = "Asia/Shanghai";
 
@@ -79,10 +77,11 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       kdePackages.kate
-      sarasa-gothic
+      fastfetch
       qq
       vscode
       obsidian
+      zotero
       clash-verge-rev
       libreoffice-qt6-fresh
       jetbrains.clion
@@ -143,6 +142,17 @@
   gdb
   ];
 
+  fonts.packages = with pkgs; [
+  noto-fonts
+  noto-fonts-cjk
+  noto-fonts-emoji
+  liberation_ttf
+  fira-code-nerdfont
+  sarasa-gothic
+  dina-font
+  proggyfonts
+  ];
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -155,8 +165,6 @@
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
-
-
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
