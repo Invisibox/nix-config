@@ -89,7 +89,6 @@
       telegram-desktop
       kde-rounded-corners
       inputs.zen-browser.packages."${system}".specific
-    #  thunderbird
     ];
   };
 
@@ -144,7 +143,7 @@
 
   fonts.packages = with pkgs; [
   noto-fonts
-  noto-fonts-cjk
+  noto-fonts-cjk-sans
   noto-fonts-emoji
   liberation_ttf
   fira-code-nerdfont
@@ -152,6 +151,11 @@
   dina-font
   proggyfonts
   ];
+
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
