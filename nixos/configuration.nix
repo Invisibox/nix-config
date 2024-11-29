@@ -79,6 +79,9 @@
     packages = with pkgs; [
       kdePackages.kate
       fastfetch
+      eza
+      zoxide
+      fzf
       flex
       bison
       readline
