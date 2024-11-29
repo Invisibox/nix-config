@@ -36,6 +36,7 @@
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
+  services.xserver.libinput.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -78,6 +79,9 @@
     packages = with pkgs; [
       kdePackages.kate
       fastfetch
+      flex
+      bison
+      readline
       qq
       vscode
       obsidian
@@ -87,6 +91,7 @@
       jetbrains.clion
       wechat-uos
       telegram-desktop
+      lx-music-desktop
       kde-rounded-corners
       inputs.zen-browser.packages."${system}".specific
     ];
@@ -95,8 +100,17 @@
   # Install firefox.
   programs.firefox.enable = true;
 
+  # Install steam
+  programs.steam = {
+  enable = true;
+  remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+  dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+  };
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = ["electron-30.5.1"];
   nix.settings = {
     # given the users in this list the right to specify additional substituters via:
     #    1. `nixConfig.substituters` in `flake.nix`
@@ -135,6 +149,7 @@
   curl
   openssh
   gcc
+  cmake
   bun
   uv
   ruff
