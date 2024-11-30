@@ -82,6 +82,7 @@
       eza
       zoxide
       fzf
+      gtest
       flex
       bison
       readline
