@@ -82,10 +82,8 @@
       eza
       zoxide
       fzf
-      gtest
       flex
       bison
-      readline
       qq
       vscode
       obsidian
@@ -142,6 +140,11 @@
 
   programs.nix-ld.enable = true;
 
+  virtualisation.podman = {
+  enable = true;
+  dockerCompat = true;
+  };
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -158,6 +161,9 @@
   uv
   ruff
   gdb
+  readline
+  gtest
+  distrobox
   ];
 
   fonts.packages = with pkgs; [
