@@ -75,6 +75,7 @@
   users.users.zh = {
     isNormalUser = true;
     description = "zh";
+    shell = pkgs.zsh;
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       kdePackages.kate
