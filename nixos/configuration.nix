@@ -116,7 +116,7 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = ["electron-30.5.1"];
+  nixpkgs.config.permittedInsecurePackages = ["electron-30.5.1" "dotnet-sdk-7.0.410" "dotnet-sdk-wrapped-7.0.410"];
   nix.settings = {
     # given the users in this list the right to specify additional substituters via:
     #    1. `nixConfig.substituters` in `flake.nix`
