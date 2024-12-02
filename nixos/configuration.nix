@@ -146,8 +146,8 @@
   programs.nix-ld.enable = true;
 
   virtualisation.podman = {
-  enable = true;
-  dockerCompat = true;
+    enable = true;
+    dockerCompat = true;
   };
 
   # List packages installed in system profile. To search, run:
