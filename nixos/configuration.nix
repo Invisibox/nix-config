@@ -83,8 +83,6 @@
       eza
       zoxide
       fzf
-      flex
-      bison
       qq
       vscode
       obsidian
@@ -169,6 +167,9 @@
   readline
   gtest
   distrobox
+  bashInteractive
+  nodejs
+  nodejs.pkgs.pnpm
   ];
 
   fonts.packages = with pkgs; [
