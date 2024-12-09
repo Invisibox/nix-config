@@ -156,6 +156,7 @@
   #  wget
   neovim
   git
+  gatk
   wget
   curl
   openssh
