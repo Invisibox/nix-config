@@ -79,6 +79,7 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       kdePackages.kate
+      rar
       fastfetch
       eza
       zoxide
