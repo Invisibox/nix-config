@@ -95,7 +95,7 @@
       telegram-desktop
       lx-music-desktop
       kde-rounded-corners
-      inputs.zen-browser.packages."${system}".specific
+      microsoft-edge
     ];
   };
 
@@ -168,6 +168,7 @@
   #  wget
   neovim
   git
+  tree
   gatk
   wget
   curl
