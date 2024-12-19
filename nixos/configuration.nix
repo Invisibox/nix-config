@@ -183,8 +183,8 @@
   gtest
   distrobox
   bashInteractive
-  nodejs
-  nodejs.pkgs.pnpm
+  # nodejs
+  # nodejs.pkgs.pnpm
   ];
 
   fonts.packages = with pkgs; [
