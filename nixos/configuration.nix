@@ -173,6 +173,7 @@
   wget
   curl
   openssh
+  openssl
   gcc
   cmake
   bun
