@@ -180,7 +180,8 @@
   uv
   ruff
   gdb
-  readline
+  python3
+  jdk
   gtest
   distrobox
   bashInteractive
