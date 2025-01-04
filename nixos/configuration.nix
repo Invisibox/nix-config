@@ -88,7 +88,6 @@
       vscode
       obsidian
       zotero
-      igv
       clash-verge-rev
       libreoffice-qt6-fresh
       jetbrains.clion
