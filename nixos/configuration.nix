@@ -88,6 +88,7 @@
       vscode
       obsidian
       zotero
+      termius
       clash-verge-rev
       libreoffice-qt6-fresh
       jetbrains.clion
