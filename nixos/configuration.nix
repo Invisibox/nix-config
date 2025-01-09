@@ -84,6 +84,7 @@
       eza
       zoxide
       fzf
+      thefuck
       qq
       vscode
       obsidian
