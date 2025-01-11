@@ -85,6 +85,7 @@
       zoxide
       fzf
       thefuck
+      aircrack-ng
       qq
       vscode
       obsidian
