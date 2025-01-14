@@ -92,6 +92,7 @@
       zotero
       termius
       clash-verge-rev
+      sing-box
       libreoffice-qt6-fresh
       jetbrains.clion
       wechat-uos
