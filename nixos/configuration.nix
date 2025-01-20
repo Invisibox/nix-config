@@ -90,6 +90,7 @@
       vscode
       obsidian
       zotero
+      kitty
       termius
       clash-verge-rev
       sing-box
