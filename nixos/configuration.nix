@@ -87,6 +87,7 @@
       thefuck
       aircrack-ng
       qq
+      v2raya
       vscode
       obsidian
       zotero
