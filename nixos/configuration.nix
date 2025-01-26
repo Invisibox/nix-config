@@ -53,7 +53,7 @@
   services.blueman.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -69,7 +69,7 @@
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  # services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.zh = {
@@ -87,8 +87,9 @@
       thefuck
       aircrack-ng
       qq
+      xray
       v2ray
-      v2raya
+      v2rayn
       vscode
       obsidian
       zotero
@@ -201,7 +202,7 @@
   noto-fonts-cjk-sans
   noto-fonts-emoji
   liberation_ttf
-  fira-code-nerdfont
+  nerd-fonts.fira-code
   sarasa-gothic
   dina-font
   proggyfonts
