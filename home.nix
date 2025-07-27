@@ -1,4 +1,9 @@
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
   # 注意修改这里的用户名与用户目录
@@ -23,7 +28,7 @@
   # 通过 home.packages 安装一些常用的软件
   # 这些软件将仅在当前用户下可用，不会影响系统级别的配置
   # 建议将所有 GUI 软件，以及与 OS 关系不大的 CLI 软件，都通过 home.packages 安装
-  home.packages = with pkgs;[
+  home.packages = with pkgs; [
     kdePackages.kate
     fastfetch
     vscode
@@ -33,10 +38,10 @@
     tela-icon-theme
     bibata-cursors
     kde-rounded-corners
-    
+
     inputs.kwin-effects-forceblur.packages.${pkgs.system}.default # Wayland
     inputs.kwin-effects-forceblur.packages.${pkgs.system}.x11 # X11
-    
+
     darkly-qt5
     darkly
     wpsoffice-cn
@@ -72,6 +77,29 @@
     enable = true;
     userName = "Invisibox";
     userEmail = "fortunateli@outlook.com";
+  };
+
+  # mpv 相关配置
+  programs.mpv = {
+    enable = true;
+
+    package = (
+      pkgs.mpv-unwrapped.wrapper {
+        mpv = pkgs.mpv-unwrapped.override {
+          ffmpeg = pkgs.ffmpeg-full;
+          waylandSupport = true;
+        };
+        scripts = with pkgs.mpvScripts; [
+          uosc
+          sponsorblock
+        ];
+      }
+    );
+    config = {
+      profile = "high-quality";
+      ytdl-format = "bestvideo+bestaudio";
+      cache-default = 1000000;
+    };
   };
 
   # This value determines the Home Manager release that your
