@@ -39,7 +39,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.zh = import ./home.nix;
+            home-manager.users.zh = import ./home-manager/home.nix;
             
             # 设置 home-manager 的备份文件扩展名
             # 这样在修改 home.nix 时，home-manager 会自动备份旧的
