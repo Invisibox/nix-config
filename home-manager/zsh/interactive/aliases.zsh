@@ -1,20 +1,26 @@
 alias reload="exec zsh"
-
-alias sudo="sudo -E"
+alias c='clear' # clear terminal
 
 # nix aliases
-
-export NIXPKGS_ALLOW_UNFREE=1
 
 alias nix-gc="command sudo nix-collect-garbage -d"
 alias nix-delete="command sudo nix store delete"
 ns () nix shell 'nixpkgs#'${^@} --impure
 
 # files
-alias e="eza --icons always --color always --reverse --hyperlink --no-quotes --git --all"
-alias e1="e --oneline"
-alias ee="e --long"
-alias et="e --tree"
+alias ls='eza --icons --color=auto --group-directories-first' # list files with icons, color, and directories first
+alias l='ls -lhg --sort=type' # list files with human-readable sizes, sorted by type
+alias la='l -a' # list all files
+alias lsd='ls -ld *(-/DN)' # list directories only
+alias lsa='ls -aF' # list all files with indicators
+alias lt='eza --icons=auto --tree' # list folder as tree
+
+alias tree='ls --tree'
+alias tre='tree -L 2'
+alias treea='tree -a' # list all files in tree format
+alias treed='tree -d' # list directories only in tree format
+# alias treel='tree -a --git-ignore --ignore-glob=".git|.DS_Store|.cache|node_modules|target"' # list all files in tree format, ignoring certain directories
+alias treel='tree -a --git-ignore --ignore-glob=".git|.DS_Store|.cache|node_modules|target"'
 
 alias md="mkdir -p"
 mcd () { mkdir -p -- $1 && cd $1 }
@@ -47,7 +53,3 @@ alias dl="curl -LO"
 alias ka="killall"
 
 alias ff="fastfetch"
-alias hf="hyperfine"
-alias hc="hyprctl"
-alias bb="btm"
-
