@@ -13,6 +13,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./nix.nix
   ];
 
   # Bootloader.
@@ -167,9 +168,6 @@
   # install zsh.
   programs.zsh.enable = true;
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
   # Install Steam
   programs.steam = {
     enable = true;
@@ -191,25 +189,6 @@
   # Disable nano, as it is not needed.
   programs.nano.enable = false;
 
-  # Enable the Nix command line interface and flakes.
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-
-  # do garbage collection weekly to keep disk usage low
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 1w";
-  };
-
-  # Optimise storage
-  # you can also optimise the store manually via:
-  #    nix-store --optimise
-  # https://nixos.org/manual/nix/stable/command-ref/conf-file.html#conf-auto-optimise-store
-  nix.settings.auto-optimise-store = true;
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -222,7 +201,6 @@
     eza
     bun
     uv
-    nixfmt-rfc-style
     libdbusmenu # https://github.com/microsoft/vscode/issues/34510
     kdePackages.sddm-kcm
     kdePackages.ksystemlog

@@ -45,7 +45,7 @@
       # --- 鼠标控制 ---
       "MBTN_LEFT" = "cycle pause";
       "MBTN_LEFT_DBL" = "cycle fullscreen"; # 左键双击 全屏/退出全屏
-      "MBTN_RIGHT" = "cycle pause"; # 右键 暂停/继续
+      "MBTN_RIGHT" = "cycle fullscreen"; # 右键 暂停/继续
       "MBTN_BACK" = "playlist-prev"; # 侧键向前 播放列表上一个
       "MBTN_FORWARD" = "playlist-next"; # 侧键向后 播放列表下一个
       "WHEEL_UP" = "add volume 5"; # 滚轮向上 音量+5
