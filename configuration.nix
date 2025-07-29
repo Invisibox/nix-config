@@ -149,6 +149,7 @@
       "input"
       "uinput"
     ];
+    shell = pkgs.zsh;
   };
 
   # Install clash-verge.
@@ -162,6 +163,9 @@
 
   # Install firefox.
   programs.firefox.enable = true;
+  
+  # install zsh.
+  programs.zsh.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
