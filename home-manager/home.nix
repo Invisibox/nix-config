@@ -74,7 +74,7 @@
 
   programs.zsh.enable = true;
   home.sessionVariables = {
-    ZDOTDIR = ".config/zsh";
+    ZDOTDIR = "$HOME/.config/zsh";
   };
 
   # git 相关配置

@@ -15,7 +15,8 @@ done
 
 path+=(~/.local/bin)
 
-export ZSH_CONFIG_DIR=${${(%):-%x}:h}
+# export ZSH_CONFIG_DIR=${${(%):-%x}:h}
+export ZSH_CONFIG_DIR="$HOME/.config/zsh"
 export ZSH_CACHE_DIR=$ZSH_CONFIG_DIR/cache
 
 if [[ ! -d $ZSH_CACHE_DIR ]]; then
