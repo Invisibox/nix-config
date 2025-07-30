@@ -37,10 +37,10 @@
 
       substituters = [
         # cache mirror located in China
-        # status: https://mirrors.ustc.edu.cn/status/
-        "https://mirrors.ustc.edu.cn/nix-channels/store"
         # status: https://mirrors.sjtug.sjtu.edu.cn/
         "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store"
+        # status: https://mirrors.ustc.edu.cn/status/
+        "https://mirrors.ustc.edu.cn/nix-channels/store"
         # status: https://mirrors.tuna.tsinghua.edu.cn/status/
         "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
 
