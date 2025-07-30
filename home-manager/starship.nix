@@ -1,7 +1,8 @@
-{ pkgs, config, ... }:
-
 {
-
+  pkgs,
+  config,
+  ...
+}: {
   # disable warnings
   home.sessionVariables.STARSHIP_LOG = "error";
 

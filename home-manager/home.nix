@@ -3,9 +3,7 @@
   pkgs,
   inputs,
   ...
-}:
-
-{
+}: {
   # 注意修改这里的用户名与用户目录
   home.username = "zh";
   home.homeDirectory = "/home/zh";
@@ -103,7 +101,7 @@
         exit_past_line_start = false;
         accept_past_line_end = false;
       };
-      history_filter = [ "^\s+" ];
+      history_filter = ["^\s+"];
     };
   };
 

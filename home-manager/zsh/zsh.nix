@@ -3,52 +3,48 @@
   pkgs,
   config,
   ...
-}:
-
-let
-
+}: let
   # zcompile files based on a glob expression
-  zcompileGlob =
-    globs: # sh
-    ''
-      ${config.programs.zsh.package}/bin/zsh -dfc '
-        setopt extendedglob globstarshort dotglob
-        for f in ${globs}; do
-          zcompile -U -- $f 2>/dev/null
-        done
-      ' || :
-    '';
+  zcompileGlob = globs:
+  # sh
+  ''
+    ${config.programs.zsh.package}/bin/zsh -dfc '
+      setopt extendedglob globstarshort dotglob
+      for f in ${globs}; do
+        zcompile -U -- $f 2>/dev/null
+      done
+    ' || :
+  '';
 
   # make a derivation out of a plugin's name and source.
   # will zcompile it automatically. optionally, the unpack
   # phase can be overwritten.
-  mkZshPlugin =
-    name: attrs:
+  mkZshPlugin = name: attrs:
     pkgs.callPackage (
-      { stdenvNoCC }:
-      stdenvNoCC.mkDerivation (
-        attrs
-        // {
-          inherit name;
-          phases = [ "unpackPhase" ];
-          unpackPhase =
-            (attrs.unpackPhase or # sh
+      {stdenvNoCC}:
+        stdenvNoCC.mkDerivation (
+          attrs
+          // {
+            inherit name;
+            phases = ["unpackPhase"];
+            unpackPhase =
+              (
+                attrs.unpackPhase or # sh
             ''
-              mkdir -p -- $out/
-              cp -r $src/.* $src/* $out/
-            ''
-            )
-            + ''
-              ${zcompileGlob "$out/**"}
-            '';
-        }
-      )
-    ) { };
+                  mkdir -p -- $out/
+                  cp -r $src/.* $src/* $out/
+                ''
+              )
+              + ''
+                ${zcompileGlob "$out/**"}
+              '';
+          }
+        )
+    ) {};
 
-  zsh-syntax-highlighting =
-    let
-      name = "zsh-syntax-highlighting";
-    in
+  zsh-syntax-highlighting = let
+    name = "zsh-syntax-highlighting";
+  in
     mkZshPlugin name {
       src = pkgs.fetchFromGitHub {
         owner = "zsh-users";
@@ -58,10 +54,9 @@ let
       };
     };
 
-  zsh-history-substring-search =
-    let
-      name = "zsh-history-substring-search";
-    in
+  zsh-history-substring-search = let
+    name = "zsh-history-substring-search";
+  in
     mkZshPlugin name {
       src = pkgs.fetchFromGitHub {
         owner = "zsh-users";
@@ -71,10 +66,9 @@ let
       };
     };
 
-  zsh-autosuggestions =
-    let
-      name = "zsh-autosuggestions";
-    in
+  zsh-autosuggestions = let
+    name = "zsh-autosuggestions";
+  in
     mkZshPlugin name {
       src = pkgs.fetchFromGitHub {
         owner = "zsh-users";
@@ -89,10 +83,9 @@ let
       '';
     };
 
-  fzf-tab-completion =
-    let
-      name = "fzf-tab-completion";
-    in
+  fzf-tab-completion = let
+    name = "fzf-tab-completion";
+  in
     mkZshPlugin name {
       src = pkgs.fetchFromGitHub {
         owner = "lincheney";
@@ -106,10 +99,9 @@ let
       '';
     };
 
-  zsh-smartcache =
-    let
-      name = "zsh-smartcache";
-    in
+  zsh-smartcache = let
+    name = "zsh-smartcache";
+  in
     mkZshPlugin name {
       src = pkgs.fetchFromGitHub {
         owner = "QuarticCat";
@@ -119,10 +111,9 @@ let
       };
     };
 
-  zsh-no-ps2 =
-    let
-      name = "zsh-no-ps2";
-    in
+  zsh-no-ps2 = let
+    name = "zsh-no-ps2";
+  in
     mkZshPlugin name {
       src = pkgs.fetchFromGitHub {
         owner = "romkatv";
@@ -132,7 +123,7 @@ let
       };
     };
 
-  atuin-integration = pkgs.runCommandLocal "zsh atuin init" { } ''
+  atuin-integration = pkgs.runCommandLocal "zsh atuin init" {} ''
     sd=${pkgs.sd}/bin/sd
 
     XDG_CONFIG_HOME=/tmp/ XDG_DATA_HOME=/tmp/ \
@@ -144,13 +135,8 @@ let
             }
             ' > $out
   '';
-
-in
-
-{
-
+in {
   xdg.configFile = {
-
     # entrypoint
     # zdotdir is set by the nixos module and points to $XDG_CONFIG_HOME/zsh
 
@@ -187,7 +173,7 @@ in
 
     "zsh/keybindings/keymap_foot.zsh" = {
       text = import ./keybindings/keymap_foot.nix {
-        footKeysAttrSet = import ../foot/keys.nix { inherit lib; };
+        footKeysAttrSet = import ../foot/keys.nix {inherit lib;};
         inherit lib;
       };
       onChange = zcompileGlob "keybindings/keymap_foot.zsh";
@@ -199,5 +185,4 @@ in
       onChange = zcompileGlob "widgets/**.zsh";
     };
   };
-
 }

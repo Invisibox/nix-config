@@ -3,9 +3,7 @@
   pkgs,
   inputs,
   ...
-}:
-
-{
+}: {
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -19,7 +17,7 @@
 
     optimise = {
       automatic = true;
-      dates = [ "1w" ];
+      dates = ["1w"];
     };
 
     settings = {
@@ -36,15 +34,15 @@
         "zh"
         "@wheel"
       ];
-      
+
       substituters = [
         # cache mirror located in China
-        # status: https://mirror.sjtug.edu.cn/
-        "https://mirror.sjtug.edu.cn/nix-channels/store"
         # status: https://mirrors.ustc.edu.cn/status/
         "https://mirrors.ustc.edu.cn/nix-channels/store"
+        # status: https://mirrors.sjtug.sjtu.edu.cn/
+        "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store"
         # status: https://mirrors.tuna.tsinghua.edu.cn/status/
-        https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store
+        "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
 
         "https://cache.nixos.org"
 
@@ -67,7 +65,7 @@
   environment.systemPackages = with pkgs; [
     nvd
     nix-output-monitor
-    nixfmt-rfc-style
+    nil
+    alejandra
   ];
-
 }

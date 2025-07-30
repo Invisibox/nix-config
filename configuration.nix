@@ -1,15 +1,12 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
 {
   config,
   pkgs,
   inputs,
   ...
-}:
-
-{
+}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -164,7 +161,7 @@
 
   # Install firefox.
   programs.firefox.enable = true;
-  
+
   # install zsh.
   programs.zsh.enable = true;
 
@@ -179,8 +176,8 @@
   # Enable Flatpak support.
   services.flatpak.enable = true;
   systemd.services.flatpak-repo = {
-    wantedBy = [ "multi-user.target" ];
-    path = [ pkgs.flatpak ];
+    wantedBy = ["multi-user.target"];
+    path = [pkgs.flatpak];
     script = ''
       flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
     '';
@@ -276,7 +273,7 @@
   # networking.firewall.enable = false;
   networking.firewall = {
     enable = true;
-    trustedInterfaces = [ "Mihomo" ];
+    trustedInterfaces = ["Mihomo"];
     checkReversePath = "loose";
   };
 
@@ -287,5 +284,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
-
 }
