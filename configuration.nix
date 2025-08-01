@@ -158,11 +158,11 @@
     serviceMode = true;
   };
 
-  # Install firefox.
-  programs.firefox.enable = true;
-
-  # install zsh.
+  # Install zsh.
   programs.zsh.enable = true;
+  
+  # Enable nix ld.
+  programs.nix-ld.enable = true;
 
   # Install Steam
   programs.steam = {
