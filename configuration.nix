@@ -79,8 +79,9 @@
 
   # DDC/CI for monitor control
   services.udev.extraRules = ''
-  KERNEL=="i2c-[0-9]*", SUBSYSTEM=="i2c-dev", GROUP="i2c", MODE="0660"  
+  KERNEL=="i2c-[0-9]*", GROUP="ddc", MODE="0660", PROGRAM="${pkgs.ddcutil}/bin/ddcutil --bus=%n getvcp 0x10"
   '';
+  users.groups.ddc = { };
 
   # Enable polkit for KDE Plasma
   # security.polkit.enable = true;
@@ -143,6 +144,7 @@
       "wheel"
       "docker"
       "i2c"
+      "ddc"
       "input"
       "uinput"
     ];
