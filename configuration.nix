@@ -19,6 +19,7 @@
       enable = true;
       device = "nodev";
       efiSupport = true;
+      configurationLimit = 10;
     };
     efi = {
       canTouchEfiVariables = true;
@@ -70,17 +71,15 @@
     ];
   };
 
-  # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
-
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
+  hardware.i2c.enable = true;
+
   # DDC/CI for monitor control
   services.udev.extraRules = ''
-    KERNEL=="i2c-[0-9]*", SUBSYSTEM=="i2c-dev", MODE="0666"
+  KERNEL=="i2c-[0-9]*", SUBSYSTEM=="i2c-dev", GROUP="i2c", MODE="0660"  
   '';
 
   # Enable polkit for KDE Plasma

@@ -19,7 +19,7 @@
     "sd_mod"
   ];
   boot.initrd.kernelModules = [];
-  boot.kernelModules = ["kvm-amd" "i2c-dev" "uinput"];
+  boot.kernelModules = ["kvm-amd" "uinput"];
   boot.extraModulePackages = [];
 
   fileSystems."/" = {
