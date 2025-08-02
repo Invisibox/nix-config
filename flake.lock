@@ -1,5 +1,63 @@
 {
   "nodes": {
+    "asus-numberpad-driver": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1753248535,
+        "narHash": "sha256-PLx2TADTNe1EktBt6VUtQEWkEG+k/I9I/+Amyg+o+g8=",
+        "owner": "asus-linux-drivers",
+        "repo": "asus-numberpad-driver",
+        "rev": "de1def2d69a63c1fb79926eaff6f06e4a5805a6d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "asus-linux-drivers",
+        "repo": "asus-numberpad-driver",
+        "type": "github"
+      }
+    },
+    "chinese-fonts-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1735891296,
+        "narHash": "sha256-xmyzX5JXC1JQNVNhI8AnbivcID2AJoCQXlSKxRxsMt0=",
+        "owner": "brsvh",
+        "repo": "chinese-fonts-overlay",
+        "rev": "748d91262ab205d069d5a40275f079ed70b71994",
+        "type": "github"
+      },
+      "original": {
+        "owner": "brsvh",
+        "repo": "chinese-fonts-overlay",
+        "type": "github"
+      }
+    },
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems_2"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -96,14 +154,32 @@
     },
     "root": {
       "inputs": {
+        "asus-numberpad-driver": "asus-numberpad-driver",
+        "chinese-fonts-overlay": "chinese-fonts-overlay",
         "home-manager": "home-manager",
         "kwin-effects-forceblur": "kwin-effects-forceblur",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",
+        "wpsFonts": "wpsFonts",
         "zen-browser": "zen-browser"
       }
     },
     "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_2": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
@@ -133,6 +209,27 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "wpsFonts": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1726022768,
+        "narHash": "sha256-x0oRF3hIja6bGL/IjCpOqDcFKAB4VDmPf9DC258T0LA=",
+        "owner": "hypercrusher",
+        "repo": "wpsfonts",
+        "rev": "82bc57288852e8c467b00d72e68082109d82e61b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hypercrusher",
+        "repo": "wpsfonts",
         "type": "github"
       }
     },

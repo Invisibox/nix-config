@@ -10,6 +10,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./font.nix
     ./nix.nix
   ];
 
@@ -210,29 +211,6 @@
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk-sans
-    noto-fonts-emoji
-    noto-fonts-color-emoji
-    liberation_ttf
-    nerd-fonts.jetbrains-mono
-    sarasa-gothic
-    corefonts # Microsoft Core Fonts
-    vista-fonts # Vista Fonts
-  ];
-
-  fonts.fontconfig.localConf = ''
-    <match target="font">
-      <test name="family" qual="first">
-        <string>Noto Color Emoji</string>
-      </test>
-      <edit name="antialias" mode="assign">
-        <bool>false</bool>
-      </edit>
-    </match>
-  '';
-
   services.kanata = {
     enable = true;
     package = pkgs.kanata;
@@ -251,6 +229,23 @@
           )
         '';
       };
+    };
+  };
+  
+  # Enable the Asus Numberpad driver
+  # This is necessary for the Asus Zenbook Numberpad to work properly.
+  services.asus-numberpad-driver = {
+    enable = true;
+    layout = "up5401ea";
+    wayland = true;
+    runtimeDir = "/run/user/1000/";
+    waylandDisplay = "wayland-0";
+    ignoreWaylandDisplayEnv = false;
+    config = {
+      "activation_time" = "0.5";
+      "enabled_touchpad_pointer" = "1";
+      "disable_due_inactivity_time" = "30";
+      # More Configuration Options
     };
   };
 
