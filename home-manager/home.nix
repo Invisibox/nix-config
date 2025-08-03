@@ -50,6 +50,8 @@
     artim-dark
     thunderbird
     qbittorrent-enhanced
+    follow
+    keyguard
     brave
 
     inputs.zen-browser.packages."${system}".twilight
