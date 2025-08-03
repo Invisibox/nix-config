@@ -74,7 +74,6 @@
   };
 
   # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
   hardware.i2c.enable = true;
