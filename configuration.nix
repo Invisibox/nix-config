@@ -12,6 +12,7 @@
     ./hardware-configuration.nix
     ./font.nix
     ./nix.nix
+    ./modules/sddm.nix
   ];
 
   # Bootloader.
@@ -80,7 +81,7 @@
 
   # DDC/CI for monitor control
   services.udev.extraRules = ''
-  KERNEL=="i2c-[0-9]-*", SUBSYSTEM=="i2c-dev", GROUP="i2c", MODE="0660"
+    KERNEL=="i2c-[0-9]-*", SUBSYSTEM=="i2c-dev", GROUP="i2c", MODE="0660"
   '';
 
   # Enable polkit for KDE Plasma
@@ -161,7 +162,7 @@
 
   # Install zsh.
   programs.zsh.enable = true;
-  
+
   # Enable nix ld.
   programs.nix-ld.enable = true;
 
@@ -229,7 +230,16 @@
       };
     };
   };
-  
+
+  # Enable fingerprint reader support
+  services.fprintd = {
+    enable = true;
+    tod = {
+      enable = true;
+      driver = pkgs.libfprint-2-tod1-elan;
+    };
+  };
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
