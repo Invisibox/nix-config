@@ -80,9 +80,8 @@
 
   # DDC/CI for monitor control
   services.udev.extraRules = ''
-  KERNEL=="i2c-[0-9]*", GROUP="ddc", MODE="0660", PROGRAM="${pkgs.ddcutil}/bin/ddcutil --bus=%n getvcp 0x10"
+  KERNEL=="i2c-[0-9]-*", SUBSYSTEM=="i2c-dev", GROUP="i2c", MODE="0660"
   '';
-  users.groups.ddc = { };
 
   # Enable polkit for KDE Plasma
   # security.polkit.enable = true;
@@ -145,21 +144,20 @@
       "wheel"
       "docker"
       "i2c"
-      "ddc"
       "input"
       "uinput"
     ];
     shell = pkgs.zsh;
   };
 
-  # Install clash-verge.
-  programs.clash-verge = {
-    enable = true;
-    package = pkgs.clash-verge-rev;
-    autoStart = false;
-    tunMode = true;
-    serviceMode = true;
-  };
+  # # Install clash-verge.
+  # programs.clash-verge = {
+  #   enable = true;
+  #   package = pkgs.clash-verge-rev;
+  #   autoStart = false;
+  #   tunMode = true;
+  #   serviceMode = true;
+  # };
 
   # Install zsh.
   programs.zsh.enable = true;
@@ -232,23 +230,6 @@
     };
   };
   
-  # Enable the Asus Numberpad driver
-  # This is necessary for the Asus Zenbook Numberpad to work properly.
-  services.asus-numberpad-driver = {
-    enable = true;
-    layout = "up5401ea";
-    wayland = true;
-    runtimeDir = "/run/user/1000/";
-    waylandDisplay = "wayland-0";
-    ignoreWaylandDisplayEnv = false;
-    config = {
-      "activation_time" = "0.5";
-      "enabled_touchpad_pointer" = "1";
-      "disable_due_inactivity_time" = "30";
-      # More Configuration Options
-    };
-  };
-
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

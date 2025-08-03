@@ -18,11 +18,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    asus-numberpad-driver = {
-      url = "github:asus-linux-drivers/asus-numberpad-driver";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    
     chinese-fonts-overlay = {
       url = "github:brsvh/chinese-fonts-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -42,7 +37,6 @@
   outputs = {
     self,
     nixpkgs,
-    asus-numberpad-driver,
     home-manager,
     ...
   } @ inputs: {
@@ -54,8 +48,6 @@
         # 这样旧的配置文件仍然能生效
         ./configuration.nix
         
-        asus-numberpad-driver.nixosModules.default
-
         # 将 home-manager 配置为 nixos 的一个 module
         # 这样在 nixos-rebuild switch 时，home-manager 配置也会被自动部署
         home-manager.nixosModules.home-manager
