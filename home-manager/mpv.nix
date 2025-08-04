@@ -39,6 +39,7 @@
       slang = "chi,zho,zh,zh-CN,zh-TW,zh-HK,zh-MO"; # 优先字幕轨
       osd-bar = "no"; # 禁用 OSD 状态栏
       border = "no"; # 禁用边框
+      osd-font = "Noto Sans CJK SC"; # OSD 字体
     };
 
     # input.conf
