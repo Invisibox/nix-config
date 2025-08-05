@@ -161,6 +161,12 @@
 
   # Install zsh.
   programs.zsh.enable = true;
+  
+  security.sudo.extraConfig = ''
+    # 保留 Atuin 会话变量，这对钩子与守护进程通信至关重要
+    Defaults env_keep += "ATUIN_SESSION"
+    Defaults env_keep += "ATUIN_HISTORY_ID"
+  '';
 
   # Enable nix ld.
   programs.nix-ld.enable = true;
@@ -198,6 +204,7 @@
     eza
     bun
     uv
+    gcc
     libdbusmenu # https://github.com/microsoft/vscode/issues/34510
     kdePackages.sddm-kcm
     kdePackages.ksystemlog

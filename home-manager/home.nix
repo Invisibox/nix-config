@@ -50,6 +50,7 @@
     artim-dark
     thunderbird
     qbittorrent-enhanced
+    geogebra6
     brave
 
     inputs.zen-browser.packages."${system}".twilight
@@ -64,6 +65,9 @@
     eza # A modern replacement for ‘ls’
     fzf # A command-line fuzzy finder
     fd
+    pango
+    pkg-config
+    cairo
     foliate
 
     # nix related
@@ -97,14 +101,15 @@
     settings = {
       update_check = false;
       style = "compact";
+      save_failed_commands = "false";
       inline_height = 12;
-      dialect = "uk";
+      dialect = "us";
       keys = {
         scroll_exits = false;
         exit_past_line_start = false;
         accept_past_line_end = false;
       };
-      history_filter = ["^\s+"];
+      history_filter = ["^\\s+"];
     };
   };
 
