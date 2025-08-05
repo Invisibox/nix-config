@@ -16,7 +16,6 @@
       instances.pdf.settings = {
         Out = "\${HOME}/Documents/CUPS-PDF";
         UserUMask = "0033";
-        TitlePref = "1";
       };
     };
   };

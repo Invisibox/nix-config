@@ -64,8 +64,14 @@
 
   environment.systemPackages = with pkgs; [
     nvd
-    nh
     nil
     alejandra
   ];
+
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "-d";
+    flake = config.users.users.zh.home + "/Documents/nix-config";
+  };
 }
