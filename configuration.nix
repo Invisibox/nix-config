@@ -12,6 +12,7 @@
     ./hardware-configuration.nix
     ./font.nix
     ./nix.nix
+    ./printing.nix
     ./modules/sddm.nix
   ];
 
@@ -106,9 +107,6 @@
     variant = "";
   };
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
   # Enable Bluetooth
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
@@ -161,12 +159,6 @@
 
   # Install zsh.
   programs.zsh.enable = true;
-  
-  security.sudo.extraConfig = ''
-    # 保留 Atuin 会话变量，这对钩子与守护进程通信至关重要
-    Defaults env_keep += "ATUIN_SESSION"
-    Defaults env_keep += "ATUIN_HISTORY_ID"
-  '';
 
   # Enable nix ld.
   programs.nix-ld.enable = true;

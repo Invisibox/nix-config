@@ -64,7 +64,7 @@
 
   environment.systemPackages = with pkgs; [
     nvd
-    nix-output-monitor
+    nh
     nil
     alejandra
   ];
