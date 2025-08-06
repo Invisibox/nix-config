@@ -5,8 +5,8 @@
 }: {
 nixpkgs.overlays = [
     (self: super: {
-      # 我们要覆盖 'wps-office-cn' 这个包
-      wps-office-cn = super.wps-office-cn.overrideAttrs (oldAttrs: {
+      # 我们要覆盖 'wpsoffice-cn' 这个包
+      wpsoffice-cn = super.wpsoffice-cn.overrideAttrs (oldAttrs: {
         # 我们使用 postInstall 钩子, 在包安装完成后执行额外操作
         postInstall = ''
           # wrapProgram 是一个Nix提供的便利工具
