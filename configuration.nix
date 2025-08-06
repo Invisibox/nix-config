@@ -13,7 +13,8 @@
     ./font.nix
     ./nix.nix
     ./printing.nix
-    ./modules/sddm.nix
+    ./modules/sddm
+    ./overlays
   ];
 
   # Bootloader.
@@ -76,6 +77,11 @@
 
   # Enable the KDE Plasma Desktop Environment.
   services.desktopManager.plasma6.enable = true;
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
 
   hardware.i2c.enable = true;
 
@@ -198,6 +204,8 @@
     uv
     gcc
     libdbusmenu # https://github.com/microsoft/vscode/issues/34510
+    xsettingsd
+    xorg.xrdb
     kdePackages.sddm-kcm
     kdePackages.ksystemlog
     kdePackages.xdg-desktop-portal-kde

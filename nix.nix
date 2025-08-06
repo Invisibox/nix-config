@@ -70,8 +70,8 @@
 
   programs.nh = {
     enable = true;
-    clean.enable = true;
-    clean.extraArgs = "-d";
+    # clean.enable = true;
+    # clean.extraArgs = "-d";
     flake = config.users.users.zh.home + "/Documents/nix-config";
   };
 }
