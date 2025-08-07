@@ -69,6 +69,7 @@
     pkg-config
     cairo
     foliate
+    hyperfine
 
     # nix related
     #
