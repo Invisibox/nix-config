@@ -154,14 +154,14 @@
     shell = pkgs.zsh;
   };
 
-  # # Install clash-verge.
-  # programs.clash-verge = {
-  #   enable = true;
-  #   package = pkgs.clash-verge-rev;
-  #   autoStart = false;
-  #   tunMode = true;
-  #   serviceMode = true;
-  # };
+  # Install clash-verge.
+  programs.clash-verge = {
+    enable = true;
+    package = pkgs.clash-verge-rev;
+    autoStart = false;
+    tunMode = true;
+    serviceMode = true;
+  };
 
   # Install zsh.
   programs.zsh.enable = true;

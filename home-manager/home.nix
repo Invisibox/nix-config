@@ -47,10 +47,12 @@
     wpsoffice-cn
     discord
     spotify
+    folo
     artim-dark
     thunderbird
     qbittorrent-enhanced
     geogebra6
+    foliate
     brave
 
     inputs.zen-browser.packages."${system}".twilight
@@ -67,8 +69,8 @@
     fd
     pango
     pkg-config
+    devbox
     cairo
-    foliate
     hyperfine
 
     # nix related
