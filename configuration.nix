@@ -66,17 +66,24 @@
     type = "fcitx5";
     enable = true;
     fcitx5.waylandFrontend = true;
+    fcitx5.plasma6Support = true;
     fcitx5.addons = with pkgs; [
       fcitx5-rime
       fcitx5-gtk
       fcitx5-mellow-themes
-      kdePackages.fcitx5-qt
-      kdePackages.fcitx5-configtool
     ];
   };
 
   # Enable the KDE Plasma Desktop Environment.
   services.desktopManager.plasma6.enable = true;
+  
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [
+    elisa
+    okular
+    sddm-kcm
+    ksystemlog
+    xdg-desktop-portal-kde
+  ];
 
   hardware.graphics = {
     enable = true;
@@ -206,9 +213,6 @@
     libdbusmenu # https://github.com/microsoft/vscode/issues/34510
     xsettingsd
     xorg.xrdb
-    kdePackages.sddm-kcm
-    kdePackages.ksystemlog
-    kdePackages.xdg-desktop-portal-kde
     xdg-desktop-portal-gtk
   ];
 

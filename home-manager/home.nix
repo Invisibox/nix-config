@@ -52,7 +52,6 @@
     thunderbird
     qbittorrent-enhanced
     geogebra6
-    foliate
     brave
 
     inputs.zen-browser.packages."${system}".twilight
