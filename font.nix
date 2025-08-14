@@ -15,6 +15,7 @@
     liberation_ttf
     nerd-fonts.jetbrains-mono
     sarasa-gothic
+    lxgw-wenkai
     windows-fonts
     inputs.wpsFonts.packages.${system}.default
   ];
