@@ -199,6 +199,16 @@
   # Enable nix ld.
   programs.nix-ld.enable = true;
 
+  steam = {
+    enable = true;
+    enableNative = true; # Enable native Steam client.
+    enableSteamBeta = true; # Enable Steam Beta client.
+    fixDownloadSpeed = true; # Fix slow download speeds in Steam.
+  };
+
+  # Disable nano, as it is not needed.
+  programs.nano.enable = false;
+
   # Enable Flatpak support.
   services.flatpak.enable = true;
   systemd.services.flatpak-repo = {
@@ -207,10 +217,7 @@
     script = ''
       flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
     '';
-  };
-
-  # Disable nano, as it is not needed.
-  programs.nano.enable = false;
+  }; 
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

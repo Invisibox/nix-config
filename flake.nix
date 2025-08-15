@@ -8,6 +8,8 @@
 
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       # IMPORTANT: we're using "libgbm" and is only available in unstable so ensure
@@ -24,13 +26,13 @@
       url = "github:brsvh/chinese-fonts-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     wpsFonts = {
       url = "github:hypercrusher/wpsfonts";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    home-manager ={
+    home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };

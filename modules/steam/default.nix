@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  username,
   pkgs,
   inputs,
   ...
@@ -12,7 +11,7 @@
   fsrVersion = "67D435F7d97000";
   fsrDll = pkgs.fetchurl {
     url = "https://download.amd.com/dir/bin/amdxcffx64.dll/${fsrVersion}/amdxcffx64.dll";
-    sha256 = "sha256-OuTTllFAwQjzKJXbRhV7Ma15AgFo1U+EHFYqH9/EqVw="; # fix hash
+    sha256 = "sha256-bdC+IIAH7Q0ngkw8m1F4RD0F5GnTFHl4iqj6gnEW8R8="; # fix hash
     curlOpts = "--referer https://support.amd.com";
   };
 
@@ -54,10 +53,6 @@
 in {
   options.steam = {
     enable = lib.mkEnableOption "Enable Steam in NixOS";
-    enableFlatpak = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-    };
     enableNative = lib.mkOption {
       type = lib.types.bool;
       default = true;
@@ -92,14 +87,14 @@ in {
         extraProfile = ''
           unset TZ
         '';
-        extraPkgs =
-          pkgs: with pkgs; [            
+        extraPkgs = pkgs:
+          with pkgs; [
             bibata-cursors
           ];
       };
       dedicatedServer.openFirewall = true;
       extraCompatPackages = with pkgs; [
-        luxtorpeda
+        # luxtorpeda
         inputs.chaotic.packages.${system}.proton-cachyos
         proton-ge-bin
         proton-ge-bin-fsr4
@@ -108,7 +103,7 @@ in {
       protontricks.enable = true;
       remotePlay.openFirewall = true;
     };
-    home-manager.users.${username} = {
+    home-manager.users.zh = {
       pkgs,
       config,
       ...
@@ -137,29 +132,6 @@ in {
         };
         packages = with pkgs; [
           steamcmd
-        ];
-      };
-      services.flatpak = lib.mkIf cfg.enableFlatpak {
-        overrides = {
-          "com.valvesoftware.Steam" = {
-            Context = {
-              filesystems = [
-                "${config.home.homeDirectory}/Games"
-                "${config.xdg.dataHome}/applications"
-                "${config.xdg.dataHome}/games"
-                "${config.xdg.dataHome}/Steam"
-              ];
-            };
-            Environment = {
-              PULSE_SINK = "Game";
-            };
-            "Session Bus Policy" = {
-              org.freedesktop.Flatpak = "talk";
-            };
-          };
-        };
-        packages = [
-          "com.valvesoftware.Steam"
         ];
       };
     };
