@@ -35,9 +35,7 @@
     jetbrains.pycharm-professional
 
     tela-icon-theme
-    bibata-cursors
-    
-    
+
     kde-rounded-corners
     inputs.kwin-effects-forceblur.packages.${pkgs.system}.default # Wayland
     inputs.kwin-effects-forceblur.packages.${pkgs.system}.x11 # X11
@@ -69,7 +67,7 @@
     pango
     pkg-config
     devbox
-    cairo
+    android-tools
     hyperfine
 
     # nix related
@@ -78,6 +76,14 @@
     # with more details log output
     nix-output-monitor
   ];
+
+  home.pointerCursor = {
+    gtk.enable = true;
+    x11.enable = true;
+    name = "Bibata-Modern-Ice";
+    package = pkgs.bibata-cursors;
+    size = 20;
+  };
 
   programs.zsh.enable = true;
   home.sessionVariables = {

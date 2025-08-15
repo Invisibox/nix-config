@@ -14,6 +14,7 @@
     ./nix.nix
     ./printing.nix
     ./modules/sddm
+    ./modules/steam
     ./overlays
   ];
 
@@ -23,13 +24,35 @@
       enable = true;
       device = "nodev";
       efiSupport = true;
+      splashImage = null;
       configurationLimit = 10;
+      theme = "${
+        (pkgs.fetchFromGitHub {
+          owner = "xenlism";
+          repo = "Grub-themes";
+          rev = "40ac048df9aacfc053c515b97fcd24af1a06762f";
+          hash = "sha256-ProTKsFocIxWAFbYgQ46A+GVZ7mUHXxZrvdiPJqZJ6I=";
+        })
+      }/xenlism-grub-2k-nixos/Xenlism-Nixos/";
     };
     efi = {
       canTouchEfiVariables = true;
       efiSysMountPoint = "/boot";
     };
   };
+
+  # Enable "Silent boot"
+  boot = {
+    consoleLogLevel = 3;
+    initrd.verbose = false;
+    kernelParams = [
+      "quiet"
+      "splash"
+      "boot.shell_on_fail"
+      "udev.log_priority=3"
+      "rd.systemd.show_status=auto"
+    ];
+  };  
 
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -76,7 +99,7 @@
 
   # Enable the KDE Plasma Desktop Environment.
   services.desktopManager.plasma6.enable = true;
-  
+
   environment.plasma6.excludePackages = with pkgs.kdePackages; [
     elisa
     okular
@@ -175,14 +198,6 @@
 
   # Enable nix ld.
   programs.nix-ld.enable = true;
-
-  # Install Steam
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-    localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
-  };
 
   # Enable Flatpak support.
   services.flatpak.enable = true;
