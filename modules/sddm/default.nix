@@ -13,6 +13,7 @@ in {
     enable = lib.mkDefault true;
     theme = "breeze";
     wayland.enable = true;
+    settings.Theme.CursorTheme = "Bibata-Modern-Ice";
   };
 
   environment.systemPackages = [

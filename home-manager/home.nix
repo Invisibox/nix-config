@@ -69,12 +69,6 @@
     devbox
     android-tools
     hyperfine
-
-    # nix related
-    #
-    # it provides the command `nom` works just like `nix`
-    # with more details log output
-    nix-output-monitor
   ];
 
   home.pointerCursor = {
@@ -102,6 +96,7 @@
     ./kitty.nix
     ./starship.nix
     ./zsh/zsh.nix
+    ./theming.nix
   ];
 
   programs.atuin = {
