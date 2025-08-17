@@ -170,6 +170,28 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
+  
+    environment.sessionVariables = {
+    # this is a lazy way to do it. it works because
+    # user vars come after setting this dummy var to 1.
+    __NIXOS_SET_ENVIRONMENT_DONE = "";
+
+    NIXOS_OZONE_WL = "1";
+
+    XDG_CACHE_HOME  = "$HOME/.cache";
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_DATA_HOME   = "$HOME/.local/share";
+    XDG_STATE_HOME  = "$HOME/.local/state";
+    PATH = [ "$HOME/.local/bin" ];
+    ZDOTDIR = "$XDG_CONFIG_HOME/zsh";
+
+    # set to nano by default
+    # TODO find out where
+    # EDITOR = "";
+
+    # allows using $PAGER as the pager for systemctl commands
+    SYSTEMD_PAGERSECURE = "false";
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.zh = {
@@ -241,8 +263,6 @@
   ];
 
   environment.variables.EDITOR = "neovim";
-
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   services.kanata = {
     enable = true;

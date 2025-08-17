@@ -79,10 +79,10 @@
     size = 20;
   };
 
-  programs.zsh.enable = true;
-  home.sessionVariables = {
-    ZDOTDIR = "$HOME/.config/zsh";
-  };
+  # programs.zsh.enable = true;
+  # home.sessionVariables = {
+  #   ZDOTDIR = "$HOME/.config/zsh";
+  # };
 
   # git 相关配置
   programs.git = {
