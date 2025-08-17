@@ -87,10 +87,10 @@ in {
         extraProfile = ''
           unset TZ
         '';
-        extraPkgs = pkgs:
-          with pkgs; [
-            bibata-cursors
-          ];
+        # extraPkgs = pkgs:
+        #   with pkgs; [
+        #     bibata-cursors
+        #   ];
       };
       dedicatedServer.openFirewall = true;
       extraCompatPackages = with pkgs; [

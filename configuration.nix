@@ -15,6 +15,8 @@
     ./printing.nix
     ./modules/sddm
     ./modules/steam
+    ./modules/nix-ld
+    ./modules/fhs-icon.nix
     ./overlays
   ];
 
@@ -197,7 +199,7 @@
   programs.zsh.enable = true;
 
   # Enable nix ld.
-  programs.nix-ld.enable = true;
+  nix-ld.enable = true;
 
   steam = {
     enable = true;
