@@ -1,12 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{
-  config,
-  pkgs,
-  inputs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -51,7 +46,7 @@
       "udev.log_priority=3"
       "rd.systemd.show_status=auto"
     ];
-  };  
+  };
 
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -167,19 +162,19 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
-  
-    environment.sessionVariables = {
+
+  environment.sessionVariables = {
     # this is a lazy way to do it. it works because
     # user vars come after setting this dummy var to 1.
     __NIXOS_SET_ENVIRONMENT_DONE = "";
 
     NIXOS_OZONE_WL = "1";
 
-    XDG_CACHE_HOME  = "$HOME/.cache";
+    XDG_CACHE_HOME = "$HOME/.cache";
     XDG_CONFIG_HOME = "$HOME/.config";
-    XDG_DATA_HOME   = "$HOME/.local/share";
-    XDG_STATE_HOME  = "$HOME/.local/state";
-    PATH = [ "$HOME/.local/bin" ];
+    XDG_DATA_HOME = "$HOME/.local/share";
+    XDG_STATE_HOME = "$HOME/.local/state";
+    PATH = ["$HOME/.local/bin"];
     ZDOTDIR = "$XDG_CONFIG_HOME/zsh";
 
     # set to nano by default
@@ -238,7 +233,7 @@
     script = ''
       flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
     '';
-  }; 
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

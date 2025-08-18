@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }: let
   cursor-theme = "Bibata-Modern-Ice";
@@ -39,6 +38,4 @@ in {
       };
     };
   };
-  
-
 }

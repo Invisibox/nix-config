@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   system.fsPackages = [pkgs.bindfs];
   fileSystems = let
     mkRoSymBind = path: {

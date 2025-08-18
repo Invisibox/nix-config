@@ -1,9 +1,5 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
-nixpkgs.overlays = [
+{...}: {
+  nixpkgs.overlays = [
     (self: super: {
       # 我们要覆盖 'wpsoffice-cn' 这个包
       wpsoffice-cn = super.wpsoffice-cn.overrideAttrs (oldAttrs: {
