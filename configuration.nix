@@ -13,10 +13,7 @@
     ./font.nix
     ./nix.nix
     ./printing.nix
-    ./modules/sddm
-    ./modules/steam
-    ./modules/nix-ld
-    ./modules/fhs-icon.nix
+    ./modules
     ./overlays
   ];
 

@@ -44,6 +44,7 @@
     darkly
     wpsoffice-cn
     discord
+    _64gram
     spotify
     folo
     artim-dark
@@ -78,11 +79,6 @@
     package = pkgs.bibata-cursors;
     size = 20;
   };
-
-  # programs.zsh.enable = true;
-  # home.sessionVariables = {
-  #   ZDOTDIR = "$HOME/.config/zsh";
-  # };
 
   # git 相关配置
   programs.git = {
