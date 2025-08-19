@@ -43,7 +43,6 @@
     darkly
     wpsoffice-cn
     discord
-    _64gram
     spotify
     folo
     artim-dark

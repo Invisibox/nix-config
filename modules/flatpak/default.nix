@@ -47,7 +47,6 @@ in
         };
         services.flatpak = {
           packages = [
-            "io.github.DenysMb.Kontainer"
             "com.tencent.WeChat"
             "com.baidu.NetDisk"
             "com.qq.QQ"
