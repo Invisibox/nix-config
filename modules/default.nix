@@ -1,5 +1,6 @@
 {
   imports = [
+    ./heroic
     ./nix-ld
     ./sddm
     ./steam

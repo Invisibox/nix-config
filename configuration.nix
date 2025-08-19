@@ -221,6 +221,11 @@
     enableSteamBeta = true; # Enable Steam Beta client.
     fixDownloadSpeed = true; # Fix slow download speeds in Steam.
   };
+  
+  heroic = {
+    enable = true; # Enable Heroic Games Launcher.
+    enableNative = true; # Enable native Heroic client.
+  };
 
   # Disable nano, as it is not needed.
   programs.nano.enable = false;
