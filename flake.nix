@@ -10,6 +10,11 @@
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       # IMPORTANT: we're using "libgbm" and is only available in unstable so ensure
@@ -41,6 +46,7 @@
   outputs = {
     self,
     nixpkgs,
+    nix-flatpak,
     home-manager,
     ...
   } @ inputs: {
@@ -51,7 +57,9 @@
         # 这里导入之前我们使用的 configuration.nix，
         # 这样旧的配置文件仍然能生效
         ./configuration.nix
-        
+
+        nix-flatpak.nixosModules.nix-flatpak
+
         # 将 home-manager 配置为 nixos 的一个 module
         # 这样在 nixos-rebuild switch 时，home-manager 配置也会被自动部署
         home-manager.nixosModules.home-manager
@@ -61,6 +69,10 @@
           home-manager.users.zh = import ./home-manager/home.nix;
 
           home-manager.backupFileExtension = "hm-backup";
+
+          home-manager.sharedModules = [
+            nix-flatpak.homeManagerModules.nix-flatpak
+          ];
 
           # 使用 home-manager.extraSpecialArgs 自定义传递给 ./home.nix 的参数
           # 取消注释下面这一行，就可以在 home.nix 中使用 flake 的所有 inputs 参数了
