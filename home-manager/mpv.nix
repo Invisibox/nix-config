@@ -36,6 +36,7 @@
       osd-bar = "no"; # 禁用 OSD 状态栏
       border = "no"; # 禁用边框
       osd-font = "Noto Sans CJK SC"; # OSD 字体
+      sub-font = "Noto Sans CJK SC"; # 字幕字体
     };
 
     # input.conf

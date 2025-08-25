@@ -52,7 +52,10 @@
   } @ inputs: {
     nixosConfigurations.ASUS = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = {inherit inputs;};
+      specialArgs = {
+        inherit inputs;
+        username = "zh";
+      };
       modules = [
         # 这里导入之前我们使用的 configuration.nix，
         # 这样旧的配置文件仍然能生效

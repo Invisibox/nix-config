@@ -5,5 +5,6 @@
     ./nix-ld
     ./sddm
     ./steam
+    ./virtualization
   ];
 }

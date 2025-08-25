@@ -13,7 +13,7 @@
 
   boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "thunderbolt" "usbhid" "usb_storage" "sd_mod"];
   boot.initrd.kernelModules = [];
-  boot.kernelModules = ["kvm-amd" "uinput"];
+  boot.kernelModules = ["kvm-amd" "uinput" "ip_tables" "iptable_nat" "iptable_filter"];
   boot.extraModulePackages = [];
 
   fileSystems."/" = {

@@ -93,6 +93,9 @@
     ./theming.nix
   ];
 
+  # KDE Connect
+  services.kdeconnect.enable = true;
+
   programs.atuin = {
     enable = true;
     settings = {

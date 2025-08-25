@@ -221,13 +221,15 @@
     enableSteamBeta = true; # Enable Steam Beta client.
     fixDownloadSpeed = true; # Fix slow download speeds in Steam.
   };
-  
+
   heroic = {
     enable = true; # Enable Heroic Games Launcher.
     enableNative = true; # Enable native Heroic client.
   };
-  
+
   flatpak.enable = true; # Enable Flatpak support.
+
+  virtualization.enable = true;
 
   # Disable nano, as it is not needed.
   programs.nano.enable = false;
@@ -305,6 +307,18 @@
     enable = true;
     trustedInterfaces = ["Mihomo"];
     checkReversePath = "loose";
+    allowedTCPPortRanges = [
+      {
+        from = 1714;
+        to = 1764;
+      } # KDE Connect
+    ];
+    allowedUDPPortRanges = [
+      {
+        from = 1714;
+        to = 1764;
+      } # KDE Connect
+    ];
   };
 
   # This value determines the NixOS release from which the default
