@@ -231,6 +231,13 @@
 
   virtualization.enable = true;
 
+  obs = {
+    enable = true;
+    enableFlatpak = false;
+    enableNative = true;
+    silenceOutput = true;
+  };
+
   # Disable nano, as it is not needed.
   programs.nano.enable = false;
 

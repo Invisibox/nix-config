@@ -6,5 +6,6 @@
     ./sddm
     ./steam
     ./virtualization
+    ./obs
   ];
 }
