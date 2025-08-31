@@ -6,13 +6,6 @@
       cups-filters
       cups-browsed
     ];
-    cups-pdf = {
-      enable = true;
-      instances.pdf.settings = {
-        Out = "\${HOME}/Documents/CUPS-PDF";
-        UserUMask = "0033";
-      };
-    };
   };
 
   # Enable autodiscovery of network printers
