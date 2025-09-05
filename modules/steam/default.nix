@@ -1,58 +1,63 @@
 {
   lib,
   config,
+  username,
   pkgs,
   inputs,
   ...
-}: let
+}:
+let
   cfg = config.steam;
 
   # FSR4
-  fsrVersion = "67D435F7d97000";
+  fsrVersion = "6759C4F010ad000";
   fsrDll = pkgs.fetchurl {
     url = "https://download.amd.com/dir/bin/amdxcffx64.dll/${fsrVersion}/amdxcffx64.dll";
-    sha256 = "sha256-bdC+IIAH7Q0ngkw8m1F4RD0F5GnTFHl4iqj6gnEW8R8="; # fix hash
+    hash = "sha256-e010fDyxEUp0o/dAc2IShtxZINutHlHSBAgpqAOJm2E=";
     curlOpts = "--referer https://support.amd.com";
   };
 
   proton-ge-bin-fsr4 =
-    (pkgs.proton-ge-bin.override {steamDisplayName = "GE-Proton FSR";}).overrideAttrs
-    (old: {
-      installPhase = ''
-        runHook preInstall
+    (pkgs.proton-ge-bin.override { steamDisplayName = "GE-Proton FSR"; }).overrideAttrs
+      (old: {
+        installPhase = ''
+          runHook preInstall
 
-        # Make it impossible to add to an environment. You should use the appropriate NixOS option.
-        # Also leave some breadcrumbs in the file.
-        echo "${old.pname} should not be installed into environments. Please use programs.steam.extraCompatPackages instead." > $out
+          # Make it impossible to add to an environment. You should use the appropriate NixOS option.
+          # Also leave some breadcrumbs in the file.
+          echo "${old.pname} should not be installed into environments. Please use programs.steam.extraCompatPackages instead." > $out
 
-        mkdir $steamcompattool
-        cp -a $src/* $steamcompattool
-        chmod -R +w $steamcompattool
+          mkdir $steamcompattool
+          cp -a $src/* $steamcompattool
+          chmod -R +w $steamcompattool
 
-        rm $steamcompattool/compatibilitytool.vdf
-        cp $src/compatibilitytool.vdf $steamcompattool
+          rm $steamcompattool/compatibilitytool.vdf
+          cp $src/compatibilitytool.vdf $steamcompattool
 
-        runHook postInstall
-      '';
+          runHook postInstall
+        '';
 
-      postInstall = ''
-        mkdir -p $steamcompattool/files/lib/wine/amdprop
-        cp ${fsrDll} $steamcompattool/files/lib/wine/amdprop/amdxcffx64.dll
-        echo "${fsrVersion}" > $steamcompattool/files/lib/wine/amdprop/amdxcffx64_version
-      '';
+        postInstall = ''
+          mkdir -p $steamcompattool/files/lib/wine/amdprop
+          cp ${fsrDll} $steamcompattool/files/lib/wine/amdprop/amdxcffx64.dll
+          echo "${fsrVersion}" > $steamcompattool/files/lib/wine/amdprop/amdxcffx64_version
+        '';
 
-      preFixup =
-        (old.preFixup or "")
-        + ''
+        preFixup = (old.preFixup or "") + ''
           substituteInPlace "$steamcompattool/proton" \
             --replace-fail 'if not version_match:' '# if not version_match:' \
             --replace-fail 'with open(g_proton.lib_dir + "wine/amdprop/amdxcffx64_version", "w") as file:' '# with open(g_proton.lib_dir + "wine/amdprop/amdxcffx64_version", "w") as file:' \
             --replace-fail 'file.write(versions[1] + "\n")' '# file.write(versions[1] + "\n")'
         '';
-    });
-in {
+      });
+in
+{
   options.steam = {
     enable = lib.mkEnableOption "Enable Steam in NixOS";
+    enableFlatpak = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
     enableNative = lib.mkOption {
       type = lib.types.bool;
       default = true;
@@ -74,23 +79,22 @@ in {
         extraEnv = {
           MANGOHUD = true;
           OBS_VKCAPTURE = true;
-          PROTON_ENABLE_WAYLAND = true;
-          PROTON_ENABLE_HDR = true;
-          PROTON_USE_NTSYNC = true;
-          PROTON_USE_WOW64 = true;
           PULSE_SINK = "Game";
           # FSR 4
           DXIL_SPIRV_CONFIG = "wmma_rdna3_workaround";
           PROTON_FSR4_UPGRADE = true;
+          # proton-cachyos
+          PROTON_FSR4_RDNA3_UPGRADE = true;
+          # proton-ge
+          PROTON_ENABLE_WAYLAND = true;
+          PROTON_ENABLE_HDR = true;
+          PROTON_USE_WOW64 = true;
         };
         # https://github.com/NixOS/nixpkgs/issues/279893#issuecomment-2425213386
         extraProfile = ''
           unset TZ
         '';
-        # extraPkgs = pkgs:
-        #   with pkgs; [
-        #     bibata-cursors
-        #   ];
+        privateTmp = false; # https://github.com/NixOS/nixpkgs/issues/381923
       };
       dedicatedServer.openFirewall = true;
       extraCompatPackages = with pkgs; [
@@ -103,37 +107,58 @@ in {
       protontricks.enable = true;
       remotePlay.openFirewall = true;
     };
-    home-manager.users.zh = {
-      pkgs,
-      config,
-      ...
-    }: {
-      home = {
-        file = {
-          steam-beta = {
-            enable = cfg.enableSteamBeta;
-            text = "publicbeta";
-            target = "${config.xdg.dataHome}/Steam/package/beta";
+    home-manager.users.${username} =
+      { pkgs, config, ... }:
+      {
+        home = {
+          file = {
+            steam-beta = {
+              enable = cfg.enableSteamBeta;
+              text = "publicbeta";
+              target = "${config.xdg.dataHome}/Steam/package/beta";
+            };
+            steam-slow-fix = {
+              enable = cfg.fixDownloadSpeed;
+              text = ''
+                @nClientDownloadEnableHTTP2PlatformLinux 0
+                @fDownloadRateImprovementToAddAnotherConnection 1.0
+                unShaderBackgroundProcessingThreads 8
+              '';
+              target = "${config.xdg.dataHome}/Steam/steam_dev.cfg";
+            };
+            wine-links-protonge-fsr = {
+              enable = true;
+              source = config.lib.file.mkOutOfStoreSymlink "${proton-ge-bin-fsr4.steamcompattool}";
+              target = "${config.xdg.dataHome}/Steam/compatibilitytools.d/GE-Proton10-bin-fsr";
+            };
           };
-          steam-slow-fix = {
-            enable = cfg.fixDownloadSpeed;
-            text = ''
-              @nClientDownloadEnableHTTP2PlatformLinux 0
-              @fDownloadRateImprovementToAddAnotherConnection 1.0
-              unShaderBackgroundProcessingThreads 8
-            '';
-            target = "${config.xdg.dataHome}/Steam/steam_dev.cfg";
-          };
-          wine-links-protonge-fsr = {
-            enable = true;
-            source = config.lib.file.mkOutOfStoreSymlink "${proton-ge-bin-fsr4.steamcompattool}";
-            target = "${config.xdg.dataHome}/Steam/compatibilitytools.d/GE-Proton10-bin-fsr";
-          };
+          packages = with pkgs; [
+            steamcmd
+          ];
         };
-        packages = with pkgs; [
-          steamcmd
-        ];
+        services.flatpak = lib.mkIf cfg.enableFlatpak {
+          overrides = {
+            "com.valvesoftware.Steam" = {
+              Context = {
+                filesystems = [
+                  "${config.home.homeDirectory}/Games"
+                  "${config.xdg.dataHome}/applications"
+                  "${config.xdg.dataHome}/games"
+                  "${config.xdg.dataHome}/Steam"
+                ];
+              };
+              Environment = {
+                PULSE_SINK = "Game";
+              };
+              "Session Bus Policy" = {
+                org.freedesktop.Flatpak = "talk";
+              };
+            };
+          };
+          packages = [
+            "com.valvesoftware.Steam"
+          ];
+        };
       };
-    };
   };
 }

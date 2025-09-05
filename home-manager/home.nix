@@ -50,6 +50,8 @@
     qbittorrent-enhanced
     geogebra6
     brave
+    planify
+    element-desktop
 
     inputs.zen-browser.packages."${system}".twilight
 
