@@ -217,6 +217,12 @@
     enable = true; # Enable Heroic Games Launcher.
     enableNative = true; # Enable native Heroic client.
   };
+  
+  bottles = {
+    enable = true; # Enable Bottles.
+    enableNative = true; # Enable native Bottles.
+    enableFlatpak = false; # Enable Bottles Flatpak version.
+  };
 
   flatpak.enable = true; # Enable Flatpak support.
 

@@ -4,11 +4,14 @@
   inputs = {
     # NixOS 官方软件源，这里使用 nixos-25.05 分支
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
 
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+
+    nix-gaming.url = "github:fufexan/nix-gaming";
 
     nur = {
       url = "github:nix-community/NUR";

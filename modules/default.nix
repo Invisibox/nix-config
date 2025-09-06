@@ -1,5 +1,6 @@
 {
   imports = [
+    ./bottles
     ./flatpak
     ./heroic
     ./nix-ld
