@@ -218,11 +218,7 @@
     enableNative = true; # Enable native Heroic client.
   };
   
-  bottles = {
-    enable = true; # Enable Bottles.
-    enableNative = true; # Enable native Bottles.
-    enableFlatpak = false; # Enable Bottles Flatpak version.
-  };
+  bottles.enable = true; # Enable Bottles.
 
   flatpak.enable = true; # Enable Flatpak support.
 
@@ -251,6 +247,8 @@
     bun
     uv
     gcc
+    btrfs-progs
+    compsize
     libdbusmenu # https://github.com/microsoft/vscode/issues/34510
     xsettingsd
     xorg.xrdb

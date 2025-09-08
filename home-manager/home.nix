@@ -51,6 +51,7 @@
     geogebra6
     brave
     planify
+    mesen
     element-desktop
 
     inputs.zen-browser.packages."${system}".twilight
@@ -70,6 +71,7 @@
     devbox
     android-tools
     hyperfine
+    texlive.combined.scheme-full
   ];
 
   home.pointerCursor = {
