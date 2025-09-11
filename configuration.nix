@@ -222,6 +222,11 @@
 
   lutris.enable = true; # Enable Lutris.
 
+  hardware = {
+      xone.enable = true;
+      xpadneo.enable = true;
+    };
+
   flatpak.enable = true; # Enable Flatpak support.
 
   virtualization.enable = true;
