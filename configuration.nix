@@ -220,6 +220,8 @@
   
   bottles.enable = true; # Enable Bottles.
 
+  lutris.enable = true; # Enable Lutris.
+
   flatpak.enable = true; # Enable Flatpak support.
 
   virtualization.enable = true;
