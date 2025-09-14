@@ -71,6 +71,7 @@
     devbox
     android-tools
     hyperfine
+    btop
     texlive.combined.scheme-full
   ];
 
