@@ -53,6 +53,7 @@
     planify
     mesen
     element-desktop
+    hmcl
 
     inputs.zen-browser.packages."${system}".twilight
 
@@ -70,6 +71,8 @@
     pkg-config
     devbox
     android-tools
+    blast-bin
+    rar
     hyperfine
     btop
     texlive.combined.scheme-full
