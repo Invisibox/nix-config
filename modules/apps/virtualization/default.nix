@@ -4,11 +4,9 @@
   pkgs,
   username,
   ...
-}:
-let
+}: let
   cfg = config.virtualization;
-in
-{
+in {
   options = {
     virtualization = {
       enable = lib.mkEnableOption "Enable containerization (Podman) in NixOS & home-manager";
@@ -22,7 +20,7 @@ in
     # --- environment.systemPackages 部分 ---
     environment.systemPackages = with pkgs; [
       docker-compose # Podman 可以使用 docker-compose 文件
-      podlet         # 用于从 Podman 容器生成 systemd 服务
+      podlet # 用于从 Podman 容器生成 systemd 服务
       podman-desktop
     ];
     # --- virtualisation.podman 部分 ---
@@ -42,6 +40,6 @@ in
         "podman"
       ];
     };
-    home-manager.users.${username} = { };
+    home-manager.users.${username} = {};
   };
 }

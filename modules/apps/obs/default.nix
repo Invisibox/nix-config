@@ -4,11 +4,9 @@
   username,
   pkgs,
   ...
-}:
-let
+}: let
   cfg = config.obs;
-in
-{
+in {
   options = {
     obs = {
       enable = lib.mkEnableOption "Enable obs in home-manager";
