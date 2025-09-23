@@ -13,6 +13,8 @@
 
     nix-gaming.url = "github:fufexan/nix-gaming";
 
+    daeuniverse.url = "github:daeuniverse/flake.nix";
+
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";

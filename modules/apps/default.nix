@@ -1,6 +1,7 @@
 {
   imports = [
     ./bottles
+    ./daed
     ./flatpak
     ./heroic
     ./lutris

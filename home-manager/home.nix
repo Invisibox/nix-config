@@ -67,12 +67,14 @@
     eza # A modern replacement for ‘ls’
     fzf # A command-line fuzzy finder
     fd
+    jq
     pango
     pkg-config
     devbox
     android-tools
     blast-bin
     rar
+    aircrack-ng
     hyperfine
     btop
     texlive.combined.scheme-full

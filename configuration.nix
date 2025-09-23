@@ -217,15 +217,17 @@
     enable = true; # Enable Heroic Games Launcher.
     enableNative = true; # Enable native Heroic client.
   };
-  
+
   bottles.enable = true; # Enable Bottles.
 
   lutris.enable = true; # Enable Lutris.
 
   hardware = {
-      xone.enable = true;
-      xpadneo.enable = true;
-    };
+    xone.enable = true;
+    xpadneo.enable = true;
+  };
+
+  daed.enable = true; # Enable Daed.
 
   flatpak.enable = true; # Enable Flatpak support.
 
@@ -314,8 +316,8 @@
   # networking.firewall.enable = false;
   networking.firewall = {
     enable = true;
-    trustedInterfaces = ["Mihomo"];
-    checkReversePath = "loose";
+    # trustedInterfaces = ["Mihomo"];
+    # checkReversePath = "loose";
     allowedTCPPortRanges = [
       {
         from = 1714;
