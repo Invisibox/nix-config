@@ -30,14 +30,14 @@ in
           wine-links-proton-cachyos-heroic = {
             enable = cfg.enableNative;
             source = config.lib.file.mkOutOfStoreSymlink "${
-              inputs.chaotic.packages.${pkgs.system}.proton-cachyos
+              inputs.chaotic.packages.${pkgs.system}.proton-cachyos_x86_64_v4
             }/bin";
             target = "${config.xdg.configHome}/heroic/tools/proton/proton-cachyos";
           };
           wine-links-proton-cachyos-flatpak-heroic = {
             enable = cfg.enableFlatpak;
             source = config.lib.file.mkOutOfStoreSymlink "${
-              inputs.chaotic.packages.${pkgs.system}.proton-cachyos
+              inputs.chaotic.packages.${pkgs.system}.proton-cachyos_x86_64_v4
             }/bin";
             target = ".var/app/com.heroicgameslauncher.hgl/config/heroic/tools/proton/proton-cachyos";
           };
@@ -61,7 +61,6 @@ in
                   "/mnt/crusader/Games"
                   "${config.home.homeDirectory}/Games"
                   "${config.xdg.dataHome}/applications"
-                  "${config.xdg.dataHome}/games"
                   "${config.xdg.dataHome}/Steam"
                 ];
               };
@@ -72,8 +71,6 @@ in
           };
           packages = [
             "com.heroicgameslauncher.hgl"
-            "org.freedesktop.Platform.VulkanLayer.gamescope/x86_64/24.08"
-            "org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/24.08"
           ];
         };
       };
