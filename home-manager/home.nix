@@ -77,6 +77,7 @@
     aircrack-ng
     hyperfine
     btop
+    wl-clipboard
     texlive.combined.scheme-full
   ];
 

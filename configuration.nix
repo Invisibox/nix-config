@@ -255,7 +255,9 @@
     eza
     bun
     uv
-    gcc
+    gccgo
+    libgcc
+    ncurses
     btrfs-progs
     compsize
     libdbusmenu # https://github.com/microsoft/vscode/issues/34510
