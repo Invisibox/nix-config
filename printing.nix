@@ -5,6 +5,7 @@
     drivers = with pkgs; [
       cups-filters
       cups-browsed
+      hplip
     ];
   };
 

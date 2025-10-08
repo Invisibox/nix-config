@@ -53,6 +53,7 @@ in
             "com.tencent.wemeet"
             "org.telegram.desktop"
             "com.cherry_ai.CherryStudio"
+            "com.termius.Termius"
           ];
           remotes = [
             {

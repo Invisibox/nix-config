@@ -32,6 +32,9 @@
     obsidian
     zotero
     jetbrains.pycharm-professional
+    limo
+    calibre
+    onlyoffice-bin
 
     tela-icon-theme
 
