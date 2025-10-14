@@ -31,10 +31,10 @@
     vscode
     obsidian
     zotero
-    jetbrains.pycharm-professional
     limo
     calibre
     onlyoffice-bin
+    tor-browser
 
     tela-icon-theme
 
@@ -44,7 +44,7 @@
 
     darkly-qt5
     darkly
-    wpsoffice-cn
+    wpsoffice
     discord
     spotify
     folo
