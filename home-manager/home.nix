@@ -44,14 +44,13 @@
 
     darkly-qt5
     darkly
-    wpsoffice
+    wpsoffice-cn
     discord
     spotify
     folo
     artim-dark
     thunderbird
     qbittorrent-enhanced
-    geogebra6
     brave
     planify
     mesen
@@ -75,7 +74,6 @@
     pkg-config
     devbox
     android-tools
-    blast-bin
     rar
     aircrack-ng
     hyperfine
@@ -104,7 +102,6 @@
     ./kitty.nix
     ./starship.nix
     ./zsh/zsh.nix
-    ./theming.nix
   ];
 
   # KDE Connect

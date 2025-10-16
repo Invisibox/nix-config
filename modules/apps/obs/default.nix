@@ -4,9 +4,11 @@
   username,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.obs;
-in {
+in
+{
   options = {
     obs = {
       enable = lib.mkEnableOption "Enable obs in home-manager";
@@ -27,10 +29,16 @@ in {
   config = lib.mkIf cfg.enable {
     home-manager.users.${username} = {
       home = {
-        packages = lib.mkIf cfg.enableNative [
-          pkgs.obs-cmd
-        ];
-        sessionVariables = lib.mkIf cfg.silenceOutput {
+        packages =
+          with pkgs;
+          lib.mkIf cfg.enableNative [
+            obs-cmd
+          ];
+        sessionVariables = {
+          # https://github.com/nowrep/obs-vkcapture/issues/14#issuecomment-322237961
+          VK_INSTANCE_LAYERS = "VK_LAYER_MANGOHUD_overlay_x86:VK_LAYER_MANGOHUD_overlay_x86_64:VK_LAYER_OBS_vkcapture_32:VK_LAYER_OBS_vkcapture_64";
+        }
+        // lib.optionalAttrs cfg.silenceOutput {
           OBS_VKCAPTURE_QUIET = "1";
         };
       };
@@ -58,7 +66,9 @@ in {
           "com.obsproject.Studio"
           "com.obsproject.Studio.Plugin.InputOverlay"
           "com.obsproject.Studio.Plugin.OBSVkCapture"
+          "org.freedesktop.Platform.VulkanLayer.OBSVkCapture/x86_64/23.08" # Heroic
           "org.freedesktop.Platform.VulkanLayer.OBSVkCapture/x86_64/24.08"
+          "org.freedesktop.Platform.VulkanLayer.OBSVkCapture/x86_64/25.08"
         ];
       };
       xdg = {

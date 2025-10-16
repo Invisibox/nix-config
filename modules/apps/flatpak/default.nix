@@ -1,24 +1,20 @@
 {
   lib,
   config,
+  username,
   pkgs,
   ...
-}:
-let
+}: let
   cfg = config.flatpak;
-in
-{
-
+in {
   options = {
     flatpak = {
       enable = lib.mkEnableOption "Enable flatpak in NixOS & home-manager";
     };
   };
   config = lib.mkIf cfg.enable {
-    services = {
-      flatpak = {
-        enable = true;
-      };
+    services.flatpak = {
+      enable = true;
     };
 
     environment.systemPackages = with pkgs; [
@@ -27,51 +23,50 @@ in
     ];
 
     systemd.services = {
-      "home-manager-zh" = {
+      "home-manager-${username}" = {
         serviceConfig.TimeoutStartSec = pkgs.lib.mkForce 1200;
       };
     };
 
-    users.users.zh.extraGroups = [ "flatpak" ];
+    users.users.${username}.extraGroups = ["flatpak"];
 
     xdg.portal.enable = true;
 
-    home-manager.users.zh =
-      { config, ... }:
-      {
-        home = {
-          sessionPath = [
-            "/var/lib/flatpak/exports/bin"
-            "${config.xdg.dataHome}/flatpak/exports/bin"
-          ];
-        };
-        services.flatpak = {
-          packages = [
-            "com.tencent.WeChat"
-            "com.baidu.NetDisk"
-            "com.qq.QQ"
-            "com.tencent.wemeet"
-            "org.telegram.desktop"
-            "com.cherry_ai.CherryStudio"
-            "com.termius.Termius"
-          ];
-          remotes = [
-            {
-              name = "flathub";
-              location = "https://flathub.org/repo/flathub.flatpakrepo";
-            }
-            {
-              name = "flathub-beta";
-              location = "https://flathub.org/beta-repo/flathub-beta.flatpakrepo";
-            }
-          ];
-          overrides = {
-            global = {
-              Context = {
-                filesystems = [
+    home-manager.users.${username} = {config, ...}: {
+      home = {
+        sessionPath = [
+          "/var/lib/flatpak/exports/bin"
+          "${config.xdg.dataHome}/flatpak/exports/bin"
+        ];
+      };
+      services.flatpak = {
+        packages = [
+          "com.tencent.WeChat"
+          "com.baidu.NetDisk"
+          "com.qq.QQ"
+          "com.tencent.wemeet"
+          "org.telegram.desktop"
+          "com.cherry_ai.CherryStudio"
+          "com.termius.Termius"
+        ];
+        remotes = [
+          {
+            name = "flathub";
+            location = "https://flathub.org/repo/flathub.flatpakrepo";
+          }
+          {
+            name = "flathub-beta";
+            location = "https://flathub.org/beta-repo/flathub-beta.flatpakrepo";
+          }
+        ];
+        overrides = {
+          global = {
+            Context = {
+              filesystems =
+                [
                   "/nix/store:ro"
                   "/run/current-system/sw/bin:ro"
-                  "/run/media/zh:ro"
+                  "/run/media/${username}:ro"
                   # Theming
                   "${config.home.homeDirectory}/.icons:ro"
                   "${config.home.homeDirectory}/.themes:ro"
@@ -83,16 +78,20 @@ in
                   "xdg-config/gtk-4.0:ro"
                   "xdg-data/themes:ro"
                   "xdg-data/icons:ro"
+                  "xdg-config/lsfg-vk:rw"
+                  "xdg-run/discord-ipc-*"
                 ];
-              };
-              Environment = {
+            };
+            Environment =
+              {
                 # Wrong cursor in flatpaks fix
                 XCURSOR_PATH = "/run/host/user-share/icons:/run/host/share/icons";
+                LSFG_CONFIG = "${config.xdg.configHome}/lsfg-vk/conf.toml";
               };
-            };
           };
-          uninstallUnmanaged = false;
         };
+        uninstallUnmanaged = false;
       };
+    };
   };
 }
