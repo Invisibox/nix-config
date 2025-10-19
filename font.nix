@@ -13,6 +13,8 @@
     noto-fonts-emoji
     noto-fonts-color-emoji
     liberation_ttf
+    material-symbols
+    inter
     nerd-fonts.jetbrains-mono
     sarasa-gothic
     lxgw-wenkai

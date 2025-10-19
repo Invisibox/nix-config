@@ -46,6 +46,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
   };
 
   outputs = {
@@ -76,7 +77,7 @@
           home-manager.useUserPackages = true;
           home-manager.users.zh = import ./home-manager/home.nix;
 
-          home-manager.backupFileExtension = "hm-backup";
+          home-manager.backupFileExtension = "hm-back";
 
           home-manager.sharedModules = [
             nix-flatpak.homeManagerModules.nix-flatpak

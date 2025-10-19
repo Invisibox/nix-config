@@ -91,16 +91,18 @@
     ];
   };
 
-  # Enable the KDE Plasma Desktop Environment.
-  services.desktopManager.plasma6.enable = true;
+  # # Enable the KDE Plasma Desktop Environment.
+  # services.desktopManager.plasma6.enable = true;
 
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [
-    elisa
-    okular
-    sddm-kcm
-    ksystemlog
-    xdg-desktop-portal-kde
-  ];
+  # environment.plasma6.excludePackages = with pkgs.kdePackages; [
+  #   elisa
+  #   okular
+  #   sddm-kcm
+  #   ksystemlog
+  #   xdg-desktop-portal-kde
+  # ];
+  
+  programs.hyprland.enable = true;
 
   hardware.graphics = {
     enable = true;
@@ -221,7 +223,7 @@
   bottles.enable = true; # Enable Bottles.
 
   lutris.enable = true; # Enable Lutris.
-
+  
   hardware = {
     xone.enable = true;
     xpadneo.enable = true;
@@ -264,6 +266,7 @@
     xsettingsd
     xorg.xrdb
     xdg-desktop-portal-gtk
+    pavucontrol
   ];
 
   environment.variables.EDITOR = "neovim";

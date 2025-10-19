@@ -35,15 +35,20 @@
     calibre
     onlyoffice-bin
     tor-browser
+    
+    waybar
+    mako
+    tofi
+    hyprpaper
 
-    tela-icon-theme
+    papirus-icon-theme
 
-    kde-rounded-corners
-    inputs.kwin-effects-forceblur.packages.${pkgs.system}.default # Wayland
-    inputs.kwin-effects-forceblur.packages.${pkgs.system}.x11 # X11
+    # kde-rounded-corners
+    # inputs.kwin-effects-forceblur.packages.${pkgs.system}.default # Wayland
+    # inputs.kwin-effects-forceblur.packages.${pkgs.system}.x11 # X11
 
-    darkly-qt5
-    darkly
+    # darkly-qt5
+    # darkly
     wpsoffice-cn
     discord
     spotify
@@ -79,6 +84,7 @@
     hyperfine
     btop
     wl-clipboard
+    graphviz
     texlive.combined.scheme-full
   ];
 
