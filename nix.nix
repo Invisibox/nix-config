@@ -14,10 +14,10 @@
       options = "--delete-older-than 7d";
     };
 
-    optimise = {
-      automatic = true;
-      dates = ["1w"];
-    };
+    # optimise = {
+    #   automatic = true;
+    #   dates = ["1w"];
+    # };
 
     settings = {
       warn-dirty = false;

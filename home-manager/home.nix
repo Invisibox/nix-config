@@ -35,8 +35,7 @@
     calibre
     onlyoffice-bin
     tor-browser
-    
-    waybar
+
     mako
     tofi
     hyprpaper
@@ -76,6 +75,7 @@
     fd
     jq
     pango
+    yazi
     pkg-config
     devbox
     android-tools
@@ -99,8 +99,10 @@
   # git 相关配置
   programs.git = {
     enable = true;
-    userName = "Invisibox";
-    userEmail = "fortunateli@outlook.com";
+    settings ={
+      user.name = "Invisibox";
+      user.email = "fortunateli@outlook.com";
+    };
   };
 
   imports = [

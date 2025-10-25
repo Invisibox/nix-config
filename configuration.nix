@@ -101,8 +101,6 @@
   #   ksystemlog
   #   xdg-desktop-portal-kde
   # ];
-  
-  programs.hyprland.enable = true;
 
   hardware.graphics = {
     enable = true;
@@ -201,12 +199,15 @@
     ];
     shell = pkgs.zsh;
   };
+  users.groups.netdev = {};
 
   # Install zsh.
   programs.zsh.enable = true;
 
   # Enable nix ld.
   nix-ld.enable = true;
+  
+  hyprland.enable = true;
 
   steam = {
     enable = true;
@@ -262,7 +263,6 @@
     ncurses
     btrfs-progs
     compsize
-    libdbusmenu # https://github.com/microsoft/vscode/issues/34510
     xsettingsd
     xorg.xrdb
     xdg-desktop-portal-gtk
