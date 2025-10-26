@@ -38,6 +38,7 @@ in {
 
       home.packages = with pkgs; [
         brightnessctl
+        ddcutil
         # qtmultimedia
         accountsservice
         cliphist

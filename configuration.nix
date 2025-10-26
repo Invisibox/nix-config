@@ -267,6 +267,7 @@
     xorg.xrdb
     xdg-desktop-portal-gtk
     pavucontrol
+    papirus-icon-theme
   ];
 
   environment.variables.EDITOR = "neovim";

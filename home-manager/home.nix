@@ -40,8 +40,6 @@
     tofi
     hyprpaper
 
-    papirus-icon-theme
-
     # kde-rounded-corners
     # inputs.kwin-effects-forceblur.packages.${pkgs.system}.default # Wayland
     # inputs.kwin-effects-forceblur.packages.${pkgs.system}.x11 # X11
