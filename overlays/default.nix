@@ -2,6 +2,7 @@
   nixpkgs.overlays = [
     (final: prev: {
       proton-em = prev.callPackage ./proton-em {};
+      ori-fcitx5 = prev.callPackage ./ori-fcitx5 {};
       proton-ge-bin = prev.proton-ge-bin.overrideAttrs (old: rec {
         version = "GE-Proton10-16";
         src = prev.fetchzip {
