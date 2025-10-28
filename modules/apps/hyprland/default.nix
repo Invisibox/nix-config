@@ -34,25 +34,29 @@ in {
         inputs.dankMaterialShell.homeModules.dankMaterialShell.default
       ];
 
-      programs.dankMaterialShell.enable = true;
+      programs.dankMaterialShell = {
+        enable = true;
+        plugins = {
+          calculator.src = "${inputs.dankMaterialShell}/PLUGINS/calculator";
+        };
+      };
 
       home.packages = with pkgs; [
         brightnessctl
         ddcutil
-        # qtmultimedia
+        mate.mate-polkit
+        kdePackages.qtmultimedia
         accountsservice
         cliphist
         matugen
-        waybar
-        rofi
-        swaynotificationcenter
+        cava
         wlogout
         swww
       ];
 
-      # services.kanshi.enable = true;
+      services.kanshi.enable = true;
 
-      services.swaync.enable = true;
+      # services.swaync.enable = true;
     };
   };
 }

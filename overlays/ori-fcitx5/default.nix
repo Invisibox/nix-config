@@ -4,7 +4,7 @@
   stdenv,
   fetchFromGitHub,
 }:
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   pname = "ori-fcitx5";
   version = "0.1.0";
 
@@ -13,18 +13,22 @@ stdenv.mkDerivation rec {
     repo = "Ori-fcitx5";
     rev = "d2cf5df";
     # 你的 fetchFromGitHub 请求依然在这里
-    sha256 = "sha256-kE3A7U2T1QZ3/wA3ZqWfXvU7Y5uS2f9g8h7j6K5L4M3=";
+    sha256 = "sha256-46O/wCRphjVkYCbr29QqyiGBG27u3UG2DnrInZSQkIA=";
   };
 
   installPhase = ''
-    install -d $out/share/fcitx5/themes
-    cp -r src/* $out/share/fcitx5/themes/
+    runHook preInstall
+
+    mkdir -pv $out/share/fcitx5/themes/
+    cp -rv Ori* $out/share/fcitx5/themes/
+
+    runHook postInstall
   '';
 
   meta = with lib; {
     description = "This theme is just an attempt to round corners with svg theme.";
     homepage = "https://github.com/Reverier-Xu/Ori-fcitx5";
-    license = licenses.mpl2;
+    license = licenses.mpl20;
     platforms = platforms.all;
   };
 }
