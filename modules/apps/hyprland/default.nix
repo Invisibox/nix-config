@@ -44,6 +44,7 @@ in {
       home.packages = with pkgs; [
         brightnessctl
         ddcutil
+        libnotify
         mate.mate-polkit
         kdePackages.qtmultimedia
         accountsservice
