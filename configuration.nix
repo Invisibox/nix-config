@@ -88,7 +88,7 @@
       fcitx5-gtk
       fcitx5-mellow-themes
       ori-fcitx5
-      fcitx5-configtool
+      qt6Packages.fcitx5-configtool
     ];
   };
 
@@ -231,8 +231,6 @@
     xpadneo.enable = true;
   };
 
-  daed.enable = true; # Enable Daed.
-
   flatpak.enable = true; # Enable Flatpak support.
 
   virtualization.enable = true;
@@ -268,10 +266,14 @@
     xorg.xrdb
     xdg-desktop-portal-gtk
     pavucontrol
-    papirus-icon-theme
+    dconf-editor
+    sparkle
   ];
 
-  environment.variables.EDITOR = "neovim";
+  environment.variables = {
+    EDITOR = "neovim";
+    QT_QPA_PLATFORMTHEME = "qt6ct";
+  };
 
   services.kanata = {
     enable = true;
@@ -322,21 +324,21 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
   networking.firewall = {
-    enable = true;
+    enable = false;
     # trustedInterfaces = ["Mihomo"];
     # checkReversePath = "loose";
-    allowedTCPPortRanges = [
-      {
-        from = 1714;
-        to = 1764;
-      } # KDE Connect
-    ];
-    allowedUDPPortRanges = [
-      {
-        from = 1714;
-        to = 1764;
-      } # KDE Connect
-    ];
+    # allowedTCPPortRanges = [
+    #   {
+    #     from = 1714;
+    #     to = 1764;
+    #   } # KDE Connect
+    # ];
+    # allowedUDPPortRanges = [
+    #   {
+    #     from = 1714;
+    #     to = 1764;
+    #   } # KDE Connect
+    # ];
   };
 
   # This value determines the NixOS release from which the default

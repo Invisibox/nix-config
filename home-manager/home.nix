@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  lib,
   ...
 }: {
   # 注意修改这里的用户名与用户目录
@@ -27,18 +28,14 @@
   # 建议将所有 GUI 软件，以及与 OS 关系不大的 CLI 软件，都通过 home.packages 安装
   home.packages = with pkgs; [
     kdePackages.kate
+    papirus-icon-theme
     fastfetch
     vscode
     obsidian
     zotero
     limo
     calibre
-    onlyoffice-bin
     tor-browser
-
-    mako
-    tofi
-    hyprpaper
 
     # kde-rounded-corners
     # inputs.kwin-effects-forceblur.packages.${pkgs.system}.default # Wayland
@@ -49,6 +46,8 @@
     wpsoffice-cn
     discord
     spotify
+    psst
+    spot
     folo
     artim-dark
     thunderbird
@@ -84,6 +83,8 @@
     wl-clipboard
     graphviz
     texlive.combined.scheme-full
+    
+    qgnomeplatform
   ];
 
   home.pointerCursor = {
@@ -97,7 +98,7 @@
   # git 相关配置
   programs.git = {
     enable = true;
-    settings ={
+    settings = {
       user.name = "Invisibox";
       user.email = "fortunateli@outlook.com";
     };
@@ -112,6 +113,14 @@
 
   # KDE Connect
   services.kdeconnect.enable = true;
+
+  gtk = {
+    enable = true;
+    iconTheme = {
+      package = pkgs.papirus-icon-theme;
+      name = "Papirus";
+    };
+  };
 
   programs.atuin = {
     enable = true;

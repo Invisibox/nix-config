@@ -48,6 +48,7 @@ in
           xorg.libXext
           udev
           vulkan-loader
+          papirus-icon-theme
         ];
     };
     home-manager.users.${username} = { };

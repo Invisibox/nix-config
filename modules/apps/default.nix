@@ -1,7 +1,6 @@
 {
   imports = [
     ./bottles
-    ./daed
     ./flatpak
     ./heroic
     ./hyprland
