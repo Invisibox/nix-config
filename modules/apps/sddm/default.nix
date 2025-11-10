@@ -17,6 +17,7 @@ in {
     # the following changes will require sddm to be restarted to take
     # effect correctly. It is recomend to reboot after this
     extraPackages = sddm-theme.propagatedBuildInputs;
+    enableHidpi = true;
     wayland.enable = true;
     settings = {
       # required for styling the virtual keyboard

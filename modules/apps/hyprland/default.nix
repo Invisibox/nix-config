@@ -42,6 +42,34 @@ in {
       xdg-utils
     ];
 
+    # stylix = {
+    #   base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
+    #   enable = true;
+    #   targets.gtk.enable = true;
+    #   # targets.gtk.flatpakSupport.enable = true;
+    #   cursor = {
+    #     package = pkgs.bibata-cursors;
+    #     name = "Bibata-Modern-Ice";
+    #     size = 20;
+    #   };
+    #   # fonts = {
+    #   #   monospace.name = "Maple Mono";
+    #   #   monospace.package = pkgs.maple-mono-variable;
+    #   #   sansSerif.name = "LXGW WenKai";
+    #   #   sansSerif.package = pkgs.lxgw-wenkai;
+    #   #   serif.name = "LXGW WenKai";
+    #   #   serif.package = pkgs.lxgw-wenkai;
+    #   #   emoji.name = "Noto Color Emoji";
+    #   #   emoji.package = pkgs.noto-fonts-color-emoji;
+    #   # };
+    #   iconTheme = {
+    #     enable = true;
+    #     package = pkgs.papirus-icon-theme;
+    #     dark = "Papirus-Dark";
+    #     light = "Papirus-Light";
+    #   };
+    # };
+
     home-manager.users.${username} = {
       pkgs,
       config,
