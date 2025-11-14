@@ -5,9 +5,11 @@
   pkgs,
   inputs,
   ...
-}: let
+}:
+let
   cfg = config.steam;
-in {
+in
+{
   options.steam = {
     enable = lib.mkEnableOption "Enable Steam in NixOS";
     enableFlatpak = lib.mkOption {
@@ -50,65 +52,62 @@ in {
         '';
         privateTmp = false; # https://github.com/NixOS/nixpkgs/issues/381923
       };
-      dedicatedServer.openFirewall = true;
       extraCompatPackages = with pkgs; [
-        inputs.chaotic.packages.${system}.proton-cachyos_x86_64_v4
+        inputs.nur-bandithedoge.legacyPackages.${pkgs.system}.proton.cachyos
         proton-em
-        proton-ge-bin
+        inputs.nur-bandithedoge.legacyPackages.${system}.proton.ge
       ];
       localNetworkGameTransfers.openFirewall = true;
       protontricks.enable = true;
       remotePlay.openFirewall = true;
     };
-    home-manager.users.${username} = {
-      pkgs,
-      config,
-      ...
-    }: {
-      home = {
-        file = {
-          steam-beta = {
-            enable = cfg.enableSteamBeta;
-            text = "publicbeta";
-            target = "${config.xdg.dataHome}/Steam/package/beta";
+    home-manager.users.${username} =
+      { pkgs, config, ... }:
+      {
+        home = {
+          file = {
+            steam-beta = {
+              enable = cfg.enableSteamBeta;
+              text = "publicbeta";
+              target = "${config.xdg.dataHome}/Steam/package/beta";
+            };
+            steam-slow-fix = {
+              enable = cfg.fixDownloadSpeed;
+              text = ''
+                @nClientDownloadEnableHTTP2PlatformLinux 0
+                @fDownloadRateImprovementToAddAnotherConnection 1.0
+                unShaderBackgroundProcessingThreads 8
+              '';
+              target = "${config.xdg.dataHome}/Steam/steam_dev.cfg";
+            };
           };
-          steam-slow-fix = {
-            enable = cfg.fixDownloadSpeed;
-            text = ''
-              @nClientDownloadEnableHTTP2PlatformLinux 0
-              @fDownloadRateImprovementToAddAnotherConnection 1.0
-              unShaderBackgroundProcessingThreads 8
-            '';
-            target = "${config.xdg.dataHome}/Steam/steam_dev.cfg";
-          };
+          packages = with pkgs; [
+            steamcmd
+          ];
         };
-        packages = with pkgs; [
-          steamcmd
-        ];
-      };
-      services.flatpak = lib.mkIf cfg.enableFlatpak {
-        overrides = {
-          "com.valvesoftware.Steam" = {
-            Context = {
-              filesystems = [
-                "${config.home.homeDirectory}/Games"
-                "${config.xdg.dataHome}/applications"
-                "${config.xdg.dataHome}/games"
-                "${config.xdg.dataHome}/Steam"
-              ];
-            };
-            Environment = {
-              PULSE_SINK = "Game";
-            };
-            "Session Bus Policy" = {
-              org.freedesktop.Flatpak = "talk";
+        services.flatpak = lib.mkIf cfg.enableFlatpak {
+          overrides = {
+            "com.valvesoftware.Steam" = {
+              Context = {
+                filesystems = [
+                  "${config.home.homeDirectory}/Games"
+                  "${config.xdg.dataHome}/applications"
+                  "${config.xdg.dataHome}/games"
+                  "${config.xdg.dataHome}/Steam"
+                ];
+              };
+              Environment = {
+                PULSE_SINK = "Game";
+              };
+              "Session Bus Policy" = {
+                org.freedesktop.Flatpak = "talk";
+              };
             };
           };
+          packages = [
+            "com.valvesoftware.Steam"
+          ];
         };
-        packages = [
-          "com.valvesoftware.Steam"
-        ];
       };
-    };
   };
 }

@@ -5,6 +5,9 @@
 }: {
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = [
+    "jitsi-meet-1.0.8792"
+  ];
 
   # do garbage collection weekly to keep disk usage low
   nix = {

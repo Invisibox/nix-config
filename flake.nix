@@ -19,6 +19,7 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nur-bandithedoge.url = "github:bandithedoge/nur-packages";
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";

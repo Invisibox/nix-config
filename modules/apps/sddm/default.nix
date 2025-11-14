@@ -17,12 +17,11 @@ in {
     # the following changes will require sddm to be restarted to take
     # effect correctly. It is recomend to reboot after this
     extraPackages = sddm-theme.propagatedBuildInputs;
-    enableHidpi = true;
     wayland.enable = true;
     settings = {
       # required for styling the virtual keyboard
       General = {
-        GreeterEnvironment = "QML2_IMPORT_PATH=${sddm-theme}/share/sddm/themes/${sddm-theme.pname}/components/,QT_IM_MODULE=qtvirtualkeyboard";
+        GreeterEnvironment = "QML2_IMPORT_PATH=${sddm-theme}/share/sddm/themes/${sddm-theme.pname}/components/,QT_IM_MODULE=qtvirtualkeyboard,QT_SCREEN_SCALE_FACTORS=2,QT_FONT_DPI=192";
         InputMethod = "qtvirtualkeyboard";
       };
     };

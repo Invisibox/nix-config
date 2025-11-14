@@ -222,9 +222,9 @@
     enableNative = true; # Enable native Heroic client.
   };
 
-  bottles.enable = true; # Enable Bottles.
+  # bottles.enable = true; # Enable Bottles.
 
-  lutris.enable = true; # Enable Lutris.
+  # lutris.enable = true; # Enable Lutris.
   
   hardware = {
     xone.enable = true;
@@ -296,14 +296,14 @@
     };
   };
 
-  # Enable fingerprint reader support
-  services.fprintd = {
-    enable = true;
-    tod = {
-      enable = true;
-      driver = pkgs.libfprint-2-tod1-elan;
-    };
-  };
+  # # Enable fingerprint reader support
+  # services.fprintd = {
+  #   enable = true;
+  #   tod = {
+  #     enable = true;
+  #     driver = pkgs.libfprint-2-tod1-elan;
+  #   };
+  # };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
