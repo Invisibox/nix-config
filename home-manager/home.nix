@@ -44,6 +44,7 @@
     # darkly-qt5
     # darkly
     wpsoffice-cn
+    winboat
     discord
     spotify
     psst
@@ -85,7 +86,7 @@
     wl-clipboard
     graphviz
     texlive.combined.scheme-full
-    
+
     qgnomeplatform
   ];
 
@@ -103,6 +104,20 @@
     settings = {
       user.name = "Invisibox";
       user.email = "fortunateli@outlook.com";
+    };
+  };
+
+  programs.zed-editor = {
+    enable = true;
+    extensions = ["nix" "toml" "rust"];
+    userSettings = {
+      theme = {
+        mode = "system";
+        dark = "One Dark";
+        light = "One Light";
+      };
+      hour_format = "hour24";
+      vim_mode = true;
     };
   };
 

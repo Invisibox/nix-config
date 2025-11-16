@@ -110,10 +110,12 @@ in {
         swww
       ];
 
-      services.kanshi = {
-        enable = true;
-        systemdTarget = "";
-      };
+      services.shikane.enable = true;
+
+      # services.kanshi = {
+      #   enable = true;
+      #   systemdTarget = "";
+      # };
       # services.swaync.enable = true;
     };
   };

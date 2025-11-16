@@ -85,4 +85,6 @@
     # clean.extraArgs = "-d";
     flake = config.users.users.zh.home + "/Documents/nix-config";
   };
+  
+  nix.channel.enable = false; # remove nix-channel related tools & configs, we use flakes instead.
 }
