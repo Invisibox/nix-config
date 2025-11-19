@@ -1,7 +1,11 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -86,22 +90,12 @@
     fcitx5.addons = with pkgs; [
       fcitx5-rime
       fcitx5-gtk
+      libsForQt5.fcitx5-qt
+      kdePackages.fcitx5-qt
       fcitx5-mellow-themes
-      ori-fcitx5
       qt6Packages.fcitx5-configtool
     ];
   };
-
-  # # Enable the KDE Plasma Desktop Environment.
-  # services.desktopManager.plasma6.enable = true;
-
-  # environment.plasma6.excludePackages = with pkgs.kdePackages; [
-  #   elisa
-  #   okular
-  #   sddm-kcm
-  #   ksystemlog
-  #   xdg-desktop-portal-kde
-  # ];
 
   hardware.graphics = {
     enable = true;
@@ -114,23 +108,6 @@
   services.udev.extraRules = ''
     KERNEL=="i2c-[0-9]-*", SUBSYSTEM=="i2c-dev", GROUP="i2c", MODE="0660"
   '';
-
-  # Enable polkit for KDE Plasma
-  # security.polkit.enable = true;
-
-  # systemd.user.services.polkit-kde-authentication-agent = {
-  #   description = "Polkit KDE Authentication Agent";
-  #   wantedBy = [ "graphical-session.target" ];
-  #   wants = [ "graphical-session.target" ];
-  #   after = [ "graphical-session.target" ];
-  #   serviceConfig = {
-  #     Type = "simple";
-  #     ExecStart = "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1";
-  #     Restart = "on-failure";
-  #     RestartSec = "1";
-  #     TimeoutStopSec = "5";
-  #   };
-  # };
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -160,9 +137,6 @@
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
 
   environment.sessionVariables = {
     # this is a lazy way to do it. it works because
@@ -207,7 +181,7 @@
 
   # Enable nix ld.
   nix-ld.enable = true;
-  
+
   hyprland.enable = true;
 
   steam = {
@@ -225,7 +199,7 @@
   # bottles.enable = true; # Enable Bottles.
 
   # lutris.enable = true; # Enable Lutris.
-  
+
   hardware = {
     xone.enable = true;
     xpadneo.enable = true;
@@ -339,6 +313,13 @@
     #     to = 1764;
     #   } # KDE Connect
     # ];
+  };
+
+  security.wrappers.sparkle = {
+    owner = "root";
+    group = "root";
+    capabilities = "cap_net_bind_service,cap_net_raw,cap_net_admin=+ep";
+    source = lib.getExe pkgs.sparkle;
   };
 
   # This value determines the NixOS release from which the default

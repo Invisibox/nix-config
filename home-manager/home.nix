@@ -44,7 +44,7 @@
     # darkly-qt5
     # darkly
     wpsoffice-cn
-    winboat
+    # winboat
     discord
     spotify
     psst
@@ -59,7 +59,7 @@
     element-desktop
     hmcl
 
-    inputs.zen-browser.packages."${system}".twilight
+    inputs.zen-browser.packages."${system}".default
 
     # archives
     zip
