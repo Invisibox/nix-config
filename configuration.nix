@@ -90,12 +90,11 @@
     fcitx5.addons = with pkgs; [
       fcitx5-rime
       fcitx5-gtk
-      libsForQt5.fcitx5-qt
-      kdePackages.fcitx5-qt
       fcitx5-mellow-themes
       qt6Packages.fcitx5-configtool
     ];
   };
+  programs.gdk-pixbuf.modulePackages = with pkgs; [ librsvg ]; # For fcitx5 svg theme support
 
   hardware.graphics = {
     enable = true;

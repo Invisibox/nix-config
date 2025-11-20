@@ -47,16 +47,16 @@
     # winboat
     discord
     spotify
-    psst
     spot
     folo
-    artim-dark
+    vial
     thunderbird
     qbittorrent-enhanced
     brave
     planify
     mesen
     element-desktop
+    anki
     hmcl
 
     inputs.zen-browser.packages."${system}".default
@@ -120,7 +120,7 @@
       vim_mode = true;
     };
   };
-
+  
   imports = [
     ./mpv.nix
     ./kitty.nix
