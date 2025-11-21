@@ -45,6 +45,7 @@
     # darkly
     wpsoffice-cn
     # winboat
+    piliplus
     discord
     spotify
     spot
@@ -52,6 +53,7 @@
     vial
     thunderbird
     qbittorrent-enhanced
+    servo
     brave
     planify
     mesen
@@ -122,6 +124,8 @@
   };
   
   imports = [
+    ./fish
+    ./nautilus
     ./mpv.nix
     ./kitty.nix
     ./starship.nix

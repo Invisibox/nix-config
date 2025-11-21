@@ -4,6 +4,7 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }: {
   imports = [
@@ -94,7 +95,7 @@
       qt6Packages.fcitx5-configtool
     ];
   };
-  programs.gdk-pixbuf.modulePackages = with pkgs; [ librsvg ]; # For fcitx5 svg theme support
+  programs.gdk-pixbuf.modulePackages = with pkgs; [librsvg]; # For fcitx5 svg theme support
 
   hardware.graphics = {
     enable = true;
@@ -170,12 +171,18 @@
       "input"
       "uinput"
     ];
-    shell = pkgs.zsh;
+    shell = config.programs.fish.package;
   };
   users.groups.netdev = {};
 
-  # Install zsh.
+  # # Install zsh.
   programs.zsh.enable = true;
+
+  programs.fish = {
+    enable = true;
+    useBabelfish = true;
+  };
+  users.defaultUserShell = config.programs.fish.package;
 
   # Enable nix ld.
   nix-ld.enable = true;

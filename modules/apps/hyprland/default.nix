@@ -18,57 +18,9 @@ in {
     services.upower.enable = true;
     services.power-profiles-daemon.enable = true;
 
-    programs = {
-      thunar = {
-        enable = true;
-        plugins = with pkgs.xfce; [
-          thunar-archive-plugin
-          thunar-volman
-        ];
-      };
-      # enable preference changes saving for xfce/thunar
-      xfconf.enable = true;
-      # test for archive plugin and neovim wrapper
-      # file-roller.enable = true;
-      # add this after environment.systemPackages, otherwise it won't be found
-      dconf.enable = true;
-    };
-    services = {
-      gvfs.enable = true;
-      tumbler.enable = true;
-    };
-
     environment.systemPackages = with pkgs; [
       xdg-utils
     ];
-
-    # stylix = {
-    #   base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
-    #   enable = true;
-    #   targets.gtk.enable = true;
-    #   # targets.gtk.flatpakSupport.enable = true;
-    #   cursor = {
-    #     package = pkgs.bibata-cursors;
-    #     name = "Bibata-Modern-Ice";
-    #     size = 20;
-    #   };
-    #   # fonts = {
-    #   #   monospace.name = "Maple Mono";
-    #   #   monospace.package = pkgs.maple-mono-variable;
-    #   #   sansSerif.name = "LXGW WenKai";
-    #   #   sansSerif.package = pkgs.lxgw-wenkai;
-    #   #   serif.name = "LXGW WenKai";
-    #   #   serif.package = pkgs.lxgw-wenkai;
-    #   #   emoji.name = "Noto Color Emoji";
-    #   #   emoji.package = pkgs.noto-fonts-color-emoji;
-    #   # };
-    #   iconTheme = {
-    #     enable = true;
-    #     package = pkgs.papirus-icon-theme;
-    #     dark = "Papirus-Dark";
-    #     light = "Papirus-Light";
-    #   };
-    # };
 
     home-manager.users.${username} = {
       pkgs,
@@ -111,12 +63,6 @@ in {
       ];
 
       services.shikane.enable = true;
-
-      # services.kanshi = {
-      #   enable = true;
-      #   systemdTarget = "";
-      # };
-      # services.swaync.enable = true;
     };
   };
 }
