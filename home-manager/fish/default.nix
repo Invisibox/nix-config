@@ -19,23 +19,22 @@
     '';
 in {
   imports = [
-    ./keybindings.nix
   ];
 
   programs.fish = {
     enable = true;
 
-    loginShellInit =
-      # fish
-      ''
-        status is-interactive; and cd /data
-      '';
+    # loginShellInit =
+    #   # fish
+    #   ''
+    #     status is-interactive; and cd /data
+    #   '';
 
-    interactiveShellInit =
-      # fish
-      ''
-        source ${starshipInit}
-        source ${link "./functions.fish"}
-      '';
+    # interactiveShellInit =
+    #   # fish
+    #   ''
+    #     source ${starshipInit}
+    #     source ${link "./functions.fish"}
+    #   '';
   };
 }

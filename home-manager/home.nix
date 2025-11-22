@@ -145,6 +145,7 @@
 
   programs.atuin = {
     enable = true;
+    enableFishIntegration = true;
     settings = {
       update_check = false;
       style = "compact";
@@ -162,6 +163,7 @@
 
   programs.fzf = {
     enable = true;
+    enableFishIntegration = true;
     defaultOptions = [
       "--with-shell='zsh -c'"
       "--multi"
