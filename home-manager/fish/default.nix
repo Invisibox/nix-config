@@ -1,5 +1,4 @@
 # home-manager/fish/default.nix
-
 # 1. 改为标准的模块参数
 {
   config,
@@ -36,5 +35,8 @@ in {
     #     source ${starshipInit}
     #     source ${link "./functions.fish"}
     #   '';
+    interactiveShellInit = ''
+      set fish_greeting # Disable greeting
+    '';
   };
 }

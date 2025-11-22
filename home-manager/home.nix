@@ -196,6 +196,11 @@
       "spinner" = "1"; # Streaming input indicator
     };
   };
+  
+  programs.eza = {
+    enable = true;
+    enableFishIntegration = true;
+  };
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

@@ -1,6 +1,7 @@
 {...}: {
   programs.kitty = {
     enable = true;
+    shellIntegration.enableFishIntegration = true;
     themeFile = "Nord";
     font = {
       name = "JetBrainsMono Nerd Font";
