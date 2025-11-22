@@ -18,7 +18,7 @@
     sarasa-gothic
     lxgw-wenkai
     windows-fonts
-    inputs.wpsFonts.packages.${system}.default
+    inputs.wpsFonts.packages.${stdenv.hostPlatform.system}.default
   ];
 
   fonts.fontconfig.localConf = ''

@@ -53,9 +53,9 @@ in
         privateTmp = false; # https://github.com/NixOS/nixpkgs/issues/381923
       };
       extraCompatPackages = with pkgs; [
-        inputs.nur-bandithedoge.legacyPackages.${pkgs.system}.proton.cachyos
+        inputs.nur-bandithedoge.legacyPackages.${pkgs.stdenv.hostPlatform.system}.proton.cachyos
         proton-em
-        inputs.nur-bandithedoge.legacyPackages.${system}.proton.ge
+        inputs.nur-bandithedoge.legacyPackages.${stdenv.hostPlatform.system}.proton.ge
       ];
       localNetworkGameTransfers.openFirewall = true;
       protontricks.enable = true;
