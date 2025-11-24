@@ -57,7 +57,7 @@
     brave
     planify
     mesen
-    element-desktop
+    fluffychat
     anki
     hmcl
 
@@ -140,6 +140,14 @@
     iconTheme = {
       package = pkgs.papirus-icon-theme;
       name = "Papirus";
+    };
+  };
+  
+  qt = {
+    enable = true;
+    style = {
+      package = pkgs.adwaita-qt;
+      name = "Adwaita";
     };
   };
 
