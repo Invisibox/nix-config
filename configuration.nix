@@ -228,8 +228,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     git
-    vim
-    neovim
     wget
     curl
     htop
@@ -248,6 +246,11 @@
     dconf-editor
     sparkle
   ];
+  
+  programs.neovim = {
+    enable = true;
+    vimAlias = true;
+  };
 
   environment.variables = {
     EDITOR = "neovim";
