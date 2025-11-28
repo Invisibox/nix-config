@@ -105,7 +105,7 @@
     enable = true;
     settings = {
       user.name = "Invisibox";
-      user.email = "fortunateli@outlook.com";
+      user.email = "admin@djdog.cc";
     };
   };
 
