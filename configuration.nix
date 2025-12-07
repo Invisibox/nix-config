@@ -205,10 +205,10 @@
 
   # lutris.enable = true; # Enable Lutris.
 
-  hardware = {
-    xone.enable = true;
-    xpadneo.enable = true;
-  };
+  # hardware = {
+  #   xone.enable = true;
+  #   xpadneo.enable = true;
+  # };
 
   flatpak.enable = true; # Enable Flatpak support.
 
@@ -252,11 +252,11 @@
     vimAlias = true;
   };
 
-  environment.variables = {
-    EDITOR = "neovim";
-    QT_QPA_PLATFORMTHEME = "gtk3";
-    QT_QPA_PLATFORMTHEME_QT6 = "gtk3";
-  };
+  # environment.variables = {
+  #   EDITOR = "neovim";
+  #   QT_QPA_PLATFORMTHEME = "qt6ct";
+  #   QT_QPA_PLATFORMTHEME_QT6 = "qt6ct";
+  # };
 
   services.kanata = {
     enable = true;

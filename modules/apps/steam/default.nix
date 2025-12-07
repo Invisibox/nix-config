@@ -33,6 +33,7 @@ in
   config = lib.mkIf cfg.enable {
     programs.steam = {
       enable = cfg.enableNative;
+      gamescopeSession.enable = true;
       package = pkgs.steam.override {
         extraEnv = {
           MANGOHUD = true;
@@ -53,9 +54,10 @@ in
         privateTmp = false; # https://github.com/NixOS/nixpkgs/issues/381923
       };
       extraCompatPackages = with pkgs; [
-        inputs.nur-bandithedoge.legacyPackages.${pkgs.stdenv.hostPlatform.system}.proton.cachyos
-        proton-em
-        inputs.nur-bandithedoge.legacyPackages.${stdenv.hostPlatform.system}.proton.ge
+        libkrb5
+        keyutils
+        inputs.chaotic.packages.${pkgs.stdenv.hostPlatform.system}.proton-cachyos_x86_64_v4
+        inputs.chaotic.packages.${pkgs.stdenv.hostPlatform.system}.proton-ge-custom
       ];
       localNetworkGameTransfers.openFirewall = true;
       protontricks.enable = true;

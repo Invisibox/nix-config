@@ -41,10 +41,12 @@
     # inputs.kwin-effects-forceblur.packages.${pkgs.system}.default # Wayland
     # inputs.kwin-effects-forceblur.packages.${pkgs.system}.x11 # X11
 
-    # darkly-qt5
-    # darkly
     wpsoffice-cn
-    # winboat
+    kdePackages.okular
+    gimp-with-plugins
+    qimgv
+    snipaste
+    winboat
     piliplus
     discord
     spotify
@@ -58,6 +60,7 @@
     planify
     mesen
     fluffychat
+    keyguard
     anki
     hmcl
 
@@ -87,10 +90,15 @@
     btop
     wl-clipboard
     graphviz
+    inetutils
     texlive.combined.scheme-full
 
     qgnomeplatform
   ];
+
+  home.sessionVariables = {
+    EDITOR = "neovim";
+  };
 
   home.pointerCursor = {
     gtk.enable = true;
@@ -122,7 +130,7 @@
       vim_mode = true;
     };
   };
-  
+
   imports = [
     ./fish
     ./nautilus
@@ -142,13 +150,11 @@
       name = "Papirus";
     };
   };
-  
+
   qt = {
     enable = true;
-    style = {
-      package = pkgs.adwaita-qt;
-      name = "Adwaita";
-    };
+    style.package = with pkgs; [darkly-qt5 darkly];
+    platformTheme.name = "qtct";
   };
 
   programs.atuin = {
@@ -204,7 +210,7 @@
       "spinner" = "1"; # Streaming input indicator
     };
   };
-  
+
   programs.eza = {
     enable = true;
     enableFishIntegration = true;
