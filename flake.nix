@@ -6,8 +6,6 @@
 
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
 
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
     nix-gaming.url = "github:fufexan/nix-gaming";
@@ -58,17 +56,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     
-    stylix = {
-      url = "github:nix-community/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # stylix = {
+    #   url = "github:nix-community/stylix";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
 
   outputs = {
     self,
     nixpkgs,
     nix-flatpak,
-    stylix,
+    # stylix,
     home-manager,
     ...
   } @ inputs: {
@@ -85,7 +83,7 @@
 
         nix-flatpak.nixosModules.nix-flatpak
 
-        stylix.nixosModules.stylix
+        # stylix.nixosModules.stylix
 
         # 将 home-manager 配置为 nixos 的一个 module
         # 这样在 nixos-rebuild switch 时，home-manager 配置也会被自动部署

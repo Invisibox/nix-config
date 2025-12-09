@@ -196,6 +196,10 @@
     fixDownloadSpeed = true; # Fix slow download speeds in Steam.
   };
 
+  gamescope = {
+    enable = true; # Enable Gamescope.
+  };
+
   heroic = {
     enable = true; # Enable Heroic Games Launcher.
     enableNative = true; # Enable native Heroic client.
@@ -246,7 +250,7 @@
     dconf-editor
     sparkle
   ];
-  
+
   programs.neovim = {
     enable = true;
     vimAlias = true;

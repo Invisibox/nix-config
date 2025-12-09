@@ -1,6 +1,7 @@
 {
   imports = [
     ./flatpak
+    ./gamescope
     ./heroic
     ./hyprland
     ./nix-ld

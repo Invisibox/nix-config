@@ -45,7 +45,8 @@
     kdePackages.okular
     gimp-with-plugins
     qimgv
-    snipaste
+    amberol
+    fluent-reader
     winboat
     piliplus
     discord
