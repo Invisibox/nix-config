@@ -4,6 +4,7 @@
     ./gamescope
     ./heroic
     ./hyprland
+    ./niri
     ./nix-ld
     ./obs
     ./sddm

@@ -40,6 +40,27 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    niri-blurry = {
+      type = "github";
+      owner = "visualglitch91";
+      repo = "niri";
+      ref = "feat/blur";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    niri-unstable = {
+      type = "github";
+      owner = "YaLTeR";
+      repo = "niri";
+      ref = "main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     dgop = {
       url = "github:AvengeMedia/dgop";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -55,7 +76,7 @@
       url = "github:uiriansan/SilentSDDM";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     # stylix = {
     #   url = "github:nix-community/stylix";
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -67,6 +88,7 @@
     nixpkgs,
     nix-flatpak,
     # stylix,
+    niri,
     home-manager,
     ...
   } @ inputs: {
@@ -97,6 +119,7 @@
 
           home-manager.sharedModules = [
             nix-flatpak.homeManagerModules.nix-flatpak
+            niri.homeModules.niri
           ];
 
           # 使用 home-manager.extraSpecialArgs 自定义传递给 ./home.nix 的参数

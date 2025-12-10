@@ -46,6 +46,7 @@
     gimp-with-plugins
     qimgv
     amberol
+    gnome-calculator
     fluent-reader
     winboat
     piliplus
@@ -133,6 +134,7 @@
   };
 
   imports = [
+    ./dms
     ./fish
     ./nautilus
     ./mpv.nix
