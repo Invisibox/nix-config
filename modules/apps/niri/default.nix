@@ -23,10 +23,10 @@
 
   services.displayManager.defaultSession = lib.mkForce "niri";
 
-  home-manager.users.${username} = {
-    imports = [
-      ./settings.nix
-      ./binds.nix
-    ];
-  };
+  # home-manager.users.${username} = {
+  #   imports = [
+  #     ./settings.nix
+  #     ./binds.nix
+  #   ];
+  # };
 }
