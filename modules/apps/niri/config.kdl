@@ -1,15 +1,16 @@
 input {
     keyboard {
-        repeat-delay 150
+        repeat-delay 250
         repeat-rate 50
     }
 
     touchpad {
         tap
-        // dwt
+        dwt
         // dwtp
         // drag-lock
         natural-scroll
+        scroll-factor 0.75
         // accel-speed 0.2
         // accel-profile "flat"
         // scroll-method "two-finger"
@@ -19,6 +20,9 @@ input {
     mouse {
         accel-profile "flat"
     }
+
+    mod-key "Alt"
+    mod-key-nested "Super"
 
     focus-follows-mouse
     warp-mouse-to-focus
@@ -84,14 +88,14 @@ layout {
 
     blur {
         on
-        passes 3
+        passes 2
         radius 12.0
         noise 0.0
     }
 }
 
 spawn-at-startup "xwayland-satellite"
-spawn-at-startup "dms" "run"
+// spawn-at-startup "dms" "run"
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
 
 // screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
@@ -296,3 +300,4 @@ binds {
     XF86MonBrightnessDown allow-when-locked=true { spawn "dms" "ipc" "brightness" "decrement" "5" ""; }
     XF86MonBrightnessUp allow-when-locked=true { spawn "dms" "ipc" "brightness" "increment" "5" ""; }
 }
+include "dms/binds.kdl"
