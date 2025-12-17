@@ -187,6 +187,8 @@
   # Enable nix ld.
   nix-ld.enable = true;
 
+  services.gvfs.enable = true;
+
   hyprland.enable = true;
 
   steam = {

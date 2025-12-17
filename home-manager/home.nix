@@ -28,6 +28,7 @@
   # 建议将所有 GUI 软件，以及与 OS 关系不大的 CLI 软件，都通过 home.packages 安装
   home.packages = with pkgs; [
     kdePackages.kate
+    file-roller
     papirus-icon-theme
     fastfetch
     vscode
@@ -52,15 +53,13 @@
     piliplus
     discord
     spotify
-    spot
-    folo
     vial
     thunderbird
     qbittorrent-enhanced
     servo
     brave
     planify
-    mesen
+    mangayomi
     fluffychat
     keyguard
     anki
@@ -132,6 +131,8 @@
       vim_mode = true;
     };
   };
+
+  programs.jujutsu.enable = true;
 
   imports = [
     ./dms

@@ -1,4 +1,4 @@
-{...}: {
+{pkgs, ...}: {
   nixpkgs.overlays = [
     (final: prev: {
       proton-em = prev.callPackage ./proton-em {};
@@ -8,6 +8,14 @@
           url = "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${version}/${version}.tar.gz";
           hash = "sha256-pwnYnO6JPoZS8w2kge98WQcTfclrx7U2vwxGc6uj9k4=";
         };
+      });
+      nautilus = prev.nautilus.overrideAttrs (nprev: {
+        buildInputs =
+          nprev.buildInputs
+          ++ (with pkgs; [
+            gst_all_1.gst-plugins-good
+            gst_all_1.gst-plugins-bad
+          ]);
       });
     })
     (self: super: {
