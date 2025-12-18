@@ -15,6 +15,7 @@
     material-symbols
     inter
     nerd-fonts.jetbrains-mono
+    nerd-fonts.fira-code
     sarasa-gothic
     lxgw-wenkai
     windows-fonts

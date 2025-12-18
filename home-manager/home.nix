@@ -49,8 +49,8 @@
     amberol
     gnome-calculator
     fluent-reader
-    winboat
     piliplus
+    winboat
     discord
     spotify
     vial
@@ -82,6 +82,7 @@
     jq
     pango
     yazi
+    lazygit
     pkg-config
     devbox
     android-tools
@@ -118,26 +119,11 @@
     };
   };
 
-  programs.zed-editor = {
-    enable = true;
-    extensions = ["nix" "toml" "rust"];
-    userSettings = {
-      theme = {
-        mode = "system";
-        dark = "One Dark";
-        light = "One Light";
-      };
-      hour_format = "hour24";
-      vim_mode = true;
-    };
-  };
-
-  programs.jujutsu.enable = true;
-
   imports = [
     ./dms
     ./fish
     ./nautilus
+    ./zed
     ./mpv.nix
     ./kitty.nix
     ./starship.nix

@@ -9,7 +9,7 @@
   programs.niri = {
     enable = true;
     # package = pkgs.niri;
-    package = inputs.niri-blurry.packages.${pkgs.system}.niri;
+    package = inputs.niri-blurry.packages.${pkgs.stdenv.hostPlatform.system}.niri;
   };
 
   environment.systemPackages = with pkgs; [

@@ -189,8 +189,6 @@
 
   services.gvfs.enable = true;
 
-  hyprland.enable = true;
-
   steam = {
     enable = true;
     enableNative = true; # Enable native Steam client.
