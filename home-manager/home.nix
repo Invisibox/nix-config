@@ -36,6 +36,7 @@
     zotero
     limo
     calibre
+    readest
     tor-browser
 
     # kde-rounded-corners
@@ -45,6 +46,7 @@
     wpsoffice-cn
     kdePackages.okular
     gimp-with-plugins
+    cherry-studio
     qimgv
     amberol
     gnome-calculator
