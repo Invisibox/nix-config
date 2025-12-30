@@ -44,6 +44,7 @@
     # inputs.kwin-effects-forceblur.packages.${pkgs.system}.x11 # X11
 
     wpsoffice-cn
+    windterm
     kdePackages.okular
     gimp-with-plugins
     cherry-studio
