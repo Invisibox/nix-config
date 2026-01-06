@@ -1,9 +1,9 @@
 {
   lib,
+  inputs,
   config,
   username,
   pkgs,
-  inputs,
   ...
 }:
 let
@@ -42,7 +42,6 @@ in
           PROTON_ENABLE_WAYLAND = true;
           PROTON_ENABLE_HDR = true;
           PROTON_USE_WOW64 = true;
-          # proton-cachyos
           PROTON_FSR4_RDNA3_UPGRADE = true;
           PROTON_USE_NTSYNC = true;
         };
@@ -53,7 +52,8 @@ in
         privateTmp = false; # https://github.com/NixOS/nixpkgs/issues/381923
       };
       extraCompatPackages = with pkgs; [
-        proton-ge-bin
+        proton-cachyos-x86_64_v4
+        proton-ge
       ];
       localNetworkGameTransfers.openFirewall = true;
       protontricks.enable = true;
@@ -74,7 +74,6 @@ in
               text = ''
                 @nClientDownloadEnableHTTP2PlatformLinux 0
                 @fDownloadRateImprovementToAddAnotherConnection 1.0
-                unShaderBackgroundProcessingThreads 8
               '';
               target = "${config.xdg.dataHome}/Steam/steam_dev.cfg";
             };

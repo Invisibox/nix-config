@@ -34,9 +34,9 @@
     vscode
     obsidian
     zotero
-    limo
     calibre
     readest
+    termius
     tor-browser
 
     # kde-rounded-corners
@@ -44,7 +44,6 @@
     # inputs.kwin-effects-forceblur.packages.${pkgs.system}.x11 # X11
 
     wpsoffice-cn
-    windterm
     kdePackages.okular
     gimp-with-plugins
     cherry-studio
@@ -97,6 +96,7 @@
     graphviz
     inetutils
     texlive.combined.scheme-full
+    nodejs
 
     qgnomeplatform
   ];

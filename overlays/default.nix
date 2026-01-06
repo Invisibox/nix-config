@@ -1,7 +1,17 @@
-{pkgs, ...}: {
+{pkgs, inputs, ...}: {
   nixpkgs.overlays = [
     (final: prev: {
       proton-em = prev.callPackage ./proton-em {};
+      proton-cachyos-x86_64_v4 =
+        inputs.nix-gaming-edge.packages.${final.stdenv.hostPlatform.system}.proton-cachyos-x86_64-v4;
+      #proton-ge = final.proton-ge-bin;
+      proton-ge = prev.proton-ge-bin.overrideAttrs (old: rec {
+        version = "GE-Proton10-27";
+        src = prev.fetchzip {
+          url = "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${version}/${version}.tar.gz";
+          hash = "sha256-yBPjPb2LzxdgEobuoeSfs3UZ1XUxZF6vIMYF+fAnLA0=";
+        };
+      });
       proton-ge-bin = prev.proton-ge-bin.overrideAttrs (old: rec {
         version = "GE-Proton10-16";
         src = prev.fetchzip {

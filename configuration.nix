@@ -248,12 +248,17 @@
     xdg-desktop-portal-gtk
     pavucontrol
     dconf-editor
-    sparkle
   ];
 
   programs.neovim = {
     enable = true;
     vimAlias = true;
+  };
+
+  programs.clash-verge = {
+    enable = true;
+    tunMode = true;
+    serviceMode = true;
   };
 
   # environment.variables = {
@@ -311,9 +316,9 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
   networking.firewall = {
-    enable = false;
-    # trustedInterfaces = ["Mihomo"];
-    # checkReversePath = "loose";
+    enable = true;
+    trustedInterfaces = ["Mihomo"];
+    checkReversePath = "loose";
     # allowedTCPPortRanges = [
     #   {
     #     from = 1714;
@@ -326,13 +331,6 @@
     #     to = 1764;
     #   } # KDE Connect
     # ];
-  };
-
-  security.wrappers.sparkle = {
-    owner = "root";
-    group = "root";
-    capabilities = "cap_net_bind_service,cap_net_raw,cap_net_admin=+ep";
-    source = lib.getExe pkgs.sparkle;
   };
 
   # This value determines the NixOS release from which the default

@@ -4,9 +4,11 @@
   pkgs,
   username,
   ...
-}: let
+}:
+let
   cfg = config.virtualization;
-in {
+in
+{
   options = {
     virtualization = {
       enable = lib.mkEnableOption "Enable virtualization in NixOS & home-manager";
@@ -25,25 +27,43 @@ in {
 
     environment = {
       systemPackages = with pkgs; [
-        docker-compose
+        #docker-compose
         podlet
+        quickemu
+        spice
+        spice-protocol
+        virtiofsd
+        virtio-win
         win-spice
       ];
     };
 
+    networking.firewall.trustedInterfaces = [ "virbr0" ];
+
+    programs.virt-manager.enable = true;
+
+    services = {
+      spice-vdagentd.enable = true;
+      qemuGuest.enable = true;
+    };
+
     virtualisation = {
-      docker = {
+      containers = {
         enable = true;
       };
       podman = {
         enable = true;
-        autoPrune = {
-          enable = true;
-          dates = "weekly";
-        };
         defaultNetwork.settings.dns_enabled = true;
         #dockerCompat = true;
-        #dockerSocket.enable = true;
+        dockerSocket.enable = true;
+      };
+      libvirtd = {
+        # Make sure you run this once: "sudo virsh net-autostart default"
+        enable = true;
+        qemu = {
+          swtpm.enable = true;
+          vhostUserPackages = with pkgs; [ virtiofsd ];
+        };
       };
       spiceUSBRedirection.enable = true;
       vmVariant = {
@@ -54,17 +74,29 @@ in {
       };
     };
 
+    systemd.tmpfiles.rules = [ "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware" ];
+
     users = {
       users = {
         ${username} = {
           extraGroups = [
-            "docker"
+            "kvm"
+            "libvirtd"
             "podman"
           ];
         };
+
+        nixosvmtest = {
+          isSystemUser = true;
+          initialHashedPassword = "$y$j9T$B1obD.4xOr/6gJ6FCsu1v/$7axAjbaqRpFR3zGZVbOuCRGUNGJXyRxdavAHIyOdyK.";
+          group = "nixosvmtest";
+        };
+      };
+      groups = {
+        nixosvmtest = { };
       };
     };
 
-    home-manager.users.${username} = {};
+    home-manager.users.${username} = { };
   };
 }

@@ -8,6 +8,7 @@
     ./nix-ld
     ./obs
     ./sddm
+    ./singbox
     ./steam
     ./virtualization
   ];

@@ -4,11 +4,11 @@
   ...
 }: {
   imports = [
-    inputs.dankMaterialShell.homeModules.dank-material-shell
-    inputs.dankMaterialShell.homeModules.niri
+    inputs.dms.homeModules.dankMaterialShell.default
+    inputs.dms.homeModules.dankMaterialShell.niri
   ];
 
-  programs.dank-material-shell = {
+  programs.dankMaterialShell = {
     enable = true;
 
     systemd = {
