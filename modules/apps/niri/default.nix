@@ -51,6 +51,9 @@
     };
   };
 
+  services.upower.enable = true;
+  services.power-profiles-daemon.enable = true;
+
   # 设置默认会话
   # 确保你在其他地方配置了 services.xserver.displayManager.gdm.enable = true;
   # 或者 services.greetd...
