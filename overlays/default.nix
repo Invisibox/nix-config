@@ -1,4 +1,8 @@
-{pkgs, inputs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
   nixpkgs.overlays = [
     (final: prev: {
       proton-em = prev.callPackage ./proton-em {};

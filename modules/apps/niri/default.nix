@@ -28,9 +28,9 @@
 
   environment.systemPackages = with pkgs; [
     xwayland-satellite
-    # material-symbols
-    # inter
-    # fira-code
+    slurp
+    grim
+    satty
   ];
 
   # 禁用 Niri Flake 可能自带的 Polkit 服务，以使用下方自定义的
