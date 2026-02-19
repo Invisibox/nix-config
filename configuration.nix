@@ -138,6 +138,16 @@
     #media-session.enable = true;
   };
 
+  services.tailscale.enable = true;
+
+  services.postgresql = {
+    enable = true;
+    package = pkgs.postgresql_16; # 选择版本
+    # 其他配置...
+  };
+  # 禁用开机自启
+  systemd.services.postgresql.wantedBy = pkgs.lib.mkForce [];
+
   environment.sessionVariables = {
     # this is a lazy way to do it. it works because
     # user vars come after setting this dummy var to 1.

@@ -1,0 +1,320 @@
+include "dms/binds.kdl"
+include "dms/wpblur.kdl"
+include "dms/alttab.kdl"
+include "dms/colors.kdl"
+include "dms/layout.kdl"
+
+input {
+    keyboard {
+        repeat-delay 250
+        repeat-rate 50
+    }
+
+    touchpad {
+        tap
+        dwt
+        // dwtp
+        // drag-lock
+        natural-scroll
+        scroll-factor 0.75
+        // accel-speed 0.2
+        // accel-profile "flat"
+        // scroll-method "two-finger"
+        // disabled-on-external-mouse
+    }
+
+    mouse {
+        accel-profile "flat"
+    }
+
+    mod-key "Alt"
+    mod-key-nested "Super"
+
+    focus-follows-mouse
+    warp-mouse-to-focus
+}
+
+prefer-no-csd
+
+environment {
+    DISPLAY ":0"
+}
+
+layout {
+    gaps 13
+    empty-workspace-above-first
+    center-focused-column "on-overflow"
+    always-center-single-column
+    // background-color "transparent"
+
+    // You can customize the widths that "switch-preset-column-width" (Mod+R) toggles between.
+    preset-column-widths {
+        proportion 0.16667
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+        proportion 0.83333
+    }
+
+    default-column-width { }
+
+    focus-ring {
+        width 1.5
+    //     active-gradient from="#003c3c" to="#191724" angle=180
+    }
+
+    // tab-indicator {
+    //     width 8
+    //     gap 16
+    //     gaps-between-tabs 8
+    //     corner-radius 8
+    //     active-color "#E6E6EF"
+    //     inactive-color "#191724"
+    //     urgent-color "#CE2D4F"
+    //     length total-proportion=0.45
+    //     position "left"
+    //     place-within-column
+    // }
+
+    struts {
+        left -8
+        right -8
+        top -8
+        bottom -8
+    }
+
+    shadow {
+        on
+        draw-behind-window true
+        softness 30
+        spread 5
+        offset x=0 y=5
+        // color "#0007"
+    }
+
+    blur {
+        on
+        passes 1
+        radius 8.0
+        noise 0.0
+    }
+}
+
+spawn-at-startup "xwayland-satellite"
+// spawn-at-startup "dms" "run"
+// spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
+
+// screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+screenshot-path null
+
+animations { }
+
+window-rule {
+    match is-focused=false
+    opacity 0.85
+    draw-border-with-background false
+}
+
+window-rule {
+    match is-focused=true
+    opacity 1.0
+    draw-border-with-background false
+}
+
+window-rule {
+    match app-id=r#"zen$"# title="^画中画$"
+    open-floating true
+    open-focused false
+    opacity 1.0
+    default-floating-position x=20 y=20 relative-to="bottom-right"
+}
+
+window-rule {
+    match app-id=r#"zen-beta$"# title="^画中画$"
+    open-floating true
+    open-focused false
+    opacity 1.0
+    default-floating-position x=20 y=20 relative-to="bottom-right"
+}
+
+window-rule {
+    match app-id=r#"org.gnome.NautilusPreviewer$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"zab$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"org.pulseaudio.pavucontrol$"#
+    open-floating true
+    min-width 800
+    min-height 600
+}
+
+window-rule {
+    match app-id=r#"mongolore$"#
+    open-floating true
+}
+
+window-rule {
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+
+layer-rule {
+    match namespace="^awww-daemon$"
+
+    place-within-backdrop true
+}
+
+layer-rule {
+    match namespace=r#"^dms:\(.*\)"#
+
+    opacity 0.5
+}
+
+overview {
+    backdrop-color "#232136"
+    workspace-shadow {
+        off
+    }
+    // backdrop-color "#00000000"
+}
+
+binds {
+    // Keys consist of modifiers separated by + signs, followed by an XKB key name
+    // in the end. To find an XKB name for a particular key, you may use a program
+    // like wev.
+    //
+    // "Mod" is a special modifier equal to Super when running on a TTY, and to Alt
+    // when running as a winit window.
+    //
+    // Most actions that you can bind here can also be invoked programmatically with
+    // `niri msg action do-something`.
+
+    // Mod-Shift-/, which is usually the same as Mod-?,
+    // shows a list of important hotkeys.
+    Mod+Shift+Ctrl+Slash { show-hotkey-overlay; }
+
+    // Suggested binds for running programs: terminal, app launcher, screen locker.
+    // Mod+Shift+Space { spawn "wofi" "--show" "drun"; } // backup
+    // Mod+Space { spawn "vicinae" "toggle"; }
+    // Super+Alt+L { spawn "dolphin"; }
+    // Mod+Ctrl+L { spawn "wlogout"; }
+
+    // You can also use a shell. Do this if you need pipes, multiple commands, etc.
+    // Note: the entire command goes as a single argument in the end.
+    // Mod+T { spawn "bash" "-c" "notify-send hello && exec alacritty"; }
+
+    // Example volume keys mappings for PipeWire & WirePlumber.
+    // The allow-when-locked=true property makes them work even when the session is locked.
+    // XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.025+"; }
+    // XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.025-"; }
+    // XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+    // XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+    // XF86AudioPlay       allow-when-locked=true { spawn "playerctl" "play-pause"; }
+    // XF86AudioPause      allow-when-locked=true { spawn "playerctl" "play-pause"; }
+    // XF86AudioNext       allow-when-locked=true { spawn "playerctl" "next"; }
+    // XF86AudioPrev       allow-when-locked=true { spawn "playerctl" "previous"; }
+
+    // XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "s" "10%+"; }
+    // XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "s" "10%-"; }
+
+    Mod+Q { close-window; }
+
+    Super+Tab { toggle-overview; }
+
+    Mod+H  { focus-column-left; }
+    Mod+L  { focus-column-right; }
+    Mod+J  { focus-window-or-workspace-down; }
+    Mod+K  { focus-window-or-workspace-up; }
+
+    Mod+Ctrl+Equal { set-column-width "+2.5%"; }
+    Mod+Ctrl+Minus { set-column-width "-2.5%"; }
+
+    Mod+Ctrl+Left  { focus-column-left; }
+    Mod+Ctrl+Down  { focus-window-down; }
+    Mod+Ctrl+Up    { focus-window-up; }
+    Mod+Ctrl+Right { focus-column-right; }
+    Mod+Alt+Ctrl+Left  { consume-or-expel-window-left; }
+    Mod+Alt+Ctrl+Right { consume-or-expel-window-right; }
+    Mod+Alt+Ctrl+Up    { move-window-up; }
+    Mod+Alt+Ctrl+Down  { move-window-down; }
+
+    Mod+Home { focus-column-first; }
+    Mod+End  { focus-column-last; }
+    Mod+Ctrl+Home { move-column-to-first; }
+    Mod+Ctrl+End  { move-column-to-last; }
+
+    Mod+Shift+Left  { focus-monitor-left; }
+    Mod+Shift+Down  { focus-monitor-down; }
+    Mod+Shift+Up    { focus-monitor-up; }
+    Mod+Shift+Right { focus-monitor-right; }
+    Mod+Shift+H     { focus-monitor-left; }
+    Mod+Shift+J     { focus-monitor-down; }
+    Mod+Shift+K     { focus-monitor-up; }
+    Mod+Shift+L     { focus-monitor-right; }
+
+    Mod+WheelScrollDown { focus-column-right; }
+    Mod+WheelScrollUp   { focus-column-left; }
+    Mod+Ctrl+WheelScrollDown { focus-window-down; }
+    Mod+Ctrl+WheelScrollUp   { focus-window-up; }
+
+    Mod+Shift+WheelScrollDown      { focus-workspace-down; }
+    Mod+Shift+WheelScrollUp        { focus-workspace-up; }
+
+    Shift+Ctrl+Alt+F { maximize-column; }
+    Mod+Shift+Ctrl+F { fullscreen-window; }
+
+    Mod+Z { center-column; }
+    Mod+Ctrl+Z { center-visible-columns; }
+
+    Mod+Ctrl+Space       { toggle-window-floating; }
+
+    Mod+Ctrl+Alt+Space { toggle-column-tabbed-display; }
+
+    Mod+Ctrl+Shift+3 { screenshot-screen; }
+    Mod+Ctrl+Shift+4 { screenshot-window; }
+    // Mod+Ctrl+Shift+5 { screenshot-window; }
+    Mod+Ctrl+Shift+5 { spawn-sh "set -e; grim -t ppm -g \"$(slurp -o -d -F monospace)\" - | satty --filename - --copy-command=wl-copy --annotation-size-factor 2.0 --output-filename=\"$(xdg-user-dir PICTURES)/Screenshots/Screenshot from %Y-%m-%d %H:%M:%S.png\" --actions-on-enter=\"save-to-clipboard,exit\" --brush-smooth-history-size=5 --disable-notifications"; }
+
+    // Applications such as remote-desktop clients and software KVM switches may
+    // request that niri stops processing the keyboard shortcuts defined here
+    // so they may, for example, forward the key presses as-is to a remote machine.
+    // It's a good idea to bind an escape hatch to toggle the inhibitor,
+    // so a buggy application can't hold your session hostage.
+    //
+    // The allow-inhibiting=false property can be applied to other binds as well,
+    // which ensures niri always processes them, even when an inhibitor is active.
+    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+
+    // The quit action will show a confirmation dialog to avoid accidental exits.
+    Mod+Ctrl+Q { quit; }
+
+    // Powers off the monitors. To turn them back on, do any input like
+    // moving the mouse or pressing any other key.
+    Mod+Ctrl+Shift+Q { power-off-monitors; }
+
+    // DMS
+    Mod+Alt+N allow-when-locked=true hotkey-overlay-title="Toggle Night Mode" { spawn "dms" "ipc" "night" "toggle"; }
+    Mod+Comma hotkey-overlay-title="Toggle Settings" { spawn "dms" "ipc" "settings" "toggle"; }
+    Mod+M hotkey-overlay-title="Toggle Process List" { spawn "dms" "ipc" "processlist" "toggle"; }
+    Mod+N hotkey-overlay-title="Toggle Notification Center" { spawn "dms" "ipc" "notifications" "toggle"; }
+    Mod+P hotkey-overlay-title="Toggle Notepad" { spawn "dms" "ipc" "notepad" "toggle"; }
+    Mod+Space hotkey-overlay-title="Toggle Application Launcher" { spawn "dms" "ipc" "spotlight" "toggle"; }
+    Mod+V hotkey-overlay-title="Toggle Clipboard Manager" { spawn "dms" "ipc" "clipboard" "toggle"; }
+    Mod+X hotkey-overlay-title="Toggle Power Menu" { spawn "dms" "ipc" "powermenu" "toggle"; }
+    Super+Alt+L hotkey-overlay-title="Toggle Lock Screen" { spawn "dms" "ipc" "lock" "lock"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "dms" "ipc" "audio" "decrement" "3"; }
+    XF86AudioMicMute allow-when-locked=true { spawn "dms" "ipc" "audio" "micmute"; }
+    XF86AudioMute allow-when-locked=true { spawn "dms" "ipc" "audio" "mute"; }
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "dms" "ipc" "audio" "increment" "3"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "dms" "ipc" "brightness" "decrement" "5" ""; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn "dms" "ipc" "brightness" "increment" "5" ""; }
+
+    Super+T { spawn "kitty"; }
+    Super+E { spawn "nautilus"; }
+}

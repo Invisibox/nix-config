@@ -38,12 +38,11 @@
     readest
     termius
     tor-browser
+    tsukimi
 
-    # kde-rounded-corners
-    # inputs.kwin-effects-forceblur.packages.${pkgs.system}.default # Wayland
-    # inputs.kwin-effects-forceblur.packages.${pkgs.system}.x11 # X11
-
-    wpsoffice-cn
+    # wpsoffice-cn
+    v2rayn
+    curtail
     kdePackages.okular
     gimp-with-plugins
     cherry-studio
@@ -63,10 +62,12 @@
     planify
     mangayomi
     fluffychat
-    keyguard
+    # keyguard
     anki
     hmcl
     dig
+
+    # inputs.wpsoffice-flake.packages.x86_64-linux.default
 
     inputs.zen-browser.packages."${stdenv.hostPlatform.system}".default
 
@@ -133,9 +134,6 @@
     ./starship.nix
     ./zsh/zsh.nix
   ];
-
-  # KDE Connect
-  services.kdeconnect.enable = true;
 
   gtk = {
     enable = true;
