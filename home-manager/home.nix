@@ -34,7 +34,7 @@
     vscode
     obsidian
     zotero
-    calibre
+    # calibre
     readest
     termius
     tor-browser
@@ -145,7 +145,7 @@
 
   qt = {
     enable = true;
-    style.package = with pkgs; [darkly-qt5 darkly];
+    # style.package = with pkgs; [darkly-qt5 darkly];
     platformTheme.name = "qtct";
   };
 

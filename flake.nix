@@ -38,10 +38,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    wpsoffice-flake = {
-      url = "github:alex-karev/wpsoffice-flake";
-    };
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -77,11 +73,6 @@
       url = "github:uiriansan/SilentSDDM";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # stylix = {
-    #   url = "github:nix-community/stylix";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
   };
 
   outputs = {
