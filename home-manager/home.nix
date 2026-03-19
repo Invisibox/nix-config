@@ -98,6 +98,7 @@
     graphviz
     inetutils
     texlive.combined.scheme-full
+    cmake
     nodejs
 
     qgnomeplatform

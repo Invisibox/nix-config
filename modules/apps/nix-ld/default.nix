@@ -4,11 +4,9 @@
   username,
   pkgs,
   ...
-}:
-let
+}: let
   cfg = config.nix-ld;
-in
-{
+in {
   options = {
     nix-ld = {
       enable = lib.mkEnableOption "Enable nix-ld in NixOS";
@@ -17,8 +15,7 @@ in
   config = lib.mkIf cfg.enable {
     programs.nix-ld = {
       enable = true;
-      libraries =
-        with pkgs;
+      libraries = with pkgs;
         (steam-run.args.multiPkgs pkgs)
         ++ (heroic.args.multiPkgs pkgs)
         ++ (lutris.args.multiPkgs pkgs)
@@ -44,12 +41,12 @@ in
           mesa
           networkmanager
           pkg-config
-          xorg.libX11
-          xorg.libXext
+          libX11
+          libXext
           udev
           vulkan-loader
         ];
     };
-    home-manager.users.${username} = { };
+    home-manager.users.${username} = {};
   };
 }

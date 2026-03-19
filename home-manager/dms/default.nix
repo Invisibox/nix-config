@@ -7,7 +7,7 @@
     inputs.dms.homeModules.dank-material-shell
   ];
 
-  programs.dankMaterialShell = {
+  programs.dank-material-shell = {
     enable = true;
 
     systemd = {
@@ -38,7 +38,7 @@
     brightnessctl
     ddcutil
     libnotify
-    mate.mate-polkit
+    mate-polkit
     kdePackages.qtmultimedia
     accountsservice
     cliphist

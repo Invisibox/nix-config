@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
   fonts = {
     enableDefaultPackages = true;
     fontDir.enable = true;
