@@ -267,12 +267,6 @@
     vimAlias = true;
   };
 
-  programs.clash-verge = {
-    enable = true;
-    tunMode = true;
-    serviceMode = true;
-  };
-
   # environment.variables = {
   #   EDITOR = "neovim";
   #   QT_QPA_PLATFORMTHEME = "qt6ct";
@@ -329,8 +323,6 @@
   # networking.firewall.enable = false;
   networking.firewall = {
     enable = true;
-    trustedInterfaces = ["Mihomo"];
-    checkReversePath = "loose";
     # allowedTCPPortRanges = [
     #   {
     #     from = 1714;

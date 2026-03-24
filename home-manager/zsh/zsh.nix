@@ -173,7 +173,7 @@ in {
 
     "zsh/keybindings/keymap_foot.zsh" = {
       text = import ./keybindings/keymap_foot.nix {
-        footKeysAttrSet = import ../foot/keys.nix {inherit lib;};
+        footKeysAttrSet = import ./keybindings/keys.nix {inherit lib;};
         inherit lib;
       };
       onChange = zcompileGlob "keybindings/keymap_foot.zsh";

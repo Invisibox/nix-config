@@ -45,13 +45,12 @@
     curtail
     kdePackages.okular
     gimp-with-plugins
-    cherry-studio
     qimgv
     amberol
     gnome-calculator
     fluent-reader
     piliplus
-    winboat
+    # winboat
     discord
     spotify
     vial
