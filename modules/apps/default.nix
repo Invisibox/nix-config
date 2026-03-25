@@ -1,5 +1,6 @@
 {
   imports = [
+    ./daed
     ./flatpak
     ./gamescope
     ./heroic

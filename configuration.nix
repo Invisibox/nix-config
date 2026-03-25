@@ -236,6 +236,14 @@
     silenceOutput = true;
   };
 
+  daed = {
+    enable = true;
+    dashboardAddress = "127.0.0.1";
+    dashboardPort = 2023;
+    openDashboardFirewall = false;
+    tproxyPort = 12345;
+  };
+
   # Disable nano, as it is not needed.
   programs.nano.enable = false;
 
