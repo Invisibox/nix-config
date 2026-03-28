@@ -69,6 +69,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    daed-bin = {
+      url = "https://github.com/daeuniverse/daed/releases/download/v1.24.0/daed-linux-x86_64.zip";
+      flake = false;
+    };
+
     silentSDDM = {
       url = "github:uiriansan/SilentSDDM";
       inputs.nixpkgs.follows = "nixpkgs";

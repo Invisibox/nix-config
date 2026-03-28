@@ -2,10 +2,32 @@
   lib,
   config,
   pkgs,
+  inputs,
   ...
 }:
 let
   cfg = config.daed;
+  daedVersion = "1.24.0";
+  daedPackageFromFlake = pkgs.runCommand "daed-${daedVersion}" { } ''
+    mkdir -p \
+      "$out/bin" \
+      "$out/lib/systemd/system" \
+      "$out/share/applications" \
+      "$out/share/v2ray" \
+      "$out/share/icons/hicolor"
+
+    install -Dm755 "${inputs.daed-bin}/daed-linux-x86_64" "$out/bin/daed"
+    install -Dm444 "${inputs.daed-bin}/daed.service" "$out/lib/systemd/system/daed.service"
+    install -Dm444 "${inputs.daed-bin}/daed.desktop" "$out/share/applications/daed.desktop"
+    install -Dm444 "${inputs.daed-bin}/geoip.dat" "$out/share/v2ray/geoip.dat"
+    install -Dm444 "${inputs.daed-bin}/geosite.dat" "$out/share/v2ray/geosite.dat"
+
+    for size in 16 24 32 48 64 128 256 512 1024; do
+      install -Dm444 \
+        "${inputs.daed-bin}/icons/''${size}x''${size}.png" \
+        "$out/share/icons/hicolor/''${size}x''${size}/apps/daed.png"
+    done
+  '';
   genAssetsDrv = paths:
     pkgs.symlinkJoin {
       name = "daed-assets";
@@ -29,7 +51,12 @@ in
     daed = {
       enable = lib.mkEnableOption "Enable daed network proxy dashboard";
 
-      package = lib.mkPackageOption pkgs "daed" { };
+      package = lib.mkOption {
+        type = lib.types.package;
+        default = daedPackageFromFlake;
+        defaultText = lib.literalExpression "inputs.daed-bin (v${daedVersion})";
+        description = "The daed package to use.";
+      };
 
       configDir = lib.mkOption {
         type = lib.types.str;
@@ -171,7 +198,7 @@ in
         Type = "simple";
         User = "root";
         Environment = "DAE_LOCATION_ASSET=${cfg.assetsPath}";
-        ExecStart = "${lib.getExe cfg.package} ${lib.escapeShellArgs runArgs}";
+        ExecStart = "${lib.getExe' cfg.package "daed"} ${lib.escapeShellArgs runArgs}";
         Restart = "on-failure";
         RestartSec = "2s";
         LimitNPROC = 512;
