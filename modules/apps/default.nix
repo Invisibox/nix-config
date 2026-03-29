@@ -8,7 +8,7 @@
     ./niri
     ./nix-ld
     ./obs
-    ./sddm
+    ./dms-greeter
     ./singbox
     ./steam
     ./virtualization
