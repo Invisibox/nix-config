@@ -9,7 +9,6 @@
     ./nix-ld
     ./obs
     ./dms-greeter
-    ./singbox
     ./steam
     ./virtualization
   ];
