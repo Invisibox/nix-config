@@ -216,6 +216,8 @@
     enableNative = true; # Enable native Heroic client.
   };
 
+  lobehub.enable = true; # Enable LobeHub Desktop.
+
   # bottles.enable = true; # Enable Bottles.
 
   # lutris.enable = true; # Enable Lutris.

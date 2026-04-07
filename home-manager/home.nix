@@ -52,6 +52,7 @@
     piliplus
     # winboat
     discord
+    _64gram
     spotify
     vial
     thunderbird

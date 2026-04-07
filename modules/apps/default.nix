@@ -5,6 +5,7 @@
     ./gamescope
     ./heroic
     ./hyprland
+    ./lobehub
     ./niri
     ./nix-ld
     ./obs

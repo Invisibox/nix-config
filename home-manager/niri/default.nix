@@ -43,7 +43,7 @@ in {
           matugen
           cava
           wlogout
-          swww
+          awww
         ];
 
         services.shikane.enable = true;
