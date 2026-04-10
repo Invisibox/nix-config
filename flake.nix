@@ -74,8 +74,8 @@
       flake = false;
     };
 
-    silentSDDM = {
-      url = "github:uiriansan/SilentSDDM";
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -117,6 +117,7 @@
           home-manager.sharedModules = [
             nix-flatpak.homeManagerModules.nix-flatpak
             niri.homeModules.niri
+            inputs.spicetify-nix.homeManagerModules.default
           ];
 
           # 使用 home-manager.extraSpecialArgs 自定义传递给 ./home.nix 的参数

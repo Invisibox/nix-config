@@ -53,7 +53,6 @@
     # winboat
     discord
     _64gram
-    spotify
     vial
     thunderbird
     qbittorrent-enhanced
@@ -129,6 +128,7 @@
     ./dms
     ./fish
     ./nautilus
+    ./spotify
     ./zed
     ./mpv.nix
     ./kitty.nix
