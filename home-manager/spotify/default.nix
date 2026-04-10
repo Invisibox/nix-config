@@ -18,6 +18,7 @@ in {
 
     enabledCustomApps = with spicePkgs.apps; [
       lyricsPlus
+      ncsVisualizer
     ];
 
     theme = spicePkgs.themes.catppuccin;
