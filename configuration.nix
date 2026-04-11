@@ -246,6 +246,8 @@
     tproxyPort = 12345;
   };
 
+  wps.enable = true;
+
   # Disable nano, as it is not needed.
   programs.nano.enable = false;
 

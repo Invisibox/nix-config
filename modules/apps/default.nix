@@ -12,5 +12,6 @@
     ./dms-greeter
     ./steam
     ./virtualization
+    ./wps
   ];
 }
