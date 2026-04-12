@@ -8,7 +8,7 @@
   cfg = config.wps;
 
   # WPS bundles its own Qt stack and may fail to pick up input method settings
-  # in some Wayland/XWayland setups. Wrap launchers explicitly for fcitx.
+  # in some Wayland/XWayland setups. Wrap launchers explicitly for IME env.
   wrappedWpsPackage = cfg.package.overrideAttrs (old: {
     nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ pkgs.makeWrapper ];
     postFixup =
@@ -17,6 +17,7 @@
         for bin in wps wpp et wpspdf; do
           if [ -x "$out/bin/$bin" ]; then
             wrapProgram "$out/bin/$bin" \
+              --set QT_QPA_PLATFORM "xcb" \
               --set QT_IM_MODULE "${cfg.qtImModule}" \
               --set XMODIFIERS "@im=${cfg.qtImModule}"
           fi

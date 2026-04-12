@@ -105,6 +105,9 @@
 
   home.sessionVariables = {
     EDITOR = "neovim";
+    XCURSOR_THEME = "Bibata-Modern-Ice";
+    XCURSOR_SIZE = "20";
+    XCURSOR_PATH = "${pkgs.bibata-cursors}/share/icons:/run/current-system/sw/share/icons";
   };
 
   home.pointerCursor = {
