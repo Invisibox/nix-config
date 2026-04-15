@@ -231,6 +231,12 @@
 
   virtualization.enable = true;
 
+  waydroid = {
+    enable = true;
+    initSystemType = "GAPPS";
+    package = pkgs.waydroid-nftables; # linux 6.19 上 legacy iptables 模式会因缺少 ip_tables 失败
+  };
+
   obs = {
     enable = true;
     enableFlatpak = false;

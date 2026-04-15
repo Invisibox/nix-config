@@ -12,6 +12,7 @@
     ./dms-greeter
     ./steam
     ./virtualization
+    ./waydroid
     ./wps
   ];
 }
