@@ -42,6 +42,7 @@
     tsukimi
 
     # wpsoffice-cn
+    aria2
     v2rayn
     curtail
     kdePackages.okular
