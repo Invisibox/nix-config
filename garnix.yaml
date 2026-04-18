@@ -1,4 +1,4 @@
 builds:
   include:
-    - "nixosConfigurations.*"
+    - "nixosConfigurations.ASUS"
   exclude: []
