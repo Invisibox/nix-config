@@ -10,16 +10,10 @@
 
     nix-gaming.url = "github:fufexan/nix-gaming";
 
-    nix-gaming-edge = {
-      url = "github:powerofthe69/nix-gaming-edge";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nur-bandithedoge.url = "github:bandithedoge/nur-packages";
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";

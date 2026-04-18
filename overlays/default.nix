@@ -1,13 +1,10 @@
 {
   pkgs,
-  inputs,
   ...
 }: {
   nixpkgs.overlays = [
     (final: prev: {
       proton-em = prev.callPackage ./proton-em {};
-      proton-cachyos-x86_64_v4 =
-        inputs.nix-gaming-edge.packages.${final.stdenv.hostPlatform.system}.proton-cachyos-x86_64-v4;
       #proton-ge = final.proton-ge-bin;
       # proton-ge = prev.proton-ge-bin.overrideAttrs (old: rec {
       #   version = "GE-Proton10-27";
