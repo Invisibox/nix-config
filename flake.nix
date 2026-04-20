@@ -31,6 +31,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    steam-config-nix = {
+      url = "github:different-name/steam-config-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     niri-blurry = {
       type = "github";
@@ -107,6 +111,7 @@
             nix-flatpak.homeManagerModules.nix-flatpak
             niri.homeModules.niri
             inputs.spicetify-nix.homeManagerModules.default
+            inputs.steam-config-nix.homeModules.default
           ];
 
           # 使用 home-manager.extraSpecialArgs 自定义传递给 ./home.nix 的参数

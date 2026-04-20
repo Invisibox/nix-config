@@ -5,7 +5,9 @@
   nixpkgs.overlays = [
     (final: prev: {
       proton-em = prev.callPackage ./proton-em {};
-      #proton-ge = final.proton-ge-bin;
+      proton-ge = final.proton-ge-bin.override {
+        steamDisplayName = "Proton GE";
+      };
       # proton-ge = prev.proton-ge-bin.overrideAttrs (old: rec {
       #   version = "GE-Proton10-27";
       #   src = prev.fetchzip {

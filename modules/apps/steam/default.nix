@@ -31,6 +31,15 @@ in {
     programs.steam = {
       enable = cfg.enableNative;
       package = pkgs.steam.override {
+        extraEnv = {
+          PIPEWIRE_NODE = "Game";
+          PULSE_SINK = "Game";
+          PROTON_ENABLE_HDR = true;
+          PROTON_ENABLE_WAYLAND = true;
+          PROTON_FSR4_RDNA3_UPGRADE = true;
+          PROTON_USE_NTSYNC = true;
+          PROTON_USE_WOW64 = true;
+        };
         # https://github.com/NixOS/nixpkgs/issues/279893#issuecomment-2425213386
         extraProfile = ''
           unset TZ
@@ -38,7 +47,8 @@ in {
         privateTmp = false; # https://github.com/NixOS/nixpkgs/issues/381923
       };
       extraCompatPackages = with pkgs; [
-        proton-ge-bin
+        proton-em
+        proton-ge
       ];
       localNetworkGameTransfers.openFirewall = true;
       protontricks.enable = true;
@@ -95,7 +105,7 @@ in {
         ];
       };
       # https://github.com/different-name/steam-config-nix
-      # programs.steam.config = import ./steam-config.nix {inherit lib pkgs config;};
+      programs.steam.config = import ./steam-config.nix {inherit lib pkgs config;};
       services.flatpak = lib.mkIf cfg.enableFlatpak {
         overrides = {
           "com.valvesoftware.Steam" = {

@@ -25,7 +25,7 @@
 in {
   enable = true;
   closeSteam = true;
-  # defaultCompatTool = "Proton CachyOS x86_64-v4";
+  defaultCompatTool = "Proton GE";
   apps =
     lib.mapAttrs
     (
@@ -36,13 +36,13 @@ in {
         ]
     )
     {
-    };
-  hlbs = {
-    id = 130;
-    launchOptions = {
-      env = {
-        MESA_LOADER_DRIVER_OVERRIDE = "zink";
+      hlbs = {
+        id = 130;
+        launchOptions = {
+          env = {
+            MESA_LOADER_DRIVER_OVERRIDE = "zink";
+          };
+        };
       };
     };
-  };
 }
