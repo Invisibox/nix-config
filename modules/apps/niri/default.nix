@@ -4,19 +4,12 @@
   inputs,
   ...
 }: let
-  niriBlurryFixed = inputs.niri-blurry.packages.${pkgs.stdenv.hostPlatform.system}.niri.overrideAttrs (old: {
-    cargoDeps = pkgs.rustPlatform.importCargoLock {
-      lockFile = "${old.src}/Cargo.lock";
-      outputHashes = {
-        "smithay-0.7.0" = "sha256-WSa06MRY/XIgaTS12bss+D4vz7GDYBRXXJawP8OsdjM=";
-      };
-    };
-  });
+  niriPackage = inputs.niri-unstable.packages.${pkgs.stdenv.hostPlatform.system}.niri;
 in {
   # Enable Niri
   programs.niri = {
     enable = true;
-    package = niriBlurryFixed;
+    package = niriPackage;
   };
 
   # 图形界面权限管理

@@ -36,17 +36,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    niri-blurry = {
-      type = "github";
-      owner = "visualglitch91";
-      repo = "niri";
-      ref = "feat/blur";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     niri-unstable = {
       type = "github";
-      owner = "YaLTeR";
+      owner = "niri-wm";
       repo = "niri";
       ref = "main";
       inputs.nixpkgs.follows = "nixpkgs";
