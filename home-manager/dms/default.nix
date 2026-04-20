@@ -1,8 +1,24 @@
 {
   pkgs,
   inputs,
+  config,
   ...
-}: {
+}: let
+  avatarPath = "${config.home.homeDirectory}/.config/DankMaterialShell/avatar.avif";
+  dmsCli = "${inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.dms-shell}/bin/dms";
+  setAvatarScript = pkgs.writeShellScript "dms-set-avatar" ''
+    set -euo pipefail
+
+    for _ in $(seq 1 30); do
+      if ${dmsCli} ipc call profile setImage "${avatarPath}" >/dev/null 2>&1; then
+        exit 0
+      fi
+      sleep 1
+    done
+
+    exit 1
+  '';
+in {
   imports = [
     inputs.dms.homeModules.dank-material-shell
   ];
@@ -34,6 +50,8 @@
 
   # systemd.user.services.niri-flake-polkit.enable = false;
 
+  home.file.".config/DankMaterialShell/avatar.avif".source = ./avatar.avif;
+
   home.packages = with pkgs; [
     brightnessctl
     ddcutil
@@ -46,7 +64,34 @@
     cava
     wlogout
     awww
+    dsearch
   ];
+
+  systemd.user.services.dsearch = {
+    Unit = {
+      Description = "dsearch - fast filesystem search service";
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.dsearch}/bin/dsearch serve";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+    Install.WantedBy = ["default.target"];
+  };
+
+  systemd.user.services.dms-set-avatar = {
+    Unit = {
+      Description = "Set DMS profile avatar";
+      After = ["dms.service"];
+      Wants = ["dms.service"];
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${setAvatarScript}";
+    };
+    Install.WantedBy = ["default.target"];
+  };
 
   services.shikane.enable = true;
 }

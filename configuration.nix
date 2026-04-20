@@ -67,6 +67,9 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # DMS optional feature: user profile/avatar via org.freedesktop.Accounts
+  services.accounts-daemon.enable = true;
+
   # Set your time zone.
   time.timeZone = "Asia/Shanghai";
 
