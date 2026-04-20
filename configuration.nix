@@ -217,6 +217,7 @@
   };
 
   lobehub.enable = true; # Enable LobeHub Desktop.
+  localsend.enable = true; # Install LocalSend via Home Manager.
 
   # bottles.enable = true; # Enable Bottles.
 

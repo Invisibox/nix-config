@@ -36,10 +36,6 @@ input {
 
 prefer-no-csd
 
-environment {
-    DISPLAY ":0"
-}
-
 layout {
     gaps 13
     empty-workspace-above-first
@@ -92,15 +88,18 @@ layout {
         // color "#0007"
     }
 
-    blur {
-        on
-        passes 1
-        radius 8.0
-        noise 0.0
-    }
 }
 
-spawn-at-startup "xwayland-satellite"
+blur {
+    passes 3
+    offset 3.5
+    noise 0.01
+    saturation 0.9
+}
+
+xwayland-satellite {
+    path "xwayland-satellite"
+}
 // spawn-at-startup "dms" "run"
 // spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
 
@@ -113,6 +112,10 @@ window-rule {
     match is-focused=false
     opacity 0.85
     draw-border-with-background false
+    background-effect {
+        xray true
+        blur true
+    }
 }
 
 window-rule {
@@ -135,6 +138,20 @@ window-rule {
     open-focused false
     opacity 1.0
     default-floating-position x=20 y=20 relative-to="bottom-right"
+}
+
+window-rule {
+    match app-id=r#"^zen$"#
+    background-effect {
+        blur true
+    }
+}
+
+window-rule {
+    match app-id=r#"^zen-beta$"#
+    background-effect {
+        blur true
+    }
 }
 
 window-rule {
@@ -171,9 +188,14 @@ layer-rule {
 }
 
 layer-rule {
-    match namespace=r#"^dms:\(.*\)"#
+    match namespace="^dms:bar$"
 
     opacity 0.5
+}
+
+layer-rule {
+    match namespace="^dms:notification-popup$"
+    block-out-from "screencast"
 }
 
 overview {

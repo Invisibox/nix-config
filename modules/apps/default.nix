@@ -6,6 +6,7 @@
     ./heroic
     ./hyprland
     ./lobehub
+    ./localsend
     ./niri
     ./nix-ld
     ./obs
