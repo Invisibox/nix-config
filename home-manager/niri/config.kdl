@@ -155,6 +155,11 @@ window-rule {
 }
 
 window-rule {
+    match app-id=r#"^zen(-beta)?$"# title=r#"(?i)bitwarden"#
+    open-floating true
+}
+
+window-rule {
     match app-id=r#"org.gnome.NautilusPreviewer$"#
     open-floating true
 }
@@ -190,7 +195,7 @@ layer-rule {
 layer-rule {
     match namespace="^dms:bar$"
 
-    opacity 0.5
+    opacity 0.9
 }
 
 layer-rule {
