@@ -10,6 +10,7 @@
     ./niri
     ./nix-ld
     ./obs
+    ./rustdesk
     ./dms-greeter
     ./steam
     ./virtualization
