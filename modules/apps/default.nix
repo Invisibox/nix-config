@@ -4,7 +4,6 @@
     ./flatpak
     ./gamescope
     ./heroic
-    ./hyprland
     ./lobehub
     ./localsend
     ./niri

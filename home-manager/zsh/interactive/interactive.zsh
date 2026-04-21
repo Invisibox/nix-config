@@ -18,9 +18,6 @@ source $ZSH_CONFIG_DIR/interactive/osc7.zsh
 # OSC133: mark prompts
 source $ZSH_CONFIG_DIR/interactive/osc133.zsh
 
-# notify on command execution
-source $ZSH_CONFIG_DIR/interactive/notify.zsh
-
 # ‣ [ completions, aliases and keybindings ]
 
 # here we lazy-load completions by putting initialization into a function
@@ -101,4 +98,3 @@ init_completions_hooks+=(_completion_init_hook1)
   source $plugin_dir/atuin.zsh
 
 }
-

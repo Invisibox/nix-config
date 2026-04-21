@@ -83,8 +83,6 @@
         # 这样旧的配置文件仍然能生效
         ./configuration.nix
 
-        nix-flatpak.nixosModules.nix-flatpak
-
         # stylix.nixosModules.stylix
 
         # 将 home-manager 配置为 nixos 的一个 module

@@ -35,19 +35,18 @@ in {
     home-manager.users.${username} = {config, ...}: {
       home = {
         sessionPath = [
-          "/var/lib/flatpak/exports/bin"
           "${config.xdg.dataHome}/flatpak/exports/bin"
         ];
       };
       services.flatpak = {
+        update.onActivation = true;
         packages = [
-          "com.tencent.WeChat"
-          "com.baidu.NetDisk"
-          "com.qq.QQ"
-          "com.tencent.wemeet"
-          "org.telegram.desktop"
-          "com.cherry_ai.CherryStudio"
-          "com.termius.Termius"
+          "com.cherry_ai.CherryStudio/x86_64/stable"
+          "com.qq.QQ/x86_64/stable"
+          "com.tencent.WeChat/x86_64/stable"
+          "com.tencent.wemeet/x86_64/stable"
+          "net.agalwood.Motrix/x86_64/stable"
+          "org.telegram.desktop/x86_64/stable"
         ];
         remotes = [
           {
@@ -90,7 +89,7 @@ in {
               };
           };
         };
-        uninstallUnmanaged = false;
+        uninstallUnmanaged = true;
       };
     };
   };
