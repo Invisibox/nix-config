@@ -8,38 +8,6 @@
 }: let
   cfg = config.wps;
 
-  # chinese-fonts-overlay has a broken `packages` output in the pinned revision.
-  # Use its overlay directly to obtain windows-fonts reliably.
-  chineseFontsOverlay = inputs.chinese-fonts-overlay.overlays.default;
-  windowsFontsFromOverlay = (chineseFontsOverlay pkgs pkgs).windows-fonts;
-
-  wpsFontsConf = pkgs.writeText "wps-fonts.conf" ''
-    <?xml version="1.0"?>
-    <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
-    <fontconfig>
-      <reset-dirs />
-      <dir>${cfg.windowsFontsPackage}/share/fonts</dir>
-    </fontconfig>
-  '';
-
-  # WPS bundles its own Qt stack and may fail to pick up input method settings
-  # in some Wayland/XWayland setups. Wrap launchers explicitly for IME env.
-  wrappedWpsPackage = cfg.package.overrideAttrs (old: {
-    nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ pkgs.makeWrapper ];
-    postFixup =
-      (old.postFixup or "")
-      + ''
-        for bin in wps wpp et wpspdf; do
-          if [ -x "$out/bin/$bin" ]; then
-            wrapProgram "$out/bin/$bin" \
-              --set QT_QPA_PLATFORM "xcb" \
-              --set QT_IM_MODULE "${cfg.qtImModule}" \
-              --set XMODIFIERS "@im=${cfg.qtImModule}" \
-              --set FONTCONFIG_FILE "${wpsFontsConf}"
-          fi
-        done
-      '';
-  });
 in {
   options.wps = {
     enable = lib.mkEnableOption "Enable WPS Office (wpsoffice-cn)";
@@ -51,11 +19,16 @@ in {
     };
 
     windowsFontsPackage = lib.mkOption {
-      type = lib.types.package;
-      default = windowsFontsFromOverlay;
-      defaultText = lib.literalExpression "(inputs.chinese-fonts-overlay.overlays.default pkgs pkgs).windows-fonts";
+      type = with lib.types; nullOr package;
+      default = null;
+      defaultText = lib.literalExpression ''
+        null
+        # fallback when wps.enable = true:
+        # (inputs.chinese-fonts-overlay.overlays.default pkgs pkgs).windows-fonts
+      '';
       description = ''
         Font package exposed only to WPS via dedicated FONTCONFIG_FILE.
+        If null, fallback to windows-fonts from chinese-fonts-overlay when WPS is enabled.
       '';
     };
 
@@ -69,9 +42,44 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.enable (let
+    # Keep chinese-fonts-overlay lazy so it is not fetched/evaluated unless WPS is enabled.
+    defaultWindowsFontsPackage = (inputs.chinese-fonts-overlay.overlays.default pkgs pkgs).windows-fonts;
+    windowsFontsPackage =
+      if cfg.windowsFontsPackage == null
+      then defaultWindowsFontsPackage
+      else cfg.windowsFontsPackage;
+
+    wpsFontsConf = pkgs.writeText "wps-fonts.conf" ''
+      <?xml version="1.0"?>
+      <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+      <fontconfig>
+        <reset-dirs />
+        <dir>${windowsFontsPackage}/share/fonts</dir>
+      </fontconfig>
+    '';
+
+    # WPS bundles its own Qt stack and may fail to pick up input method settings
+    # in some Wayland/XWayland setups. Wrap launchers explicitly for IME env.
+    wrappedWpsPackage = cfg.package.overrideAttrs (old: {
+      nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ pkgs.makeWrapper ];
+      postFixup =
+        (old.postFixup or "")
+        + ''
+          for bin in wps wpp et wpspdf; do
+            if [ -x "$out/bin/$bin" ]; then
+              wrapProgram "$out/bin/$bin" \
+                --set QT_QPA_PLATFORM "xcb" \
+                --set QT_IM_MODULE "${cfg.qtImModule}" \
+                --set XMODIFIERS "@im=${cfg.qtImModule}" \
+                --set FONTCONFIG_FILE "${wpsFontsConf}"
+            fi
+          done
+        '';
+    });
+  in {
     home-manager.users.${username}.home.packages = [
       wrappedWpsPackage
     ];
-  };
+  });
 }

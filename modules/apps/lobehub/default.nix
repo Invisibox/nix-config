@@ -7,11 +7,11 @@
   cfg = config.lobehub;
 
   pname = "lobehub-desktop";
-  version = "2.1.51";
+  version = "2.1.52";
 
   src = pkgs.fetchurl {
     url = "https://github.com/lobehub/lobehub/releases/download/v${version}/LobeHub-${version}.AppImage";
-    hash = "sha256-omGmvJ7BwoDveuHF9pztjHNTSZNloykznp68uej7aGo=";
+    hash = "sha256-vs9NmbWqQfE6cPO34DOr61GFoXyk5kXF7wvzVg2q7VQ=";
   };
 
   appimageContents = pkgs.appimageTools.extractType2 {
