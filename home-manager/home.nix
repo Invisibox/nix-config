@@ -41,7 +41,6 @@
     tor-browser
     tsukimi
 
-    # wpsoffice-cn
     aria2
     v2rayn
     curtail
@@ -67,8 +66,6 @@
     anki
     hmcl
     dig
-
-    # inputs.wpsoffice-flake.packages.x86_64-linux.default
 
     inputs.zen-browser.packages."${stdenv.hostPlatform.system}".default
 
