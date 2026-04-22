@@ -6,18 +6,17 @@
 
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
 
-    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    systems.url = "github:nix-systems/default";
 
-    nur = {
-      url = "github:nix-community/NUR";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       # IMPORTANT: we're using "libgbm" and is only available in unstable so ensure
       # to have it up-to-date or simply don't specify the nixpkgs input
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
 
     chinese-fonts-overlay = {
@@ -32,6 +31,8 @@
     steam-config-nix = {
       url = "github:different-name/steam-config-nix";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.systems.follows = "systems";
     };
 
     niri-unstable = {
@@ -44,11 +45,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    daeuniverse.url = "github:daeuniverse/flake.nix";
+    daeuniverse = {
+      url = "github:daeuniverse/flake.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+    };
 
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.systems.follows = "systems";
     };
   };
 

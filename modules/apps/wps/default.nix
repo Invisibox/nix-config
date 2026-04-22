@@ -24,7 +24,7 @@ in {
       defaultText = lib.literalExpression ''
         null
         # fallback when wps.enable = true:
-        # (inputs.chinese-fonts-overlay.overlays.default pkgs pkgs).windows-fonts
+        # inputs.chinese-fonts-overlay.packages.${pkgs.stdenv.hostPlatform.system}.windows-fonts
       '';
       description = ''
         Font package exposed only to WPS via dedicated FONTCONFIG_FILE.
@@ -44,7 +44,8 @@ in {
 
   config = lib.mkIf cfg.enable (let
     # Keep chinese-fonts-overlay lazy so it is not fetched/evaluated unless WPS is enabled.
-    defaultWindowsFontsPackage = (inputs.chinese-fonts-overlay.overlays.default pkgs pkgs).windows-fonts;
+    system = pkgs.stdenv.hostPlatform.system;
+    defaultWindowsFontsPackage = inputs.chinese-fonts-overlay.packages.${system}.windows-fonts;
     windowsFontsPackage =
       if cfg.windowsFontsPackage == null
       then defaultWindowsFontsPackage

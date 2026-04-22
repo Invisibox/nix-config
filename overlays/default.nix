@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}: {
+{ ... }: {
   nixpkgs.overlays = [
     (final: prev: {
       proton-em = prev.callPackage ./proton-em {};
@@ -23,12 +20,10 @@
       #   };
       # });
       nautilus = prev.nautilus.overrideAttrs (nprev: {
-        buildInputs =
-          nprev.buildInputs
-          ++ (with pkgs; [
-            gst_all_1.gst-plugins-good
-            gst_all_1.gst-plugins-bad
-          ]);
+        buildInputs = (nprev.buildInputs or []) ++ [
+          prev.gst_all_1.gst-plugins-good
+          prev.gst_all_1.gst-plugins-bad
+        ];
       });
     })
     (self: super: {
