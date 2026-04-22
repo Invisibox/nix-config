@@ -1,4 +1,16 @@
 builds:
   include:
     - "nixosConfigurations.ASUS"
-  exclude: []
+  exclude:
+    - "packages.*.dae"
+    - "packages.*.daed"
+    - "packages.*.default"
+    - "packages.*.beta"
+    - "packages.*.beta-unwrapped"
+    - "packages.*.twilight"
+    - "packages.*.twilight-official"
+    - "packages.*.twilight-official-unwrapped"
+    - "packages.*.twilight-unwrapped"
+    - "packages.*.v2rayn"
+    - "packages.*.v2ray-geoip"
+    - "packages.*.v2ray-domain-list-community"

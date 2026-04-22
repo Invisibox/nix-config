@@ -7,27 +7,10 @@
 }:
 let
   cfg = config.daed;
-  daedVersion = "1.24.0";
-  daedPackageFromFlake = pkgs.runCommand "daed-${daedVersion}" { } ''
-    mkdir -p \
-      "$out/bin" \
-      "$out/lib/systemd/system" \
-      "$out/share/applications" \
-      "$out/share/v2ray" \
-      "$out/share/icons/hicolor"
-
-    install -Dm755 "${inputs.daed-bin}/daed-linux-x86_64" "$out/bin/daed"
-    install -Dm444 "${inputs.daed-bin}/daed.service" "$out/lib/systemd/system/daed.service"
-    install -Dm444 "${inputs.daed-bin}/daed.desktop" "$out/share/applications/daed.desktop"
-    install -Dm444 "${inputs.daed-bin}/geoip.dat" "$out/share/v2ray/geoip.dat"
-    install -Dm444 "${inputs.daed-bin}/geosite.dat" "$out/share/v2ray/geosite.dat"
-
-    for size in 16 24 32 48 64 128 256 512 1024; do
-      install -Dm444 \
-        "${inputs.daed-bin}/icons/''${size}x''${size}.png" \
-        "$out/share/icons/hicolor/''${size}x''${size}/apps/daed.png"
-    done
-  '';
+  system = pkgs.stdenv.hostPlatform.system;
+  daePackages = inputs.daeuniverse.packages.${system};
+  daePackageFromFlake = daePackages.dae;
+  daedPackageFromFlake = daePackages.daed;
   genAssetsDrv = paths:
     pkgs.symlinkJoin {
       name = "daed-assets";
@@ -54,7 +37,7 @@ in
       package = lib.mkOption {
         type = lib.types.package;
         default = daedPackageFromFlake;
-        defaultText = lib.literalExpression "inputs.daed-bin (v${daedVersion})";
+        defaultText = lib.literalExpression "inputs.daeuniverse.packages.${system}.daed";
         description = "The daed package to use.";
       };
 
@@ -155,7 +138,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = [ cfg.package ];
+    environment.systemPackages = [
+      daePackageFromFlake
+      cfg.package
+    ];
 
     systemd.tmpfiles.rules = [
       "d ${cfg.configDir} 0750 root root - -"

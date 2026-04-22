@@ -44,10 +44,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    daed-bin = {
-      url = "https://github.com/daeuniverse/daed/releases/download/v1.24.0/daed-linux-x86_64.zip";
-      flake = false;
-    };
+    daeuniverse.url = "github:daeuniverse/flake.nix";
 
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
