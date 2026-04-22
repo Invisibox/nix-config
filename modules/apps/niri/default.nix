@@ -4,17 +4,7 @@
   inputs,
   ...
 }: let
-  niriMainPackage = inputs.niri-unstable.packages.${pkgs.stdenv.hostPlatform.system}.niri;
-  niriPackage = niriMainPackage.overrideAttrs (old: {
-    patches =
-      (old.patches or [])
-      ++ [
-        # Rebased from PR #1791 (Support shm sharing) onto niri main.
-        ./patches/0001-pw_utils-support-shm-sharing-for-screencast.patch
-        # Follow-up fixups for current niri main render API.
-        ./patches/0002-pw_utils-adapt-main-render-api.patch
-      ];
-  });
+  niriPackage = inputs.niri-unstable.packages.${pkgs.stdenv.hostPlatform.system}.niri;
 in {
   # Enable Niri
   programs.niri = {
@@ -30,12 +20,35 @@ in {
     enable = true;
     # 切回 gnome portal 后端，避免 wlr backend 的兼容性问题
     wlr.enable = lib.mkForce false;
+    config = {
+      common = {
+        default = ["gnome" "gtk"];
+        "org.freedesktop.impl.portal.FileChooser" = ["gtk"];
+      };
+      niri = {
+        default = ["gnome" "gtk"];
+        "org.freedesktop.impl.portal.FileChooser" = ["gtk"];
+      };
+    };
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
-      # pkgs.xdg-desktop-portal-wlr
-      pkgs.xdg-desktop-portal
       pkgs.xdg-desktop-portal-gnome
     ];
+  };
+
+  # Ensure xdg-desktop-portal sees Niri session env on D-Bus activation.
+  systemd.user.services.niri-portal-env = {
+    description = "Import Niri env for XDG portal activation";
+    wantedBy = ["graphical-session.target"];
+    wants = ["graphical-session-pre.target"];
+    after = ["graphical-session-pre.target"];
+    partOf = ["graphical-session.target"];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=niri";
+      ExecStartPost = "${pkgs.systemd}/bin/systemctl --user restart xdg-desktop-portal.service xdg-desktop-portal-gnome.service";
+    };
   };
 
   environment.systemPackages = with pkgs; [
