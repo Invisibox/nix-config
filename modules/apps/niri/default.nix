@@ -18,14 +18,14 @@ in {
   # XDG Portals (屏幕共享、文件选择)
   xdg.portal = {
     enable = true;
-    wlr.enable = true;
+    # 切回 gnome portal 后端，避免 wlr backend 的兼容性问题
+    wlr.enable = lib.mkForce false;
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
       # pkgs.xdg-desktop-portal-wlr
       pkgs.xdg-desktop-portal
       pkgs.xdg-desktop-portal-gnome
     ];
-    config.niri.default = ["gnome" "gtk"]; # 强制 Niri 使用 gnome/gtk portal
   };
 
   environment.systemPackages = with pkgs; [
@@ -34,9 +34,6 @@ in {
     grim
     satty
   ];
-
-  # 禁用 Niri Flake 可能自带的 Polkit 服务，以使用下方自定义的
-  systemd.user.services.niri-flake-polkit.enable = false;
 
   # 认证代理自动启动
   systemd.user.services.polkit-gnome-authentication-agent-1 = {

@@ -44,7 +44,6 @@ in {
           "com.cherry_ai.CherryStudio/x86_64/stable"
           "com.qq.QQ/x86_64/stable"
           "com.tencent.WeChat/x86_64/stable"
-          "com.tencent.wemeet/x86_64/stable"
           "net.agalwood.Motrix/x86_64/stable"
           "org.telegram.desktop/x86_64/stable"
         ];

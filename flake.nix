@@ -35,15 +35,7 @@
     };
 
     niri-unstable = {
-      type = "github";
-      owner = "niri-wm";
-      repo = "niri";
-      ref = "main";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    niri = {
-      url = "github:sodiboo/niri-flake";
+      url = "github:niri-wm/niri/pull/1791/head";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -68,7 +60,6 @@
     nixpkgs,
     nix-flatpak,
     # stylix,
-    niri,
     home-manager,
     ...
   } @ inputs: {
@@ -97,7 +88,6 @@
 
           home-manager.sharedModules = [
             nix-flatpak.homeManagerModules.nix-flatpak
-            niri.homeModules.niri
             inputs.spicetify-nix.homeManagerModules.default
             inputs.steam-config-nix.homeModules.default
           ];

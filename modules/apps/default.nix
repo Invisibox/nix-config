@@ -14,6 +14,7 @@
     ./steam
     ./virtualization
     ./waydroid
+    ./wemeet
     ./wps
   ];
 }
