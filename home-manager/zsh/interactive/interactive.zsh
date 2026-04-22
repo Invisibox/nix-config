@@ -111,7 +111,7 @@ init_completions_hooks+=(_completion_init_hook1)
   # source $plugin_dir/zsh-history-substring-search/zsh-history-substring-search.zsh
 
   # syntax highlighting
-  source $plugin_dir/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+  source $plugin_dir/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
   # no-ps2
   source $plugin_dir/zsh-no-ps2/zsh-no-ps2.plugin.zsh

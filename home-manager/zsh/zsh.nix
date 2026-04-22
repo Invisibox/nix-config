@@ -42,15 +42,15 @@
         )
     ) {};
 
-  fast-syntax-highlighting = let
-    name = "fast-syntax-highlighting";
+  zsh-syntax-highlighting = let
+    name = "zsh-syntax-highlighting";
   in
     mkZshPlugin name {
       src = pkgs.fetchFromGitHub {
-        owner = "zdharma-continuum";
+        owner = "zsh-users";
         repo = name;
-        rev = "3d574ccf48804b10dca52625df13da5edae7f553";
-        hash = "sha256-ZihUL4JAVk9V+IELSakytlb24BvEEJ161CQEHZYYoSA=";
+        rev = "1d85c692615a25fe2293bdd44b34c217d5d2bf04";
+        hash = "sha256-VMne38IQwqB4jwGUI2f3eEiSkT2ww7+G5ch7w+65GT0=";
       };
     };
 
@@ -148,7 +148,7 @@ in {
 
     # plugins
 
-    "zsh/plugins/fast-syntax-highlighting".source = fast-syntax-highlighting;
+    "zsh/plugins/zsh-syntax-highlighting".source = zsh-syntax-highlighting;
     # disabled: overlaps with atuin search/history widgets.
     # "zsh/plugins/zsh-history-substring-search".source = zsh-history-substring-search;
     "zsh/plugins/zsh-autosuggestions".source = zsh-autosuggestions;
