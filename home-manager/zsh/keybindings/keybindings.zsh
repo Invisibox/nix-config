@@ -94,7 +94,7 @@ bind c-l            clear-screen
 
 # move
 # TODO add {,s-,c-,a-}right to autosuggest widgets
-bind up             atuin-up-search
+bind up             lazy-atuin-up-search
 bind down           down-line-or-history
 bind left           backward-char
 bind right          forward-char
@@ -110,7 +110,7 @@ bind end            end-of-buffer
 # complete, prepend, append
 bind a-s            prepend-sudo
 bind c-t            fzf-complete-file
-bind c-r            atuin-search
+bind c-r            lazy-atuin-search
 
 # navigate short-term history
 bind a-u            undo
@@ -123,4 +123,3 @@ bind a-space        _lfcd-widget
 bind a-up           ascend
 bind a-down         descend
 bind a-t            transpose-words
-

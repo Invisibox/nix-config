@@ -36,6 +36,42 @@ typeset -ga init_completions_hooks=()
 # first, make the keymap available to consumers
 source $ZSH_CONFIG_DIR/keybindings/keymap_foot.zsh
 
+# lazily load atuin widgets on first key press
+typeset -gi _atuin_lazy_loaded=0
+
+_init_atuin_widgets () {
+  (( _atuin_lazy_loaded )) && return 0
+
+  local plugin_file=$ZSH_CONFIG_DIR/plugins/atuin.zsh
+  [[ -r $plugin_file ]] || return 1
+
+  source $plugin_file
+  if (( ${+widgets[atuin-search]} && ${+widgets[atuin-up-search]} )); then
+    _atuin_lazy_loaded=1
+    return 0
+  fi
+
+  return 1
+}
+
+lazy-atuin-search () {
+  if _init_atuin_widgets; then
+    zle atuin-search
+  else
+    zle history-incremental-search-backward
+  fi
+}
+zle -N lazy-atuin-search
+
+lazy-atuin-up-search () {
+  if _init_atuin_widgets; then
+    zle atuin-up-search
+  else
+    zle up-line-or-history
+  fi
+}
+zle -N lazy-atuin-up-search
+
 # define initial bindings and export `bind` function
 # we rely on zsh-edit for sane zle widgets so there's a plugin involved too
 source $ZSH_CONFIG_DIR/keybindings/keybindings.zsh
@@ -47,6 +83,8 @@ bind tab init_completions
 
 # the hook to run upon completion initialization
 _completion_init_hook1 () {
+  source $ZSH_CONFIG_DIR/plugins/fzf-tab-completion/fzf-tab-completion.zsh
+  zstyle ':completion:*' fzf-search-display true
   compdef _files rm
   compdef _lf _lfcd
   compdef _directories mcd
@@ -69,32 +107,13 @@ init_completions_hooks+=(_completion_init_hook1)
   ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS+=(qc-sub-r qc-shell-r)
   ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd completion history)
 
-  # history substring search
-  # ⚠ should come before syntax highlighting
-  source $plugin_dir/zsh-history-substring-search/zsh-history-substring-search.zsh
-  HISTORY_SUBSTRING_SEARCH_FUZZY=1
-  HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=black,bg=cyan'
-  HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='none'
+  # disabled: overlaps with atuin search/history widgets.
+  # source $plugin_dir/zsh-history-substring-search/zsh-history-substring-search.zsh
 
   # syntax highlighting
-  source $plugin_dir/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
-  # faint (dim) and italic rely on ZSH > 5.9, so currently a dev build
-  # ZSH_HIGHLIGHT_STYLES[comment]='fg=none,faint,italic'
-  # ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=cyan,italic'
-  # ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=cyan,italic'
-  # ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=14,italic,bold'
-  # ZSH_HIGHLIGHT_STYLES[function]='fg=13,bold'
-  # ZSH_HIGHLIGHT_STYLES[command]='fg=11,bold'
-  # ZSH_HIGHLIGHT_STYLES[alias]='fg=10,bold'
-
-  # fzf-tab
-  source $plugin_dir/fzf-tab-completion/fzf-tab-completion.zsh
-  zstyle ':completion:*' fzf-search-display true
+  source $plugin_dir/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
   # no-ps2
   source $plugin_dir/zsh-no-ps2/zsh-no-ps2.plugin.zsh
-
-  # atuin
-  source $plugin_dir/atuin.zsh
 
 }

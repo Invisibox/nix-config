@@ -42,29 +42,30 @@
         )
     ) {};
 
-  zsh-syntax-highlighting = let
-    name = "zsh-syntax-highlighting";
+  fast-syntax-highlighting = let
+    name = "fast-syntax-highlighting";
   in
     mkZshPlugin name {
       src = pkgs.fetchFromGitHub {
-        owner = "zsh-users";
+        owner = "zdharma-continuum";
         repo = name;
-        rev = "5eb677bb0fa9a3e60f0eff031dc13926e093df92";
-        hash = "sha256-KRsQEDRsJdF7LGOMTZuqfbW6xdV5S38wlgdcCM98Y/Q=";
+        rev = "3d574ccf48804b10dca52625df13da5edae7f553";
+        hash = "sha256-ZihUL4JAVk9V+IELSakytlb24BvEEJ161CQEHZYYoSA=";
       };
     };
 
-  zsh-history-substring-search = let
-    name = "zsh-history-substring-search";
-  in
-    mkZshPlugin name {
-      src = pkgs.fetchFromGitHub {
-        owner = "zsh-users";
-        repo = name;
-        rev = "87ce96b1862928d84b1afe7c173316614b30e301";
-        hash = "sha256-1+w0AeVJtu1EK5iNVwk3loenFuIyVlQmlw8TWliHZGI=";
-      };
-    };
+  # disabled: overlaps with atuin search/history widgets.
+  # zsh-history-substring-search = let
+  #   name = "zsh-history-substring-search";
+  # in
+  #   mkZshPlugin name {
+  #     src = pkgs.fetchFromGitHub {
+  #       owner = "zsh-users";
+  #       repo = name;
+  #       rev = "14c8d2e0ffaee98f2df9850b19944f32546fdea5";
+  #       hash = "sha256-KHujL1/TM5R3m4uQh2nGVC98D6MOyCgQpyFf+8gjKR0=";
+  #     };
+  #   };
 
   zsh-autosuggestions = let
     name = "zsh-autosuggestions";
@@ -90,8 +91,8 @@
       src = pkgs.fetchFromGitHub {
         owner = "lincheney";
         repo = name;
-        rev = "4850357beac6f8e37b66bd78ccf90008ea3de40b";
-        hash = "sha256-pgcrRRbZaLoChVPeOvw4jjdDCokUK1ew0Wfy42bXfQo=";
+        rev = "8ba35e65bb3792759bf17c134ce04120e5940555";
+        hash = "sha256-qod3C01EK5S0Tm6rp2ia0dPVFMKRGaozpNaLQF+O9Xw=";
       };
       unpackPhase = ''
         mkdir -p $out/
@@ -106,8 +107,8 @@
       src = pkgs.fetchFromGitHub {
         owner = "QuarticCat";
         repo = "zsh-smartcache";
-        rev = "641dbfa196c9f69264ad7a49f9ef180af75831be";
-        hash = "sha256-t6QbAMFJfCvEOtq1y/YXZz5eyyc5OHOM/xg3cgXNcjU=";
+        rev = "54aba13a6824e212992fd754c598c9e9acd259a3";
+        hash = "sha256-VFrMpSm66b8Uyyr2QDN6gvFVB9caN9TC1rNC8dMoWCo=";
       };
     };
 
@@ -126,6 +127,7 @@
   atuin-integration = pkgs.runCommandLocal "zsh atuin init" {} ''
     sd=${pkgs.sd}/bin/sd
 
+    mkdir -p "$out"
     XDG_CONFIG_HOME=/tmp/ XDG_DATA_HOME=/tmp/ \
       ${config.programs.atuin.package}/bin/atuin init zsh \
         | $sd '^bindkey.+?\n' "" \
@@ -133,7 +135,9 @@
             '_zsh_autosuggest_strategy_atuin () {
               suggestion=$(atuin search --cmd-only --limit 1 --search-mode prefix --cwd $$PWD -- "$$1")
             }
-            ' > $out
+            ' > "$out/atuin.zsh"
+
+    ${config.programs.zsh.package}/bin/zsh -dfc 'zcompile -U -- "$1"' _ "$out/atuin.zsh"
   '';
 in {
   xdg.configFile = {
@@ -144,11 +148,13 @@ in {
 
     # plugins
 
-    "zsh/plugins/zsh-syntax-highlighting".source = zsh-syntax-highlighting;
-    "zsh/plugins/zsh-history-substring-search".source = zsh-history-substring-search;
+    "zsh/plugins/fast-syntax-highlighting".source = fast-syntax-highlighting;
+    # disabled: overlaps with atuin search/history widgets.
+    # "zsh/plugins/zsh-history-substring-search".source = zsh-history-substring-search;
     "zsh/plugins/zsh-autosuggestions".source = zsh-autosuggestions;
     "zsh/plugins/fzf-tab-completion".source = fzf-tab-completion;
-    "zsh/plugins/atuin.zsh".source = atuin-integration;
+    "zsh/plugins/atuin.zsh".source = "${atuin-integration}/atuin.zsh";
+    "zsh/plugins/atuin.zsh.zwc".source = "${atuin-integration}/atuin.zsh.zwc";
     "zsh/plugins/zsh-smartcache".source = zsh-smartcache;
     "zsh/plugins/zsh-no-ps2".source = zsh-no-ps2;
 
