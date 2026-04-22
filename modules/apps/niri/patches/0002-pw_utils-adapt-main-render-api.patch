@@ -1,0 +1,101 @@
+diff --git a/src/screencasting/pw_utils.rs b/src/screencasting/pw_utils.rs
+index b272b79..a7ee29c 100644
+--- a/src/screencasting/pw_utils.rs
++++ b/src/screencasting/pw_utils.rs
+@@ -1297,8 +1297,8 @@ impl Cast {
+                     Transform::Normal,
+                 )
+             });
+-            let extra_negotiation_result = extra_negotiation_result.clone();
+-            let alpha = alpha.clone();
++            let extra_negotiation_result = *extra_negotiation_result;
++            let alpha = *alpha;
+ 
+             // Size change will drop the damage tracker, but scale change won't, so check it here.
+             let OutputModeSource::Static { scale: t_scale, .. } = damage_tracker.mode() else {
+@@ -1313,11 +1313,16 @@ impl Cast {
+                 );
+             }
+ 
+-            let (damage, _states) = damage_tracker.damage_output(1, elements).unwrap();
++            // For embedded cursor, pass the full slice (cursor + main) to the damage tracker.
++            // For metadata or hidden cursor, pass only the main elements.
++            if self.cursor_mode == CursorMode::Metadata || self.cursor_mode == CursorMode::Hidden {
++                elements = &elements[cursor_data.elem_count..];
++            }
++            let (damage, states) = damage_tracker.damage_output(1, elements).unwrap();
+ 
+             let mut has_cursor_update = false;
+             let mut redraw_cursor = false;
+-            if self.cursor_mode != CursorMode::Hidden {
++            if self.cursor_mode == CursorMode::Metadata {
+                 let (damage, _states) = cursor_damage_tracker
+                     .damage_output(1, &cursor_data.relocated)
+                     .unwrap();
+@@ -1344,30 +1349,26 @@ impl Cast {
+                     unsafe {
+                         let spa_buffer = (*buffer).buffer;
+ 
+-                        let mut pointer_elements = None;
+                         if self.cursor_mode == CursorMode::Metadata {
+                             add_cursor_metadata(renderer, spa_buffer, cursor_data, redraw_cursor);
+-                        } else if self.cursor_mode != CursorMode::Hidden {
+-                            // Embed the cursor into the main render.
+-                            pointer_elements = Some(cursor_data.original.iter());
+                         }
+-                        let pointer_elements = pointer_elements.into_iter().flatten();
+-                        let elements = pointer_elements.chain(elements);
+ 
+                         // FIXME: would be good to skip rendering the full frame if only the pointer changed.
+                         // Unfortunately, I think the OBS PipeWire code needs to be updated first to cleanly
+                         // allow for that codepath.
+                         let fd = (*(*spa_buffer).datas).fd;
+-                        let dmabuf = self.inner.borrow().dmabufs[&fd].clone();
++                        let mut inner = self.inner.borrow_mut();
++                        let inner_ = &mut *inner;
++                        let CastState::Ready { damage_tracker, .. } = &mut inner_.state else {
++                            unreachable!()
++                        };
++                        let damage_tracker = damage_tracker.as_mut().unwrap();
++                        let dmabuf = inner_.dmabufs[&fd].clone();
+ 
+-                        match render_to_dmabuf(
+-                            renderer,
+-                            dmabuf,
+-                            size,
+-                            scale,
+-                            Transform::Normal,
+-                            elements.rev(),
+-                        ) {
++                        let res = render_to_dmabuf(renderer, damage_tracker, dmabuf, elements, states);
++                        drop(inner);
++
++                        match res {
+                             Ok(sync_point) => {
+                                 mark_buffer_after_render(pw_buffer, &mut self.sequence_counter, SharingBuf::DMA(()));
+                                 trace!("queueing buffer with seq={}", self.sequence_counter);
+@@ -1386,15 +1387,9 @@ impl Cast {
+                     unsafe {
+                         let spa_buffer = (*buffer).buffer;
+ 
+-                        let mut pointer_elements = None;
+                         if self.cursor_mode == CursorMode::Metadata {
+                             add_cursor_metadata(renderer, spa_buffer, cursor_data, redraw_cursor);
+-                        } else if self.cursor_mode != CursorMode::Hidden {
+-                            // Embed the cursor into the main render.
+-                            pointer_elements = Some(cursor_data.original.iter());
+                         }
+-                        let pointer_elements = pointer_elements.into_iter().flatten();
+-                        let elements = pointer_elements.chain(elements);
+ 
+                         // FIXME: would be good to skip rendering the full frame if only the pointer changed.
+                         // Unfortunately, I think the OBS PipeWire code needs to be updated first to cleanly
+@@ -1416,7 +1411,7 @@ impl Cast {
+                             scale,
+                             Transform::Normal,
+                             fourcc,
+-                            elements.rev(),
++                            elements.iter().rev(),
+                         ) {
+                             Ok(()) => {
+                                 mark_buffer_after_render(pw_buffer, &mut self.sequence_counter, SharingBuf::SHM(&shmbuf));

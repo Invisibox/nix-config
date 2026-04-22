@@ -35,7 +35,7 @@
     };
 
     niri-unstable = {
-      url = "github:niri-wm/niri/pull/1791/head";
+      url = "github:niri-wm/niri?ref=main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

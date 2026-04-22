@@ -4,7 +4,17 @@
   inputs,
   ...
 }: let
-  niriPackage = inputs.niri-unstable.packages.${pkgs.stdenv.hostPlatform.system}.niri;
+  niriMainPackage = inputs.niri-unstable.packages.${pkgs.stdenv.hostPlatform.system}.niri;
+  niriPackage = niriMainPackage.overrideAttrs (old: {
+    patches =
+      (old.patches or [])
+      ++ [
+        # Rebased from PR #1791 (Support shm sharing) onto niri main.
+        ./patches/0001-pw_utils-support-shm-sharing-for-screencast.patch
+        # Follow-up fixups for current niri main render API.
+        ./patches/0002-pw_utils-adapt-main-render-api.patch
+      ];
+  });
 in {
   # Enable Niri
   programs.niri = {

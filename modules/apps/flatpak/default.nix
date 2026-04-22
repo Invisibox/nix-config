@@ -39,7 +39,9 @@ in {
         ];
       };
       services.flatpak = {
-        update.onActivation = true;
+        # Disable update-on-activation to avoid long-running updates
+        # blocking Home Manager activation.
+        update.onActivation = false;
         packages = [
           "com.cherry_ai.CherryStudio/x86_64/stable"
           "com.qq.QQ/x86_64/stable"
