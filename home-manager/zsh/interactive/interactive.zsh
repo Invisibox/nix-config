@@ -84,19 +84,52 @@ source $ZSH_CONFIG_DIR/keybindings/keybindings.zsh
 
 # source completions helpers
 source $ZSH_CONFIG_DIR/interactive/completion.zsh
-# delay completion system initialization until first hit on tab/s-tab
-bind tab init_completions
+# delay completion system initialization until first hit on tab/s-tab.
+# keep original tab widget so fzf-tab wraps a real completion widget
+# (init_completions unfunctions itself after the first run).
+typeset -g _completion_tab_key _completion_tab_orig_widget
+if [[ -v keys[tab] ]]; then
+  _completion_tab_key=$keys[tab]
+else
+  _completion_tab_key='^I'
+fi
+_completion_tab_orig_widget="$(bindkey -M main -- "$_completion_tab_key" 2>/dev/null || :)"
+_completion_tab_orig_widget="${_completion_tab_orig_widget##* }"
+case $_completion_tab_orig_widget in
+  ""|undefined-key|init_completions)
+    _completion_tab_orig_widget=expand-or-complete
+    ;;
+esac
+
+bindkey -M emacs -- "$_completion_tab_key" init_completions
+bindkey -M viins -- "$_completion_tab_key" init_completions
+bindkey -M main -- "$_completion_tab_key" init_completions
 
 # the hook to run upon completion initialization
 _completion_init_hook1 () {
-  source $ZSH_CONFIG_DIR/plugins/fzf-tab-completion/fzf-tab-completion.zsh
-  zstyle ':completion:*' fzf-search-display true
+  # restore original tab widget before loading fzf-tab; otherwise fzf-tab
+  # would capture init_completions as its fallback widget.
+  bindkey -M emacs -- "$_completion_tab_key" "$_completion_tab_orig_widget"
+  bindkey -M viins -- "$_completion_tab_key" "$_completion_tab_orig_widget"
+  bindkey -M main -- "$_completion_tab_key" "$_completion_tab_orig_widget"
+
+  source $ZSH_CONFIG_DIR/plugins/fzf-tab/fzf-tab.plugin.zsh
+  zstyle ':completion:*' menu no
   compdef _files rm
   compdef _lf _lfcd
   compdef _directories mcd
-  bind tab fzf_completion
-  # actually perform the requested completion
-  zle fzf_completion
+
+  if (( ${+widgets[fzf-tab-complete]} )); then
+    bindkey -M emacs -- "$_completion_tab_key" fzf-tab-complete
+    bindkey -M viins -- "$_completion_tab_key" fzf-tab-complete
+    bindkey -M main -- "$_completion_tab_key" fzf-tab-complete
+  fi
+
+  # replay the triggering tab key so the first tab press performs completion
+  # after initialization/binding has finished.
+  if [[ -n ${ZLE-} ]]; then
+    zle -U "$_completion_tab_key"
+  fi
 }
 init_completions_hooks+=(_completion_init_hook1)
 

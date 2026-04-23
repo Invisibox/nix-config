@@ -85,20 +85,16 @@
       '';
     };
 
-  fzf-tab-completion = let
-    name = "fzf-tab-completion";
+  fzf-tab = let
+    name = "fzf-tab";
   in
     mkZshPlugin name {
       src = pkgs.fetchFromGitHub {
-        owner = "lincheney";
+        owner = "Aloxaf";
         repo = name;
-        rev = "8ba35e65bb3792759bf17c134ce04120e5940555";
-        hash = "sha256-qod3C01EK5S0Tm6rp2ia0dPVFMKRGaozpNaLQF+O9Xw=";
+        rev = "0983009f8666f11e91a2ee1f88cfdb748d14f656";
+        hash = "sha256-yvPQyuK4Dw+LkwxrkWTRcw4PIf/79fW61jWbEg8Pe9Y=";
       };
-      unpackPhase = ''
-        mkdir -p $out/
-        cp $src/zsh/fzf-zsh-completion.sh $out/${name}.zsh
-      '';
     };
 
   zsh-smartcache = let
@@ -153,7 +149,7 @@ in {
     # disabled: overlaps with atuin search/history widgets.
     # "zsh/plugins/zsh-history-substring-search".source = zsh-history-substring-search;
     "zsh/plugins/zsh-autosuggestions".source = zsh-autosuggestions;
-    "zsh/plugins/fzf-tab-completion".source = fzf-tab-completion;
+    "zsh/plugins/fzf-tab".source = fzf-tab;
     "zsh/plugins/atuin.zsh".source = "${atuin-integration}/atuin.zsh";
     "zsh/plugins/atuin.zsh.zwc".source = "${atuin-integration}/atuin.zsh.zwc";
     "zsh/plugins/zsh-smartcache".source = zsh-smartcache;
