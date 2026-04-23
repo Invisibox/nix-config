@@ -90,7 +90,7 @@ in {
       Type = "oneshot";
       ExecStart = "${setAvatarScript}";
     };
-    Install.WantedBy = ["default.target"];
+    Install.WantedBy = ["graphical-session.target"];
   };
 
   services.shikane.enable = true;

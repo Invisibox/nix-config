@@ -47,7 +47,6 @@ in {
       Type = "oneshot";
       RemainAfterExit = true;
       ExecStart = "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=niri";
-      ExecStartPost = "${pkgs.systemd}/bin/systemctl --user restart xdg-desktop-portal.service xdg-desktop-portal-gnome.service";
     };
   };
 
