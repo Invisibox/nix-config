@@ -64,9 +64,9 @@ KEYTIMEOUT=10
 # remove all existing keybindings
 bindkey -rp ''
 # for ascii text
-bindkey -R ' '-'~' self-insert
+bindkey -R ' '-'~' lazy-atuin-self-insert
 # for non-ascii text
-bindkey -R "\M-^@"-"\M-^?" self-insert
+bindkey -R "\M-^@"-"\M-^?" lazy-atuin-self-insert
 # for proper pasting
 bindkey "^[[200~" bracketed-paste
 

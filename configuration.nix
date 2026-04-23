@@ -185,7 +185,7 @@
       "input"
       "uinput"
     ];
-    shell = config.programs.zsh.package;
+    shell = pkgs.zsh;
   };
   users.groups.netdev = {};
 
@@ -196,7 +196,7 @@
     enable = true;
     useBabelfish = true;
   };
-  users.defaultUserShell = config.programs.zsh.package;
+  users.defaultUserShell = pkgs.zsh;
 
   # Enable nix ld.
   nix-ld.enable = true;

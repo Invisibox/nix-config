@@ -72,6 +72,12 @@ lazy-atuin-up-search () {
 }
 zle -N lazy-atuin-up-search
 
+lazy-atuin-self-insert () {
+  (( _atuin_lazy_loaded )) || _init_atuin_widgets || :
+  zle .self-insert
+}
+zle -N lazy-atuin-self-insert
+
 # define initial bindings and export `bind` function
 # we rely on zsh-edit for sane zle widgets so there's a plugin involved too
 source $ZSH_CONFIG_DIR/keybindings/keybindings.zsh
