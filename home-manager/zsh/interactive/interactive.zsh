@@ -34,7 +34,7 @@ _comp_options+=(globdots)
 typeset -ga init_completions_hooks=()
 
 # first, make the keymap available to consumers
-source $ZSH_CONFIG_DIR/keybindings/keymap_foot.zsh
+source $ZSH_CONFIG_DIR/keybindings/keymap_terminal.zsh
 
 # lazily load atuin widgets on first key press
 typeset -gi _atuin_lazy_loaded=0
@@ -88,8 +88,8 @@ source $ZSH_CONFIG_DIR/interactive/completion.zsh
 # keep original tab widget so fzf-tab wraps a real completion widget
 # (init_completions unfunctions itself after the first run).
 typeset -g _completion_tab_key _completion_tab_orig_widget
-if [[ -v keys[tab] ]]; then
-  _completion_tab_key=$keys[tab]
+if [[ -v terminal_key_sequences[tab] ]]; then
+  _completion_tab_key=${terminal_key_sequences[tab]}
 else
   _completion_tab_key='^I'
 fi

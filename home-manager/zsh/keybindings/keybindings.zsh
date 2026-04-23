@@ -1,6 +1,6 @@
 # ensure we were provided with a keymap beforehand
 # still a very weak promise but better than nothing
-[[ -v keys ]] || return
+[[ -v terminal_key_sequences ]] || return
 
 # Ref: https://github.com/QuarticCat/dotfiles/blob/aacdabf9dcbb0246b81fd0daf35b5c37d072b37c/zsh/.zshrc#L140-L165
 qc-word-widgets() {
@@ -28,8 +28,8 @@ qc-trim-paste() {
 zle -N bracketed-paste qc-trim-paste
 
 bind () {
-  if [[ -v keys[$1] ]]; then
-    bindkey -- $keys[$1] $2
+  if [[ -v terminal_key_sequences[$1] ]]; then
+    bindkey -- ${terminal_key_sequences[$1]} $2
   else
     print >&2 "[Warning] attempting to bind unmapped key $1, skipping"
   fi

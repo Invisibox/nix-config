@@ -174,12 +174,12 @@ in {
       onChange = zcompileGlob "keybindings/keybindings.zsh";
     };
 
-    "zsh/keybindings/keymap_foot.zsh" = {
-      text = import ./keybindings/keymap_foot.nix {
-        footKeysAttrSet = import ./keybindings/keys.nix {inherit lib;};
+    "zsh/keybindings/keymap_terminal.zsh" = {
+      text = import ./keybindings/keymap_terminal.nix {
+        terminalKeySequencesAttrSet = import ./keybindings/keys.nix {inherit lib;};
         inherit lib;
       };
-      onChange = zcompileGlob "keybindings/keymap_foot.zsh";
+      onChange = zcompileGlob "keybindings/keymap_terminal.zsh";
     };
 
     "zsh/widgets" = {
