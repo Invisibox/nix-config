@@ -110,8 +110,17 @@ init_completions_hooks+=(_completion_init_hook1)
   # disabled: overlaps with atuin search/history widgets.
   # source $plugin_dir/zsh-history-substring-search/zsh-history-substring-search.zsh
 
-  # syntax highlighting
-  source $plugin_dir/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
+  # syntax highlighting (fast-syntax-highlighting)
+  source $plugin_dir/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+
+  # keep behavior closer to zsh-syntax-highlighting defaults:
+  # - keep bracket highlighting
+  # - disable command-specific chroma rules
+  FAST_HIGHLIGHT[use_brackets]=1
+  for _fsh_key in ${(k)FAST_HIGHLIGHT}; do
+    [[ $_fsh_key == chroma-* ]] && unset "FAST_HIGHLIGHT[$_fsh_key]"
+  done
+  unset _fsh_key
 
   # no-ps2
   source $plugin_dir/zsh-no-ps2/zsh-no-ps2.plugin.zsh

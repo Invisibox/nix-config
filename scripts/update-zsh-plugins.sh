@@ -17,7 +17,7 @@ for cmd in curl jq nix awk sed mktemp cp mv; do
 done
 
 plugins=(
-  "zsh-syntax-highlighting|zsh-users|zsh-syntax-highlighting"
+  "fast-syntax-highlighting|zdharma-continuum|fast-syntax-highlighting"
   "zsh-autosuggestions|zsh-users|zsh-autosuggestions"
   "fzf-tab-completion|lincheney|fzf-tab-completion"
   "zsh-smartcache|QuarticCat|zsh-smartcache"

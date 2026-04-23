@@ -104,8 +104,8 @@ bind a-left         qc-shell-l
 bind a-right        qc-shell-r
 bind c-left         beginning-of-line
 bind c-right        end-of-line
-bind home           beginning-of-buffer
-bind end            end-of-buffer
+bind home           beginning-of-buffer-or-history
+bind end            end-of-buffer-or-history
 
 # complete, prepend, append
 bind a-s            prepend-sudo
