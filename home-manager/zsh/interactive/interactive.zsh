@@ -84,9 +84,8 @@ source $ZSH_CONFIG_DIR/keybindings/keybindings.zsh
 
 # source completions helpers
 source $ZSH_CONFIG_DIR/interactive/completion.zsh
-# delay completion system initialization until first hit on tab/s-tab.
-# keep original tab widget so fzf-tab wraps a real completion widget
-# (init_completions unfunctions itself after the first run).
+# delay completion initialization until first tab. use a dispatcher widget
+# so the same keypress both initializes completion and runs completion.
 typeset -g _completion_tab_key _completion_tab_orig_widget
 if [[ -v terminal_key_sequences[tab] ]]; then
   _completion_tab_key=${terminal_key_sequences[tab]}
@@ -96,14 +95,29 @@ fi
 _completion_tab_orig_widget="$(bindkey -M main -- "$_completion_tab_key" 2>/dev/null || :)"
 _completion_tab_orig_widget="${_completion_tab_orig_widget##* }"
 case $_completion_tab_orig_widget in
-  ""|undefined-key|init_completions)
+  ""|undefined-key|init_completions|lazy-tab-complete)
     _completion_tab_orig_widget=expand-or-complete
     ;;
 esac
 
-bindkey -M emacs -- "$_completion_tab_key" init_completions
-bindkey -M viins -- "$_completion_tab_key" init_completions
-bindkey -M main -- "$_completion_tab_key" init_completions
+lazy-tab-complete () {
+  # run one-time completion initialization on first invocation.
+  if (( ${+functions[init_completions]} )); then
+    zle init_completions
+  fi
+
+  # dispatch this same keypress to the real completion widget.
+  if (( ${+widgets[fzf-tab-complete]} )); then
+    zle fzf-tab-complete
+  else
+    zle "$_completion_tab_orig_widget"
+  fi
+}
+zle -N lazy-tab-complete
+
+bindkey -M emacs -- "$_completion_tab_key" lazy-tab-complete
+bindkey -M viins -- "$_completion_tab_key" lazy-tab-complete
+bindkey -M main -- "$_completion_tab_key" lazy-tab-complete
 
 # the hook to run upon completion initialization
 _completion_init_hook1 () {
@@ -125,11 +139,19 @@ _completion_init_hook1 () {
     bindkey -M main -- "$_completion_tab_key" fzf-tab-complete
   fi
 
-  # replay the triggering tab key so the first tab press performs completion
-  # after initialization/binding has finished.
-  if [[ -n ${ZLE-} ]]; then
-    zle -U "$_completion_tab_key"
+  # fzf-tab is loaded lazily during the first tab press, after autosuggestions
+  # has already wrapped widgets. Rebind autosuggestions wrappers now so the
+  # newly registered fzf-tab widget joins the same wrapper chain.
+  if (( ${+functions[_zsh_autosuggest_bind_widgets]} )); then
+    _zsh_autosuggest_bind_widgets
   fi
+
+  # Clear stale autosuggestion display from the pre-fzf-tab widget state.
+  if (( ${+functions[_zsh_autosuggest_highlight_reset]} )); then
+    _zsh_autosuggest_highlight_reset
+    POSTDISPLAY=
+  fi
+
 }
 init_completions_hooks+=(_completion_init_hook1)
 
