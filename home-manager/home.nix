@@ -51,7 +51,7 @@
     gnome-calculator
     fluent-reader
     piliplus
-    # winboat
+    winbox
     discord
     _64gram
     vial
