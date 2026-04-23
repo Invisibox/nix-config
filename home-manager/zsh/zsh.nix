@@ -4,13 +4,20 @@
   config,
   ...
 }: let
-  # zcompile files based on a glob expression
-  zcompileGlob = globs:
+  # zcompile files based on a glob expression.
+  # relative globs are resolved under ~/.config/zsh, while absolute
+  # or shell-variable-prefixed globs (e.g. $out/**) are used as-is.
+  zcompileGlob = glob: let
+    globExpr =
+      if lib.hasPrefix "/" glob || lib.hasPrefix "~/" glob || lib.hasPrefix "$" glob
+      then glob
+      else "~/.config/zsh/${glob}";
+  in
   # sh
   ''
     ${config.programs.zsh.package}/bin/zsh -dfc '
       setopt extendedglob globstarshort dotglob nullglob
-      for f in ~/.config/zsh/${globs}; do
+      for f in ${globExpr}; do
         [[ -f $f ]] || continue
         zcompile -U -- "$f" 2>/dev/null
       done
@@ -37,7 +44,7 @@
                 ''
               )
               + ''
-                ${zcompileGlob "$out/**"}
+                ${zcompileGlob "$out/**/*.zsh"}
               '';
           }
         )
