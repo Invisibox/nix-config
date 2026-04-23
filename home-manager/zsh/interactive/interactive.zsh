@@ -139,6 +139,12 @@ _completion_init_hook1 () {
     bindkey -M main -- "$_completion_tab_key" fzf-tab-complete
   fi
 
+  # fzf-tab widgets are created lazily; rebind fast-syntax-highlighting so
+  # its wrapper also covers `fzf-tab-complete` and refreshes colors after tab.
+  if (( ${+functions[_zsh_highlight_bind_widgets]} )); then
+    _zsh_highlight_bind_widgets
+  fi
+
   # fzf-tab is loaded lazily during the first tab press, after autosuggestions
   # has already wrapped widgets. Rebind autosuggestions wrappers now so the
   # newly registered fzf-tab widget joins the same wrapper chain.
