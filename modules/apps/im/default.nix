@@ -25,7 +25,8 @@
 
     extraInstallCommands = ''
       if [ -d "${wechatBasePackage}/share" ]; then
-        cp -r "${wechatBasePackage}/share" "$out/share"
+        cp -rL "${wechatBasePackage}/share" "$out/share"
+        chmod -R u+w "$out/share" || true
       fi
 
       if [ -f "$out/share/applications/wechat.desktop" ]; then
@@ -92,7 +93,8 @@
 
     extraInstallCommands = ''
       if [ -d "${qqBasePackage}/share" ]; then
-        cp -r "${qqBasePackage}/share" "$out/share"
+        cp -rL "${qqBasePackage}/share" "$out/share"
+        chmod -R u+w "$out/share" || true
       fi
 
       if [ -f "$out/share/applications/qq.desktop" ]; then
