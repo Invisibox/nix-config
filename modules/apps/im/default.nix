@@ -11,6 +11,43 @@
   nurPackages = inputs.xddxdd-nur.packages.${system};
   wechatBasePackage = cfg.wechatBasePackage;
   qqBasePackage = cfg.qqPackage;
+  wechatRunScript = pkgs.writeShellScript "wechat-sandbox-run" ''
+    export QT_QPA_PLATFORM=xcb
+
+    if [[ "''${XMODIFIERS:-}" == *fcitx* ]]; then
+      export QT_IM_MODULE=fcitx
+      export GTK_IM_MODULE=fcitx
+      export XMODIFIERS=@im=fcitx
+    elif [[ "''${XMODIFIERS:-}" == *ibus* ]]; then
+      export QT_IM_MODULE=ibus
+      export GTK_IM_MODULE=ibus
+      export IBUS_USE_PORTAL=1
+      export XMODIFIERS=@im=ibus
+    fi
+
+    exec ${wechatBasePackage}/bin/wechat "$@"
+  '';
+
+  qqRunScript = pkgs.writeShellScript "qq-sandbox-run" ''
+    # Keep QQ on X11/XWayland path for better IME behavior (single-line preedit).
+    unset WAYLAND_DISPLAY
+    export NIXOS_OZONE_WL=""
+    export ELECTRON_OZONE_PLATFORM_HINT=x11
+    export QT_QPA_PLATFORM=xcb
+
+    if [[ "''${XMODIFIERS:-}" == *fcitx* ]]; then
+      export QT_IM_MODULE=fcitx
+      export GTK_IM_MODULE=fcitx
+      export XMODIFIERS=@im=fcitx
+    elif [[ "''${XMODIFIERS:-}" == *ibus* ]]; then
+      export QT_IM_MODULE=ibus
+      export GTK_IM_MODULE=ibus
+      export IBUS_USE_PORTAL=1
+      export XMODIFIERS=@im=ibus
+    fi
+
+    exec ${qqBasePackage}/bin/qq "$@"
+  '';
 
   wechatSandboxed = pkgs.buildFHSEnvBubblewrap {
     pname = "wechat-sandboxed";
@@ -20,7 +57,7 @@
       else "unstable";
 
     executableName = "wechat";
-    runScript = "wechat";
+    runScript = "${wechatRunScript}";
     targetPkgs = _: [wechatBasePackage];
 
     extraInstallCommands = ''
@@ -32,6 +69,9 @@
       if [ -f "$out/share/applications/wechat.desktop" ]; then
         sed -i "s|^Exec=.*|Exec=$out/bin/wechat %U|" "$out/share/applications/wechat.desktop"
         sed -i "s|^TryExec=.*|TryExec=$out/bin/wechat|" "$out/share/applications/wechat.desktop"
+        sed -i "s|^Name=.*|Name=WeChat|" "$out/share/applications/wechat.desktop"
+        sed -i "s|^Name\[zh_CN\]=.*|Name[zh_CN]=WeChat|" "$out/share/applications/wechat.desktop"
+        sed -i "s|^Name\[zh_TW\]=.*|Name[zh_TW]=WeChat|" "$out/share/applications/wechat.desktop"
       fi
     '';
 
@@ -88,7 +128,7 @@
       else "unstable";
 
     executableName = "qq";
-    runScript = "qq";
+    runScript = "${qqRunScript}";
     targetPkgs = _: [qqBasePackage];
 
     extraInstallCommands = ''
