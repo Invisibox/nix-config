@@ -44,8 +44,6 @@ in {
         update.onActivation = false;
         packages = [
           "com.cherry_ai.CherryStudio/x86_64/stable"
-          "com.qq.QQ/x86_64/stable"
-          "com.tencent.WeChat/x86_64/stable"
           "net.agalwood.Motrix/x86_64/stable"
           "org.telegram.desktop/x86_64/stable"
         ];
@@ -62,32 +60,30 @@ in {
         overrides = {
           global = {
             Context = {
-              filesystems =
-                [
-                  "/nix/store:ro"
-                  "/run/current-system/sw/bin:ro"
-                  "/run/media/${username}:ro"
-                  # Theming
-                  "${config.home.homeDirectory}/.icons:ro"
-                  "${config.home.homeDirectory}/.themes:ro"
-                  "xdg-config/fontconfig:ro"
-                  "xdg-config/gtkrc:ro"
-                  "xdg-config/gtkrc-2.0:ro"
-                  "xdg-config/gtk-2.0:ro"
-                  "xdg-config/gtk-3.0:ro"
-                  "xdg-config/gtk-4.0:ro"
-                  "xdg-data/themes:ro"
-                  "xdg-data/icons:ro"
-                  "xdg-config/lsfg-vk:rw"
-                  "xdg-run/discord-ipc-*"
-                ];
+              filesystems = [
+                "/nix/store:ro"
+                "/run/current-system/sw/bin:ro"
+                "/run/media/${username}:ro"
+                # Theming
+                "${config.home.homeDirectory}/.icons:ro"
+                "${config.home.homeDirectory}/.themes:ro"
+                "xdg-config/fontconfig:ro"
+                "xdg-config/gtkrc:ro"
+                "xdg-config/gtkrc-2.0:ro"
+                "xdg-config/gtk-2.0:ro"
+                "xdg-config/gtk-3.0:ro"
+                "xdg-config/gtk-4.0:ro"
+                "xdg-data/themes:ro"
+                "xdg-data/icons:ro"
+                "xdg-config/lsfg-vk:rw"
+                "xdg-run/discord-ipc-*"
+              ];
             };
-            Environment =
-              {
-                # Wrong cursor in flatpaks fix
-                XCURSOR_PATH = "/run/host/user-share/icons:/run/host/share/icons";
-                LSFG_CONFIG = "${config.xdg.configHome}/lsfg-vk/conf.toml";
-              };
+            Environment = {
+              # Wrong cursor in flatpaks fix
+              XCURSOR_PATH = "/run/host/user-share/icons:/run/host/share/icons";
+              LSFG_CONFIG = "${config.xdg.configHome}/lsfg-vk/conf.toml";
+            };
           };
         };
         uninstallUnmanaged = true;

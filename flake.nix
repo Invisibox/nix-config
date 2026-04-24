@@ -45,6 +45,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    xddxdd-nur = {
+      url = "github:xddxdd/nur-packages";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+    };
+
     daeuniverse = {
       url = "github:daeuniverse/flake.nix";
       inputs.nixpkgs.follows = "nixpkgs";

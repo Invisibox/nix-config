@@ -221,6 +221,7 @@
 
   lobehub.enable = true; # Enable LobeHub Desktop.
   localsend.enable = true; # Install LocalSend via Home Manager.
+  im.enable = true; # Install sandboxed WeChat/QQ via Home Manager.
   rustdesk = {
     enable = true; # Enable RustDesk client (controller/controlled endpoint).
     openFirewall = true; # Open RustDesk peer ports (client use, not relay server).
