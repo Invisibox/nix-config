@@ -18,6 +18,9 @@ source $ZSH_CONFIG_DIR/interactive/osc7.zsh
 # OSC133: mark prompts
 source $ZSH_CONFIG_DIR/interactive/osc133.zsh
 
+# desktop notifications when commands finish
+source $ZSH_CONFIG_DIR/interactive/notify.zsh
+
 # ‣ [ completions, aliases and keybindings ]
 
 # here we lazy-load completions by putting initialization into a function
