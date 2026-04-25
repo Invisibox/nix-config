@@ -177,7 +177,6 @@
 
   imports = [
     ./dms
-    ./fish
     ./nautilus
     ./spotify
     ./zed
@@ -204,7 +203,6 @@
 
   programs.atuin = {
     enable = true;
-    enableFishIntegration = true;
     settings = {
       update_check = false;
       style = "compact";
@@ -222,7 +220,6 @@
 
   programs.fzf = {
     enable = true;
-    enableFishIntegration = true;
     defaultOptions = [
       "--with-shell='zsh -c'"
       "--multi"
@@ -258,7 +255,6 @@
 
   programs.eza = {
     enable = true;
-    enableFishIntegration = true;
   };
 
   # This value determines the Home Manager release that your

@@ -1,6 +1,6 @@
 #! /usr/bin/env zsh
 
-# fish-inspired widget for toggling sudo at command start
+# Widget for toggling sudo at command start
 
 prepend-sudo () {
   emulate -L zsh

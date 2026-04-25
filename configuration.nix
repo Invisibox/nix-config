@@ -192,10 +192,6 @@
   # # Install zsh.
   programs.zsh.enable = true;
 
-  programs.fish = {
-    enable = true;
-    useBabelfish = true;
-  };
   users.defaultUserShell = pkgs.zsh;
 
   # Enable nix ld.
