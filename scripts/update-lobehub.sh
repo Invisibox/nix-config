@@ -27,32 +27,48 @@ fi
 
 version="${tag_name#v}"
 
-asset_url="$(jq -r --arg v "${version}" '
+asset_info="$(jq -r --arg v "${version}" '
   (
     .assets[]
     | select(.name == ("LobeHub-" + $v + ".AppImage"))
-    | .browser_download_url
+    | [.browser_download_url, (.digest // "")]
+    | @tsv
   ) // empty
 ' <<<"${release_json}")"
 
-if [[ -z "${asset_url}" ]]; then
-  asset_url="$(jq -r '
+if [[ -z "${asset_info}" ]]; then
+  asset_info="$(jq -r '
     (
       .assets[]
       | select(.name | test("(?i)\\.AppImage$"))
-      | .browser_download_url
+      | [.browser_download_url, (.digest // "")]
+      | @tsv
     ) // empty
   ' <<<"${release_json}" | head -n1)"
 fi
 
-if [[ -z "${asset_url}" ]]; then
+if [[ -z "${asset_info}" ]]; then
   echo "error: unable to find AppImage asset in latest release ${tag_name}" >&2
   exit 1
 fi
 
-hash="$(nix store prefetch-file --json "${asset_url}" | jq -r '.hash')"
+IFS=$'\t' read -r asset_url asset_digest <<<"${asset_info}"
+
+hash=""
+if [[ -n "${asset_digest}" ]]; then
+  digest_algo="${asset_digest%%:*}"
+  digest_hex="${asset_digest#*:}"
+  if [[ "${digest_algo}" == "sha256" && "${digest_hex}" =~ ^[0-9A-Fa-f]{64}$ ]]; then
+    hash="$(nix hash convert --hash-algo sha256 --to sri "${digest_hex}" 2>/dev/null || true)"
+  fi
+fi
+
 if [[ -z "${hash}" || "${hash}" == "null" ]]; then
-  echo "error: unable to prefetch hash for ${asset_url}" >&2
+  hash="$(nix store prefetch-file --json "${asset_url}" | jq -r '.hash')"
+fi
+
+if [[ -z "${hash}" || "${hash}" == "null" ]]; then
+  echo "error: unable to determine hash for ${asset_url}" >&2
   exit 1
 fi
 

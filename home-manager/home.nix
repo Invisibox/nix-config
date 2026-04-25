@@ -206,7 +206,7 @@
     settings = {
       update_check = false;
       style = "compact";
-      save_failed_commands = "false";
+      store_failed = false;
       inline_height = 12;
       dialect = "us";
       keys = {
