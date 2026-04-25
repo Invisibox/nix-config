@@ -2,13 +2,10 @@
   lib,
   config,
   pkgs,
-  inputs,
   username,
   ...
 }: let
   cfg = config.im;
-  system = pkgs.stdenv.hostPlatform.system;
-  nurPackages = inputs.xddxdd-nur.packages.${system};
   wechatBasePackage = cfg.wechatBasePackage;
   qqBasePackage = cfg.qqPackage;
   wechatRunScript = pkgs.writeShellScript "wechat-sandbox-run" ''
@@ -115,11 +112,6 @@
       };
   };
 
-  defaultQqPackage =
-    if builtins.hasAttr "qq" nurPackages
-    then nurPackages.qq
-    else pkgs.qq;
-
   qqSandboxed = pkgs.buildFHSEnvBubblewrap {
     pname = "qq-sandboxed";
     version =
@@ -201,7 +193,7 @@ in {
 
     qqPackage = lib.mkOption {
       type = lib.types.package;
-      default = defaultQqPackage;
+      default = pkgs.qq;
       description = "Base QQ package wrapped in a strict bubblewrap sandbox.";
     };
   };
