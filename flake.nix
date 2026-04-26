@@ -9,8 +9,6 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     systems.url = "github:nix-systems/default";
 
-    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
-
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       # IMPORTANT: we're using "libgbm" and is only available in unstable so ensure
@@ -61,7 +59,6 @@
   outputs = {
     self,
     nixpkgs,
-    nix-flatpak,
     # stylix,
     home-manager,
     ...
@@ -90,7 +87,6 @@
           home-manager.backupFileExtension = "hm-back";
 
           home-manager.sharedModules = [
-            nix-flatpak.homeManagerModules.nix-flatpak
             inputs.spicetify-nix.homeManagerModules.default
             inputs.steam-config-nix.homeModules.default
           ];

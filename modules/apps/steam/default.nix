@@ -23,10 +23,6 @@
 in {
   options.steam = {
     enable = lib.mkEnableOption "Enable Steam in NixOS";
-    enableFlatpak = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-    };
     enableNative = lib.mkOption {
       type = lib.types.bool;
       default = true;
@@ -120,29 +116,6 @@ in {
       };
       # https://github.com/different-name/steam-config-nix
       programs.steam.config = import ./steam-config.nix {inherit lib pkgs config steamGameWrapper;};
-      services.flatpak = lib.mkIf cfg.enableFlatpak {
-        overrides = {
-          "com.valvesoftware.Steam" = {
-            Context = {
-              filesystems = [
-                "${config.home.homeDirectory}/Games"
-                "${config.xdg.dataHome}/applications"
-                "${config.xdg.dataHome}/games"
-                "${config.xdg.dataHome}/Steam"
-              ];
-            };
-            Environment = {
-              PULSE_SINK = "Game";
-            };
-            "Session Bus Policy" = {
-              org.freedesktop.Flatpak = "talk";
-            };
-          };
-        };
-        packages = [
-          "com.valvesoftware.Steam"
-        ];
-      };
     };
   };
 }

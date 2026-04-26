@@ -111,33 +111,17 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1777189573,
-        "narHash": "sha256-H9tHp2OLMPmZ5ihANGT+1a4PioLrwttRTWagfLFif/0=",
+        "lastModified": 1777204994,
+        "narHash": "sha256-PHwfKjDSe1TtW7ndaZbsGbx/nv2ZN+mkst1dquS8vqo=",
         "owner": "niri-wm",
         "repo": "niri",
-        "rev": "4c1196f45b4d23b4249bb27c46f1c1e7e5540868",
+        "rev": "83e839762fa208b3631163e85d760e0e89fe8fe3",
         "type": "github"
       },
       "original": {
         "owner": "niri-wm",
         "ref": "main",
         "repo": "niri",
-        "type": "github"
-      }
-    },
-    "nix-flatpak": {
-      "locked": {
-        "lastModified": 1767983141,
-        "narHash": "sha256-7ZCulYUD9RmJIDULTRkGLSW1faMpDlPKcbWJLYHoXcs=",
-        "owner": "gmodena",
-        "repo": "nix-flatpak",
-        "rev": "440818969ac2cbd77bfe025e884d0aa528991374",
-        "type": "github"
-      },
-      "original": {
-        "owner": "gmodena",
-        "ref": "latest",
-        "repo": "nix-flatpak",
         "type": "github"
       }
     },
@@ -218,7 +202,6 @@
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
         "niri-unstable": "niri-unstable",
-        "nix-flatpak": "nix-flatpak",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",
         "spicetify-nix": "spicetify-nix",

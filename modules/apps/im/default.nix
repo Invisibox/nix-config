@@ -149,7 +149,7 @@
       mkdir -p "''${DOCUMENTS_DIR}" "''${DOWNLOADS_DIR}" "''${QQ_HOME_DIR}"
     '';
 
-    # Keep host-visible paths minimal, similar to Flatpak-style home isolation.
+    # Keep host-visible paths minimal with sandboxed home isolation.
     extraBwrapArgs = [
       "--tmpfs /home"
       "--tmpfs /root"

@@ -232,8 +232,6 @@
   #   xpadneo.enable = true;
   # };
 
-  flatpak.enable = true; # Enable Flatpak support.
-
   virtualization.enable = true;
 
   waydroid = {
@@ -244,7 +242,6 @@
 
   obs = {
     enable = true;
-    enableFlatpak = false;
     enableNative = true;
     silenceOutput = true;
   };

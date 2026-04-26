@@ -12,10 +12,6 @@ in
   options = {
     obs = {
       enable = lib.mkEnableOption "Enable obs in home-manager";
-      enableFlatpak = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-      };
       enableNative = lib.mkOption {
         type = lib.types.bool;
         default = true;
@@ -52,40 +48,8 @@ in
           obs-vkcapture
         ];
       };
-      services.flatpak = {
-        overrides = lib.mkIf cfg.enableFlatpak {
-          "com.obsproject.Studio" = {
-            Context = {
-              sockets = [
-                "!wayland" # Disable Wayland so it shows Twitch panels / mouse cursor capture in games
-              ];
-            };
-          };
-        };
-        packages = lib.mkIf cfg.enableFlatpak [
-          "com.obsproject.Studio"
-          "com.obsproject.Studio.Plugin.InputOverlay"
-          "com.obsproject.Studio.Plugin.OBSVkCapture"
-          "org.freedesktop.Platform.VulkanLayer.OBSVkCapture/x86_64/23.08" # Heroic
-          "org.freedesktop.Platform.VulkanLayer.OBSVkCapture/x86_64/24.08"
-          "org.freedesktop.Platform.VulkanLayer.OBSVkCapture/x86_64/25.08"
-        ];
-      };
       xdg = {
         desktopEntries = {
-          "com.obsproject.Studio" = lib.mkIf cfg.enableFlatpak {
-            name = "OBS Studio";
-            comment = "Flatpak - Free and Open Source Streaming/Recording Software";
-            exec = "flatpak run --branch=stable --arch=x86_64 --command=obs com.obsproject.Studio --disable-shutdown-check";
-            terminal = false;
-            icon = "com.obsproject.Studio";
-            type = "Application";
-            startupNotify = true;
-            categories = [
-              "AudioVideo"
-              "Recorder"
-            ];
-          };
           "obs" = lib.mkIf cfg.enableNative {
             name = "OBS Studio";
             comment = "Free and Open Source Streaming/Recording Software";
