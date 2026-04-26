@@ -6,6 +6,20 @@
   ...
 }: let
   cfg = config.steam;
+  gamescopeEnabled = config.gamescope.enable;
+  gamescopePackage = config.programs.gamescope.package;
+  steamGameWrapper = pkgs.callPackage ./game-wrapper.nix {
+    gamescope = gamescopePackage;
+  };
+  steamRuntimeEnv = {
+    PIPEWIRE_NODE = "Game";
+    PULSE_SINK = "Game";
+    PROTON_ENABLE_HDR = "1";
+    PROTON_ENABLE_WAYLAND = "1";
+    PROTON_FSR4_RDNA3_UPGRADE = "1";
+    PROTON_USE_NTSYNC = "1";
+    PROTON_USE_WOW64 = "1";
+  };
 in {
   options.steam = {
     enable = lib.mkEnableOption "Enable Steam in NixOS";
@@ -31,15 +45,7 @@ in {
     programs.steam = {
       enable = cfg.enableNative;
       package = pkgs.steam.override {
-        extraEnv = {
-          PIPEWIRE_NODE = "Game";
-          PULSE_SINK = "Game";
-          PROTON_ENABLE_HDR = true;
-          PROTON_ENABLE_WAYLAND = true;
-          PROTON_FSR4_RDNA3_UPGRADE = true;
-          PROTON_USE_NTSYNC = true;
-          PROTON_USE_WOW64 = true;
-        };
+        extraEnv = steamRuntimeEnv;
         # https://github.com/NixOS/nixpkgs/issues/279893#issuecomment-2425213386
         extraProfile = ''
           unset TZ
@@ -50,10 +56,29 @@ in {
         proton-em
         proton-ge
       ];
+      extraPackages = [
+        pkgs.gamemode
+        gamescopePackage
+        pkgs.mangohud
+        pkgs.obs-studio-plugins.obs-vkcapture
+      ];
+      extest.enable = true;
+      gamescopeSession = lib.mkIf gamescopeEnabled {
+        enable = true;
+        args = [
+          "--adaptive-sync"
+          "--mangoapp"
+        ];
+      };
       localNetworkGameTransfers.openFirewall = true;
       protontricks.enable = true;
       remotePlay.openFirewall = true;
     };
+    programs.gamemode = {
+      enable = true;
+      settings.general.renice = 10;
+    };
+    users.users.${username}.extraGroups = ["gamemode"];
     home-manager.users.${username} = {
       pkgs,
       config,
@@ -68,27 +93,7 @@ in {
           };
           steam-config-default = {
             enable = true;
-            source = with pkgs;
-              lib.getExe (writeShellApplication {
-                name = "steam-config-default";
-                runtimeEnv = {
-                  PIPEWIRE_NODE = "Game";
-                  PULSE_SINK = "Game";
-                  PROTON_ENABLE_HDR = true;
-                  PROTON_ENABLE_WAYLAND = true;
-                  PROTON_FSR4_RDNA3_UPGRADE = true;
-                  PROTON_USE_NTSYNC = true;
-                  PROTON_USE_WOW64 = true;
-                };
-                runtimeInputs = [
-                  gamemode
-                  mangohud
-                  obs-studio-plugins.obs-vkcapture
-                ];
-                text = ''
-                  exec env gamemoderun obs-gamecapture mangohud "$@"
-                '';
-              });
+            source = lib.getExe steamGameWrapper;
             target = "${config.xdg.dataHome}/steam-config-nix/users/shared/app-wrappers/default";
           };
           steam-slow-fix = {
@@ -101,11 +106,20 @@ in {
           };
         };
         packages = with pkgs; [
+          steamGameWrapper
           steamcmd
         ];
       };
+      xdg.desktopEntries.steam-gamescope = lib.mkIf gamescopeEnabled {
+        name = "Steam (Gamescope)";
+        genericName = "Steam running inside Gamescope";
+        exec = "steam-gamescope";
+        icon = "steam";
+        terminal = false;
+        categories = ["Game"];
+      };
       # https://github.com/different-name/steam-config-nix
-      programs.steam.config = import ./steam-config.nix {inherit lib pkgs config;};
+      programs.steam.config = import ./steam-config.nix {inherit lib pkgs config steamGameWrapper;};
       services.flatpak = lib.mkIf cfg.enableFlatpak {
         overrides = {
           "com.valvesoftware.Steam" = {

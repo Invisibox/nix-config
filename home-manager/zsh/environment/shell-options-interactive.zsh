@@ -34,7 +34,7 @@
 
     # history
     # inc_append_history
-    # bang_hist
+    bang_hist
     # extended_history
     # hist_ignore_space
     # hist_ignore_all_dups
@@ -62,4 +62,3 @@
   zstyle ':completion:*' verbose true
 
 }
-

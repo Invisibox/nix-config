@@ -65,6 +65,8 @@ KEYTIMEOUT=10
 bindkey -rp ''
 # for ascii text
 bindkey -R ' '-'~' lazy-atuin-self-insert
+# expand history references on space, e.g. `!! ` or `!$ `
+bindkey -- ' ' magic-space
 # for non-ascii text
 bindkey -R "\M-^@"-"\M-^?" lazy-atuin-self-insert
 # for proper pasting

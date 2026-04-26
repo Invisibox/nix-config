@@ -43,9 +43,8 @@
 
     aria2
     v2rayn
-    curtail
     kdePackages.okular
-    gimp-with-plugins
+    # gimp-with-plugins
     qimgv
     amberol
     gnome-calculator
@@ -74,6 +73,9 @@
     xz
     unzip
     p7zip
+    rar
+
+    curtail
 
     # utils
     eza # A modern replacement for ‘ls’
@@ -88,7 +90,6 @@
     pkg-config
     devbox
     android-tools
-    rar
     aircrack-ng
     hyperfine
     btop
