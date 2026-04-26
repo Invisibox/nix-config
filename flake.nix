@@ -62,9 +62,11 @@
     # stylix,
     home-manager,
     ...
-  } @ inputs: {
+  } @ inputs: let
+    system = "x86_64-linux";
+  in {
     nixosConfigurations.ASUS = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
+      inherit system;
       specialArgs = {
         inherit inputs;
         username = "zh";
@@ -96,6 +98,13 @@
           home-manager.extraSpecialArgs = {inherit inputs;};
         }
       ];
+    };
+
+    packages.${system} = import ./garnix/cache-targets.nix {
+      inherit inputs system;
+      config = self.nixosConfigurations.ASUS.config;
+      lib = nixpkgs.lib;
+      pkgs = self.nixosConfigurations.ASUS.pkgs;
     };
   };
 }
