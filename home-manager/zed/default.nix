@@ -19,7 +19,10 @@
         dark = "Catppuccin Mocha";
         light = "Catppuccin Latte";
       };
+      ui_font_family = "Sarasa Gothic SC";
+      ui_font_fallbacks = ["Sarasa Gothic SC"];
       buffer_font_family = "FiraCode Nerd Font";
+      buffer_font_fallbacks = ["Sarasa Gothic SC"];
       buffer_font_size = 16;
       terminal = {
         font_family = "JetBrainsMono Nerd Font";
