@@ -29,6 +29,11 @@
         show = "auto";
         thumb = "hover";
       };
+      agent_servers = {
+        codex-acp = {
+          type = "registry";
+        };
+      };
       lsp = {
         nil = {
           initialization_options = {
