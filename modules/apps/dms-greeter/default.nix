@@ -8,6 +8,7 @@
   greeterCursorTheme = "Bibata-Modern-Ice";
   greeterCursorSize = 22;
   greeterShowSeconds = true;
+  greeterFontFamily = "Inter Variable";
   jq = lib.getExe pkgs.jq;
 in {
   imports = [
@@ -35,10 +36,14 @@ in {
     cd /var/lib/dms-greeter
 
     if [ -f settings.json ]; then
-      ${jq} '.greeterShowSeconds = ${if greeterShowSeconds then "true" else "false"}' settings.json > settings.tmp
+      ${jq} --arg greeterFontFamily "${greeterFontFamily}" \
+        '.greeterShowSeconds = ${if greeterShowSeconds then "true" else "false"} | .greeterFontFamily = $greeterFontFamily' \
+        settings.json > settings.tmp
       mv settings.tmp settings.json
     else
-      ${jq} -n '{"greeterShowSeconds": ${if greeterShowSeconds then "true" else "false"}}' > settings.json
+      ${jq} -n --arg greeterFontFamily "${greeterFontFamily}" \
+        '{"greeterShowSeconds": ${if greeterShowSeconds then "true" else "false"}, "greeterFontFamily": $greeterFontFamily}' \
+        > settings.json
     fi
   '';
 }

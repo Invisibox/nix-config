@@ -99,21 +99,21 @@ in {
           fi
 
           if grep -q '^Name=' "$desktop"; then
-            sed -i "s|^Name=.*|Name=wemeet|" "$desktop"
+            sed -i "s|^Name=.*|Name=WeMeet|" "$desktop"
           else
-            echo "Name=wemeet" >> "$desktop"
+            echo "Name=WeMeet" >> "$desktop"
           fi
 
           if grep -q '^Name\[zh_CN\]=' "$desktop"; then
-            sed -i "s|^Name\[zh_CN\]=.*|Name[zh_CN]=wemeet|" "$desktop"
+            sed -i "s|^Name\[zh_CN\]=.*|Name[zh_CN]=腾讯会议|" "$desktop"
           else
-            echo "Name[zh_CN]=wemeet" >> "$desktop"
+            echo "Name[zh_CN]=腾讯会议" >> "$desktop"
           fi
 
           if grep -q '^Name\[zh_TW\]=' "$desktop"; then
-            sed -i "s|^Name\[zh_TW\]=.*|Name[zh_TW]=wemeet|" "$desktop"
+            sed -i "s|^Name\[zh_TW\]=.*|Name[zh_TW]=WeMeet|" "$desktop"
           else
-            echo "Name[zh_TW]=wemeet" >> "$desktop"
+            echo "Name[zh_TW]=WeMeet" >> "$desktop"
           fi
         fi
       '';
