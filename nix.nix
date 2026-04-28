@@ -12,7 +12,7 @@
   # do garbage collection weekly to keep disk usage low
   nix = {
     gc = {
-      automatic = true;
+      automatic = false;
       dates = "weekly";
       options = "--delete-older-than 7d";
     };
@@ -77,10 +77,20 @@
 
   programs.nh = {
     enable = true;
-    # clean.enable = true;
-    # clean.extraArgs = "-d";
+    clean = {
+      enable = true;
+      dates = "weekly";
+      extraArgs = "--keep 3 --keep-since 7d";
+    };
     flake = config.users.users.zh.home + "/Documents/nix-config";
   };
-  
+
+  systemd.tmpfiles.rules = [
+    # nh writes build result symlinks under /tmp/nh-os*/result. On disk-backed
+    # /tmp these can outlive reboots and keep old NixOS closures alive as GC roots.
+    # Use mtime-based aging so root scans that refresh atime do not keep them forever.
+    "e /tmp/nh-os* - - - mM:7d -"
+  ];
+
   nix.channel.enable = false; # remove nix-channel related tools & configs, we use flakes instead.
 }

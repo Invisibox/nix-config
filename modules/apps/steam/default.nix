@@ -59,13 +59,6 @@ in {
         pkgs.obs-studio-plugins.obs-vkcapture
       ];
       extest.enable = true;
-      gamescopeSession = lib.mkIf gamescopeEnabled {
-        enable = true;
-        args = [
-          "--adaptive-sync"
-          "--mangoapp"
-        ];
-      };
       localNetworkGameTransfers.openFirewall = true;
       protontricks.enable = true;
       remotePlay.openFirewall = true;

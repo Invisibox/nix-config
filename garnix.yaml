@@ -1,5 +1,6 @@
 builds:
   include:
+    - "packages.*.brave-origin"
     - "packages.*.dae"
     - "packages.*.daed"
     - "packages.*.daed-assets"

@@ -73,9 +73,6 @@ in
         };
       };
     };
-
-    systemd.tmpfiles.rules = [ "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware" ];
-
     users = {
       users = {
         ${username} = {

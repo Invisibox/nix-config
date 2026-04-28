@@ -14,6 +14,7 @@
   hmPackage = findPackage config.home-manager.users.zh.home.packages;
   systemPackage = findPackage config.environment.systemPackages;
 in {
+  brave-origin = config.brave-origin.package;
   dae = inputs.daeuniverse.packages.${system}.dae;
   daed = config.daed.package;
   daed-assets = pkgs.symlinkJoin {
