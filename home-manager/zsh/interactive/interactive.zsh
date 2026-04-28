@@ -42,6 +42,70 @@ source $ZSH_CONFIG_DIR/keybindings/keymap_terminal.zsh
 # lazily load atuin widgets on first key press
 typeset -gi _atuin_lazy_loaded=0
 
+_atuin_defer_failed_history_init () {
+  # Keep failed commands searchable in this shell, then let store_failed=false
+  # remove them when the shell exits.
+  typeset -ga __atuin_deferred_failed_history_ids
+  typeset -ga __atuin_deferred_failed_history_exits
+  typeset -ga __atuin_deferred_failed_history_durations
+
+  __atuin_defer_failed_history_end () {
+    local exit_status=$1
+    local duration=$2
+    local history_id=$3
+    local -a args
+
+    args=(history end --exit "$exit_status")
+    [[ -n $duration ]] && args+=(--duration="$duration")
+    args+=(-- "$history_id")
+
+    ATUIN_LOG=error atuin "${args[@]}"
+  }
+
+  _atuin_precmd () {
+    local EXIT="$?" __atuin_precmd_time=${EPOCHREALTIME-}
+
+    [[ -z "${ATUIN_HISTORY_ID:-}" ]] && return
+
+    local history_id="$ATUIN_HISTORY_ID"
+    export ATUIN_HISTORY_ID=""
+
+    local duration=""
+    if [[ -n $__atuin_preexec_time && -n $__atuin_precmd_time ]]; then
+      printf -v duration %.0f $(((__atuin_precmd_time - __atuin_preexec_time) * 1000000000))
+    fi
+
+    if (( EXIT != 0 )); then
+      __atuin_deferred_failed_history_ids+=("$history_id")
+      __atuin_deferred_failed_history_exits+=("$EXIT")
+      __atuin_deferred_failed_history_durations+=("$duration")
+      return
+    fi
+
+    (__atuin_defer_failed_history_end "$EXIT" "$duration" "$history_id" &) >/dev/null 2>&1
+  }
+
+  __atuin_end_deferred_failed_history () {
+    local i history_id exit_status duration
+
+    for (( i = 1; i <= ${#__atuin_deferred_failed_history_ids[@]}; ++i )); do
+      history_id=${__atuin_deferred_failed_history_ids[$i]}
+      exit_status=${__atuin_deferred_failed_history_exits[$i]}
+      duration=${__atuin_deferred_failed_history_durations[$i]}
+
+      [[ -n $history_id ]] || continue
+      __atuin_defer_failed_history_end "$exit_status" "$duration" "$history_id" >/dev/null 2>&1
+    done
+
+    __atuin_deferred_failed_history_ids=()
+    __atuin_deferred_failed_history_exits=()
+    __atuin_deferred_failed_history_durations=()
+  }
+
+  add-zsh-hook -d zshexit __atuin_end_deferred_failed_history 2>/dev/null || :
+  add-zsh-hook zshexit __atuin_end_deferred_failed_history
+}
+
 _init_atuin_widgets () {
   (( _atuin_lazy_loaded )) && return 0
 
@@ -49,6 +113,7 @@ _init_atuin_widgets () {
   [[ -r $plugin_file ]] || return 1
 
   source $plugin_file
+  _atuin_defer_failed_history_init
   if (( ${+widgets[atuin-search]} && ${+widgets[atuin-up-search]} )); then
     _atuin_lazy_loaded=1
     return 0

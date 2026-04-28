@@ -21,7 +21,6 @@ builds:
     - "packages.*.spiced-spotify"
     - "packages.*.steam"
     - "packages.*.steam-game-wrapper"
-    - "packages.*.steam-gamescope"
     - "packages.*.steam-run"
     - "packages.*.tor-browser"
     - "packages.*.vial"

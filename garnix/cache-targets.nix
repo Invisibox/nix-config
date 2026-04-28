@@ -38,7 +38,6 @@ in {
   proton-ge = pkgs.proton-ge;
   steam = config.programs.steam.package;
   steam-game-wrapper = hmPackage "steam-game-wrapper";
-  steam-gamescope = systemPackage "steam-gamescope";
   steam-run = systemPackage "steam-run";
 
   fluent-reader = hmPackage "fluent-reader";
