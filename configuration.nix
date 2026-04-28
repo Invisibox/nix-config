@@ -93,7 +93,12 @@
     enable = true;
     fcitx5.waylandFrontend = true;
     fcitx5.addons = with pkgs; [
-      fcitx5-rime
+      (fcitx5-rime.override {
+        rimeDataPkgs = [
+          rime-data
+          rime-wanxiang
+        ];
+      })
       fcitx5-gtk
       fcitx5-mellow-themes
       qt6Packages.fcitx5-configtool

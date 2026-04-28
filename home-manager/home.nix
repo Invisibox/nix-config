@@ -182,6 +182,7 @@
     ./spotify
     ./zed
     ./mpv.nix
+    ./rime.nix
     ./kitty.nix
     ./starship.nix
     ./zsh/zsh.nix
