@@ -4,6 +4,7 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 target_file="${repo_root}/modules/apps/brave-origin/default.nix"
 api_url="https://api.github.com/repos/brave/brave-browser/releases?per_page=30"
+package_name="brave-origin-beta"
 
 if [[ ! -f "${target_file}" ]]; then
   echo "error: target file not found: ${target_file}" >&2
@@ -25,13 +26,13 @@ fi
 releases_json="$(curl -fsSL "${github_headers[@]}" "${api_url}")"
 
 release_info="$(
-  jq -r '
+  jq -r --arg package_name "${package_name}" '
     .[]
     | . as $release
     | ($release.tag_name | ltrimstr("v")) as $version
     | (
         $release.assets[]
-        | select(.name == ("brave-origin-nightly_" + $version + "_amd64.deb"))
+        | select(.name == ($package_name + "_" + $version + "_amd64.deb"))
       ) as $asset
     | [$version, $asset.browser_download_url, ($asset.digest // "")]
     | @tsv
@@ -39,7 +40,7 @@ release_info="$(
 )"
 
 if [[ -z "${release_info}" ]]; then
-  echo "error: unable to find a brave-origin-nightly amd64 deb in recent Brave releases" >&2
+  echo "error: unable to find a ${package_name} amd64 deb in recent Brave releases" >&2
   exit 1
 fi
 
@@ -67,7 +68,7 @@ current_version="$(sed -n 's/^  version = "\(.*\)";$/\1/p' "${target_file}" | he
 current_hash="$(sed -n 's/^      hash = "\(sha256-[^"]*\)";$/\1/p' "${target_file}" | head -n1)"
 
 if [[ "${current_version}" == "${version}" && "${current_hash}" == "${hash}" ]]; then
-  echo "brave-origin-nightly is already up to date (${version})"
+  echo "${package_name} is already up to date (${version})"
   exit 0
 fi
 

@@ -57,7 +57,6 @@
     thunderbird
     qbittorrent-enhanced
     servo
-    brave
     planify
     mangayomi
     fluffychat

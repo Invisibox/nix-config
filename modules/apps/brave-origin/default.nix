@@ -7,8 +7,8 @@
 }: let
   cfg = config.brave-origin;
 
-  pname = "brave-origin-nightly";
-  version = "1.91.119";
+  pname = "brave-origin-beta";
+  version = "1.91.120";
 
   deps = with pkgs; [
     alsa-lib
@@ -60,12 +60,12 @@
   rpath = lib.makeLibraryPath deps + ":" + lib.makeSearchPathOutput "lib" "lib64" deps;
   binpath = lib.makeBinPath deps;
 
-  braveOriginNightly = pkgs.stdenv.mkDerivation {
+  braveOriginBeta = pkgs.stdenv.mkDerivation {
     inherit pname version;
 
     src = pkgs.fetchurl {
-      url = "https://github.com/brave/brave-browser/releases/download/v${version}/brave-origin-nightly_${version}_amd64.deb";
-      hash = "sha256-HXXdTqiMUuprTORFbp2qGTS2qMFVkkyiipBQuqTLpdM=";
+      url = "https://github.com/brave/brave-browser/releases/download/v${version}/brave-origin-beta_${version}_amd64.deb";
+      hash = "sha256-KP3sV4yU/vrf8N6kNJ49mfKlEqKULGfwpctVqylsy0g=";
     };
 
     dontConfigure = true;
@@ -99,8 +99,8 @@
       cp -R opt "$out/"
       cp -R usr/share "$out/share"
 
-      app_dir="$out/opt/brave.com/brave-origin-nightly"
-      browser_wrapper="$app_dir/brave-origin-nightly"
+      app_dir="$out/opt/brave.com/brave-origin-beta"
+      browser_wrapper="$app_dir/brave-origin-beta"
       browser_binary="$app_dir/brave"
 
       rm -rf "$app_dir/cron"
@@ -118,26 +118,26 @@
           "$exe"
       done
 
-      cat > "$out/bin/brave-origin-nightly" <<'EOF'
+      cat > "$out/bin/brave-origin-beta" <<'EOF'
       #!${pkgs.bash}/bin/bash
       XDG_CONFIG_HOME="''${XDG_CONFIG_HOME:-$HOME/.config}"
 
       USER_FLAGS=""
-      USER_FLAGS_FILE="$XDG_CONFIG_HOME/brave-origin-nightly-flags.conf"
+      USER_FLAGS_FILE="$XDG_CONFIG_HOME/brave-origin-beta-flags.conf"
       if [[ -f "$USER_FLAGS_FILE" ]]; then
         USER_FLAGS="$(sed 's/#.*//' "$USER_FLAGS_FILE")"
       fi
 
-      export CHROME_USER_DATA_DIR="''${CHROME_USER_DATA_DIR:-$HOME/.config/BraveSoftware/Brave-Origin-Nightly}"
+      export CHROME_USER_DATA_DIR="''${CHROME_USER_DATA_DIR:-$HOME/.config/BraveSoftware/Brave-Origin-Beta}"
       exec "@browser_wrapper@" $USER_FLAGS ''${BRAVE_FLAGS:-} ''${FLAG:-} "$@"
       EOF
-      substituteInPlace "$out/bin/brave-origin-nightly" \
+      substituteInPlace "$out/bin/brave-origin-beta" \
         --replace-fail "@browser_wrapper@" "$browser_wrapper"
-      chmod +x "$out/bin/brave-origin-nightly"
+      chmod +x "$out/bin/brave-origin-beta"
 
       for desktop_file in "$out/share/applications/"*.desktop; do
         substituteInPlace "$desktop_file" \
-          --replace-fail "/usr/bin/brave-origin-nightly" "$out/bin/brave-origin-nightly"
+          --replace-fail "/usr/bin/brave-origin-beta" "$out/bin/brave-origin-beta"
       done
 
       substituteInPlace "$app_dir/default-app-block" \
@@ -146,7 +146,7 @@
       for icon in 16 24 32 48 64 128 256; do
         install -d "$out/share/icons/hicolor/''${icon}x''${icon}/apps"
         ln -s "$app_dir/product_logo_''${icon}.png" \
-          "$out/share/icons/hicolor/''${icon}x''${icon}/apps/brave-origin-nightly.png"
+          "$out/share/icons/hicolor/''${icon}x''${icon}/apps/brave-origin-beta.png"
       done
 
       runHook postInstall
@@ -169,26 +169,26 @@
     '';
 
     installCheckPhase = ''
-      "$out/opt/brave.com/brave-origin-nightly/brave" --version
+      "$out/opt/brave.com/brave-origin-beta/brave" --version
     '';
 
     meta = {
       description = "Minimalist browser from the makers of Brave";
       homepage = "https://brave.com/origin/";
       license = lib.licenses.mpl20;
-      mainProgram = "brave-origin-nightly";
+      mainProgram = "brave-origin-beta";
       platforms = ["x86_64-linux"];
       sourceProvenance = with lib.sourceTypes; [binaryNativeCode];
     };
   };
 in {
   options.brave-origin = {
-    enable = lib.mkEnableOption "Enable Brave Origin Nightly via Home Manager";
+    enable = lib.mkEnableOption "Enable Brave Origin Beta via Home Manager";
 
     package = lib.mkOption {
       type = lib.types.package;
-      default = braveOriginNightly;
-      description = "The Brave Origin Nightly package installed for the user.";
+      default = braveOriginBeta;
+      description = "The Brave Origin Beta package installed for the user.";
     };
   };
 

@@ -23,6 +23,10 @@ in {
     configHome = "/home/${username}";
   };
 
+  environment.systemPackages = [
+    pkgs.bibata-cursors
+  ];
+
   # dms-greeter's niri launcher auto-includes this file when present.
   environment.etc."greetd/niri_overrides.kdl".text = ''
     cursor {
@@ -30,6 +34,12 @@ in {
       xcursor-size ${toString greeterCursorSize}
     }
   '';
+
+  systemd.services.greetd.environment = {
+    XCURSOR_THEME = greeterCursorTheme;
+    XCURSOR_SIZE = toString greeterCursorSize;
+    XCURSOR_PATH = "${pkgs.bibata-cursors}/share/icons:/run/current-system/sw/share/icons";
+  };
 
   # Keep user settings intact: only patch greeter cache copy.
   systemd.services.greetd.preStart = lib.mkAfter ''

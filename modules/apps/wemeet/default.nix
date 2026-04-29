@@ -105,9 +105,9 @@ in {
           fi
 
           if grep -q '^Name\[zh_CN\]=' "$desktop"; then
-            sed -i "s|^Name\[zh_CN\]=.*|Name[zh_CN]=腾讯会议|" "$desktop"
+            sed -i "s|^Name\[zh_CN\]=.*|Name[zh_CN]=WeMeet|" "$desktop"
           else
-            echo "Name[zh_CN]=腾讯会议" >> "$desktop"
+            echo "Name[zh_CN]=WeMeet" >> "$desktop"
           fi
 
           if grep -q '^Name\[zh_TW\]=' "$desktop"; then
