@@ -24,7 +24,6 @@ in {
 
   dms-shell = hmPackage "dms-shell";
   dms-quickshell = hmPackage "quickshell-wrapped";
-  niri = config.programs.niri.package;
 
   gamescope = config.programs.gamescope.package;
   heroic = hmPackage "heroic";
@@ -41,13 +40,30 @@ in {
   steam-run = systemPackage "steam-run";
 
   fluent-reader = hmPackage "fluent-reader";
+  file-roller = hmPackage "file-roller";
+  fcitx5-rime-with-data = pkgs.fcitx5-rime.override {
+    rimeDataPkgs = [
+      pkgs.rime-data
+      pkgs.rime-wanxiang
+    ];
+  };
+  fcitx5-with-addons = systemPackage "fcitx5-with-addons";
   qq = hmPackage "qq-sandboxed";
+  qimgv = hmPackage "qimgv";
+  neovim = systemPackage "neovim";
+  nh = systemPackage "nh";
+  nodejs = hmPackage "nodejs";
+  postgresql-and-plugins = systemPackage "postgresql-and-plugins";
+  protontricks = systemPackage "protontricks";
+  rime-wanxiang = pkgs.rime-wanxiang;
+  rime-wanxiang-lts-gram = pkgs.rime-wanxiang-lts-gram;
   tor-browser = hmPackage "tor-browser";
   vial = hmPackage "Vial";
   wechat = config.im.wechatPackage;
   wemeet = config.wemeet.package;
   wemeet-base = config.wemeet.basePackage;
   windows-fonts = inputs.chinese-fonts-overlay.packages.${system}.windows-fonts;
+  winbox = hmPackage "winbox";
   wps = hmPackage "wpsoffice-cn";
   zen-browser = hmPackage "zen-beta";
 

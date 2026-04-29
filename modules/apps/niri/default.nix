@@ -1,15 +1,12 @@
 {
   pkgs,
   lib,
-  inputs,
   ...
-}: let
-  niriPackage = inputs.niri-unstable.packages.${pkgs.stdenv.hostPlatform.system}.niri;
-in {
+}: {
   # Enable Niri
   programs.niri = {
     enable = true;
-    package = niriPackage;
+    package = pkgs.niri;
   };
 
   # 图形界面权限管理

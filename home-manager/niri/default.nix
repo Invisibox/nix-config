@@ -7,7 +7,6 @@
 } @ args: let
   cfg = config.modules.desktop.niri;
   confPath = "${config.home.homeDirectory}/Documents/nix-config/home-manager/niri";
-  niriPackage = inputs.niri-unstable.packages.${pkgs.stdenv.hostPlatform.system}.niri;
 in {
   imports = [
     # 保持这两个，DMS 需要它们
@@ -24,7 +23,7 @@ in {
       {
         programs.niri = {
           enable = true;
-          package = niriPackage;
+          package = pkgs.niri;
 
           # 🟢 修正：不要设置 config = {}，DMS 的模块可能改变了 config 的类型定义
           # 直接留空，让 DMS 模块去生成它所需的默认值，或者依靠下面的配置文件覆盖
@@ -60,7 +59,7 @@ in {
             includes = {
               enable = true;
               override = true;
-              originalFileName = "hm"; 
+              originalFileName = "hm";
               filesToInclude = ["alttab" "binds" "colors" "layout" "outputs" "wpblur"];
             };
             enableSpawn = false;

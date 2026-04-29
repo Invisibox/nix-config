@@ -5,7 +5,6 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 target_file="${repo_root}/overlays/default.nix"
 wanxiang_api_url="https://api.github.com/repos/amzxyz/rime_wanxiang/releases/latest"
 gram_api_url="https://api.github.com/repos/amzxyz/RIME-LMDG/releases/tags/LTS"
-wanxiang_asset_name="${WANXIANG_ASSET:-rime-wanxiang-base.zip}"
 gram_asset_name="wanxiang-lts-zh-hans.gram"
 
 if [[ ! -f "${target_file}" ]]; then
@@ -19,6 +18,12 @@ for cmd in curl jq nix sed; do
     exit 1
   fi
 done
+
+current_version="$(sed -n 's/^  rimeWanxiangVersion = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
+current_asset_name="$(sed -n 's/^  rimeWanxiangAssetName = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
+current_wanxiang_hash="$(sed -n 's/^  rimeWanxiangZipHash = "\(sha256-[^"]*\)";$/\1/p' "${target_file}" | head -n1)"
+current_gram_hash="$(sed -n 's/^  rimeWanxiangGramHash = "\(sha256-[^"]*\)";$/\1/p' "${target_file}" | head -n1)"
+wanxiang_asset_name="${WANXIANG_ASSET:-${current_asset_name:-rime-wanxiang-flypy-fuzhu.zip}}"
 
 github_headers=(-H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28")
 if [[ -n "${GITHUB_TOKEN:-}" ]]; then
@@ -92,11 +97,6 @@ fi
 
 IFS=$'\t' read -r gram_asset_url gram_asset_digest <<<"${gram_asset_info}"
 gram_hash="$(hash_from_asset "${gram_asset_url}" "${gram_asset_digest}")"
-
-current_version="$(sed -n 's/^  rimeWanxiangVersion = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
-current_asset_name="$(sed -n 's/^  rimeWanxiangAssetName = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
-current_wanxiang_hash="$(sed -n 's/^  rimeWanxiangZipHash = "\(sha256-[^"]*\)";$/\1/p' "${target_file}" | head -n1)"
-current_gram_hash="$(sed -n 's/^  rimeWanxiangGramHash = "\(sha256-[^"]*\)";$/\1/p' "${target_file}" | head -n1)"
 
 if [[ "${current_version}" == "${version}" && "${current_asset_name}" == "${wanxiang_asset_name}" && "${current_wanxiang_hash}" == "${wanxiang_hash}" && "${current_gram_hash}" == "${gram_hash}" ]]; then
   echo "rime-wanxiang is already up to date (${version})"
