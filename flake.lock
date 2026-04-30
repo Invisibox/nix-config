@@ -30,11 +30,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1777170350,
-        "narHash": "sha256-Dm7hJHGmvVJsmZhS7cpeQ9GCtoqGEeKhfLXUvOvX3RI=",
+        "lastModified": 1777568079,
+        "narHash": "sha256-yTMkffmNpncEoPQ2stK4Zl2bmYsY/Sb5t/KeAFvbCJY=",
         "owner": "daeuniverse",
         "repo": "flake.nix",
-        "rev": "7f12ba9f0b69847e274bf15b1adad9d571cb79ef",
+        "rev": "cae4d89284d3ee8899c31610e370eb50bc8bad0a",
         "type": "github"
       },
       "original": {
@@ -261,11 +261,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1777484394,
-        "narHash": "sha256-03QK/lM/m4f1FjC4ldYtp8NobTGRdwGC24XBY6Vcdqo=",
+        "lastModified": 1777564084,
+        "narHash": "sha256-O9VRkxg+2j+sh+c73wi4VeIBECoqW2PlnCR9Qe1nQKA=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "274e039947393bc90f45b8fc6d1af23e45937af0",
+        "rev": "d93443c0f6fdb3b179bed68856f322dba4842612",
         "type": "github"
       },
       "original": {
