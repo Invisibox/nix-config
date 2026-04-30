@@ -29,22 +29,46 @@ fi
 
 cd "${repo_root}"
 
+failures=()
+
 for script_path in "${update_scripts[@]}"; do
   script_name="${script_path##*/}"
 
   if [[ ! -x "${script_path}" ]]; then
     echo "error: update script is not executable: ${script_path}" >&2
-    exit 1
+    failures+=("${script_name} (not executable)")
+    continue
   fi
 
   echo
   echo "==> ${script_name}"
-  "${script_path}"
+  if "${script_path}"; then
+    echo "==> ${script_name} completed"
+  else
+    status=$?
+    echo "error: ${script_name} failed with exit status ${status}" >&2
+    failures+=("${script_name} (${status})")
+  fi
 done
 
 echo
 echo "==> nix flake show --no-write-lock-file"
-nix flake show --no-write-lock-file "${repo_root}" >/dev/null
+if nix flake show --no-write-lock-file "${repo_root}" >/dev/null; then
+  echo "==> nix flake show completed"
+else
+  status=$?
+  echo "error: nix flake show failed with exit status ${status}" >&2
+  failures+=("nix flake show (${status})")
+fi
+
+if (( ${#failures[@]} > 0 )); then
+  echo
+  echo "update scripts completed with failures:" >&2
+  for failure in "${failures[@]}"; do
+    echo "  - ${failure}" >&2
+  done
+  exit 1
+fi
 
 echo
 echo "all update scripts completed"
