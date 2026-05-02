@@ -32,6 +32,8 @@ builds:
     - "packages.*.steam"
     - "packages.*.steam-game-wrapper"
     - "packages.*.steam-run"
+    - "packages.*.texlive-combined-full"
+    - "packages.*.thunderbird"
     - "packages.*.tor-browser"
     - "packages.*.vial"
     - "packages.*.waydroid"

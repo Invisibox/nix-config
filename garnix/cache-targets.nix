@@ -25,7 +25,7 @@ in {
   dms-shell = hmPackage "dms-shell";
   dms-quickshell = hmPackage "quickshell-wrapped";
 
-  gamescope = config.programs.gamescope.package;
+  gamescope = systemPackage "gamescope";
   heroic = hmPackage "heroic";
   lobehub-desktop = config.lobehub.package;
   mpv = config.home-manager.users.zh.programs.mpv.package;
@@ -57,6 +57,8 @@ in {
   protontricks = systemPackage "protontricks";
   rime-wanxiang = pkgs.rime-wanxiang;
   rime-wanxiang-lts-gram = pkgs.rime-wanxiang-lts-gram;
+  texlive-combined-full = hmPackage "texlive-combined-full";
+  thunderbird = hmPackage "thunderbird";
   tor-browser = hmPackage "tor-browser";
   vial = hmPackage "Vial";
   wechat = config.im.wechatPackage;
