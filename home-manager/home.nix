@@ -198,8 +198,8 @@
 
   qt = {
     enable = true;
-    # style.package = with pkgs; [darkly-qt5 darkly];
-    platformTheme.name = "qtct";
+    style.name = "adwaita";
+    platformTheme.name = "gnome";
   };
 
   programs.atuin = {
