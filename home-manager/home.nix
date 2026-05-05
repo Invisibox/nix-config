@@ -99,7 +99,8 @@
     cmake
     nodejs
 
-    qgnomeplatform
+    libsForQt5.qt5ct
+    qt6Packages.qt6ct
   ];
 
   home.sessionVariables = {
@@ -107,6 +108,11 @@
     XCURSOR_THEME = "Bibata-Modern-Ice";
     XCURSOR_SIZE = "20";
     XCURSOR_PATH = "${pkgs.bibata-cursors}/share/icons:/run/current-system/sw/share/icons";
+    QT_QPA_PLATFORMTHEME_QT6 = "qt6ct";
+  };
+
+  systemd.user.sessionVariables = {
+    QT_QPA_PLATFORMTHEME_QT6 = "qt6ct";
   };
 
   # Declarative MIME default app bindings.
@@ -126,7 +132,7 @@
       "x-scheme-handler/https" = ["zen-beta.desktop"];
 
       # Documents and text
-      "application/pdf" = ["okularApplication_pdf.desktop"];
+      "application/pdf" = ["wps-office-pdf.desktop"];
       "text/plain" = ["org.kde.kate.desktop"];
       "text/markdown" = ["org.kde.kate.desktop"];
       "application/json" = ["org.kde.kate.desktop"];
@@ -198,8 +204,7 @@
 
   qt = {
     enable = true;
-    style.name = "adwaita";
-    platformTheme.name = "gnome";
+    platformTheme.name = "qtct";
   };
 
   programs.atuin = {
