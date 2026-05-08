@@ -145,7 +145,15 @@
 
       for icon in 16 24 32 48 64 128 256; do
         install -d "$out/share/icons/hicolor/''${icon}x''${icon}/apps"
-        ln -s "$app_dir/product_logo_''${icon}.png" \
+        logo="$app_dir/product_logo_''${icon}.png"
+        if [[ ! -e "$logo" ]]; then
+          logo="$app_dir/product_logo_''${icon}_beta.png"
+        fi
+        if [[ ! -e "$logo" ]]; then
+          echo "missing icon asset: $logo" >&2
+          exit 1
+        fi
+        ln -s "$logo" \
           "$out/share/icons/hicolor/''${icon}x''${icon}/apps/brave-origin-beta.png"
       done
 
