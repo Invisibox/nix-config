@@ -37,8 +37,10 @@ in {
       nativeBuildInputs = [pkgs.makeWrapper];
       postBuild = ''
         rm -f "$out/bin/wemeet"
+        # Avoid Qt's xcb GLX integration aborting during WebEngine startup.
         makeWrapper "${pkgsStable.wemeet}/bin/wemeet-xwayland" "$out/bin/wemeet" \
           --set QT_QPA_PLATFORM "xcb" \
+          --set QT_XCB_GL_INTEGRATION "none" \
           --set SDL_VIDEODRIVER "x11" \
           --set GDK_BACKEND "x11" \
           --unset WAYLAND_DISPLAY \
@@ -54,6 +56,8 @@ in {
       export NIXOS_OZONE_WL=""
       export ELECTRON_OZONE_PLATFORM_HINT=x11
       export QT_QPA_PLATFORM=xcb
+      # Avoid Qt's xcb GLX integration aborting during WebEngine startup.
+      export QT_XCB_GL_INTEGRATION=none
       export SDL_VIDEODRIVER=x11
       export GDK_BACKEND=x11
 
@@ -148,6 +152,7 @@ in {
       unshareUts = true;
       unshareCgroup = true;
       privateTmp = true;
+      chdirToPwd = false;
 
       meta =
         (wemeetBase.meta or {})
