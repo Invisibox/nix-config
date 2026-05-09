@@ -52,6 +52,7 @@ in {
   qimgv = hmPackage "qimgv";
   neovim = systemPackage "neovim";
   nh = systemPackage "nh";
+  niri = pkgs.niri;
   nodejs = hmPackage "nodejs";
   postgresql-and-plugins = systemPackage "postgresql-and-plugins";
   protontricks = systemPackage "protontricks";

@@ -17,6 +17,7 @@ builds:
     - "packages.*.nautilus-env"
     - "packages.*.neovim"
     - "packages.*.nh"
+    - "packages.*.niri"
     - "packages.*.nodejs"
     - "packages.*.obs-cmd"
     - "packages.*.obs-studio"
