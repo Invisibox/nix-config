@@ -1,11 +1,21 @@
 {...}: let
-  rimeWanxiangVersion = "15.9.11";
+  rimeWanxiangVersion = "15.9.12";
   rimeWanxiangAssetName = "rime-wanxiang-flypy-fuzhu.zip";
-  rimeWanxiangZipHash = "sha256-6i1+e27LsHVHwAM1jJzKRj/WDwDvM6UDZMKVljDzWIE=";
+  rimeWanxiangZipHash = "sha256-VeG7GWfdiAY8QoT/tDdILw18BvRzP32Wire39t/lkNM=";
   rimeWanxiangGramHash = "sha256-X6yS5xlIUecWaYw6GqGFVgtzSHOxrIr/hnv3iYJA5j0=";
 in {
   nixpkgs.overlays = [
     (final: prev: {
+      niri = prev.niri.overrideAttrs (old: {
+        patches = (old.patches or []) ++ [
+          (prev.fetchpatch {
+            name = "niri-support-shm-sharing.patch";
+            url = "https://github.com/wrvsrx/niri/compare/tag_support-shm-sharing_4~19..tag_support-shm-sharing_4.patch";
+            hash = "sha256-LLbzjrUmCXOCqboGKFc19Lw7hyE2tMHJdadWtltfn5U=";
+          })
+        ];
+      });
+
       proton-em = prev.callPackage ./proton-em {};
       proton-ge = final.proton-ge-bin.override {
         steamDisplayName = "Proton GE";
