@@ -7,6 +7,7 @@
     ./im
     ./lobehub
     ./localsend
+    ./moonlight
     ./niri
     ./nix-ld
     ./obs

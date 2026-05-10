@@ -29,6 +29,7 @@ in {
   heroic = hmPackage "heroic";
   lobehub-desktop = config.lobehub.package;
   mpv = config.home-manager.users.zh.programs.mpv.package;
+  moonlight = hmPackage "moonlight-qt";
   nautilus-env = hmPackage "nautilus-env";
   obs-studio = config.home-manager.users.zh.programs.obs-studio.finalPackage;
   obs-cmd = hmPackage "obs-cmd";

@@ -223,6 +223,7 @@
   brave-origin.enable = true; # Install Brave Origin Nightly via Home Manager.
   lobehub.enable = true; # Enable LobeHub Desktop.
   localsend.enable = true; # Install LocalSend via Home Manager.
+  moonlight.enable = true; # Install Moonlight client via Home Manager.
   im.enable = true; # Install sandboxed WeChat/QQ via Home Manager.
   rustdesk = {
     enable = true; # Enable RustDesk client (controller/controlled endpoint).
