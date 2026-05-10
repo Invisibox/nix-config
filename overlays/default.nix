@@ -2,7 +2,7 @@
   rimeWanxiangVersion = "15.9.12";
   rimeWanxiangAssetName = "rime-wanxiang-flypy-fuzhu.zip";
   rimeWanxiangZipHash = "sha256-VeG7GWfdiAY8QoT/tDdILw18BvRzP32Wire39t/lkNM=";
-  rimeWanxiangGramHash = "sha256-X6yS5xlIUecWaYw6GqGFVgtzSHOxrIr/hnv3iYJA5j0=";
+  rimeWanxiangGramHash = "sha256-PtvtUZBzLoN7ZaGGoryht9qeYOY0kOTwPIk+tHm89e0=";
 in {
   nixpkgs.overlays = [
     (final: prev: {
