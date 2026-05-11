@@ -1,6 +1,7 @@
 {
   imports = [
     ./brave-origin
+    ./bottles
     ./daed
     ./gamescope
     ./heroic

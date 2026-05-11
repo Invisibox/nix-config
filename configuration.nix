@@ -230,7 +230,7 @@
     openFirewall = true; # Open RustDesk peer ports (client use, not relay server).
   };
 
-  # bottles.enable = true; # Enable Bottles.
+  bottles.enable = true; # Enable Bottles.
 
   # lutris.enable = true; # Enable Lutris.
 
