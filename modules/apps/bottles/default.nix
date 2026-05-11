@@ -226,6 +226,7 @@ in
             (bottlesPkgs.bottles.override {
               removeWarningPopup = true;
             })
+            pkgs.vulkan-tools
           ];
         };
         xdg = {

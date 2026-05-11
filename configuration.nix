@@ -286,6 +286,7 @@
     xsettingsd
     xrdb
     xdg-desktop-portal-gtk
+    vulkan-tools
     pavucontrol
     dconf-editor
   ];

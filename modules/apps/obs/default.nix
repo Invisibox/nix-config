@@ -4,11 +4,9 @@
   username,
   pkgs,
   ...
-}:
-let
+}: let
   cfg = config.obs;
-in
-{
+in {
   options = {
     obs = {
       enable = lib.mkEnableOption "Enable obs in home-manager";
@@ -25,16 +23,11 @@ in
   config = lib.mkIf cfg.enable {
     home-manager.users.${username} = {
       home = {
-        packages =
-          with pkgs;
+        packages = with pkgs;
           lib.mkIf cfg.enableNative [
             obs-cmd
           ];
-        sessionVariables = {
-          # https://github.com/nowrep/obs-vkcapture/issues/14#issuecomment-322237961
-          VK_INSTANCE_LAYERS = "VK_LAYER_MANGOHUD_overlay_x86:VK_LAYER_MANGOHUD_overlay_x86_64:VK_LAYER_OBS_vkcapture_32:VK_LAYER_OBS_vkcapture_64";
-        }
-        // lib.optionalAttrs cfg.silenceOutput {
+        sessionVariables = lib.optionalAttrs cfg.silenceOutput {
           OBS_VKCAPTURE_QUIET = "1";
         };
       };
