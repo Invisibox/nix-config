@@ -1,5 +1,6 @@
 builds:
   include:
+    - "packages.*.bottles"
     - "packages.*.brave-origin"
     - "packages.*.dae"
     - "packages.*.daed"

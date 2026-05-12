@@ -261,6 +261,7 @@
     tproxyPort = 12345;
   };
 
+  texlive.enable = true;
   wps.enable = true;
   wemeet.enable = true;
 

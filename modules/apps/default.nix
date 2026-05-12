@@ -15,6 +15,7 @@
     ./rustdesk
     ./dms-greeter
     ./steam
+    ./texlive
     ./virtualization
     ./waydroid
     ./wemeet
