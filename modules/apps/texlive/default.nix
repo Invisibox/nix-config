@@ -26,7 +26,7 @@ in {
         # inputs.chinese-fonts-overlay.packages.${pkgs.stdenv.hostPlatform.system}.windows-fonts
       '';
       description = ''
-        Font package exposed only to TeX Live via dedicated FONTCONFIG_FILE and OSFONTDIR.
+        Font package exposed to TeX Live via a merged FONTCONFIG_FILE.
         If null, fallback to windows-fonts from chinese-fonts-overlay when TeX Live is enabled.
       '';
     };
@@ -41,13 +41,35 @@ in {
       then defaultWindowsFontsPackage
       else cfg.windowsFontsPackage;
 
-    texliveFontsConf = pkgs.writeText "texlive-fonts.conf" ''
+    texliveFontsConf = pkgs.runCommand "texlive-fonts.conf" { } ''
+      texlive_fonts_conf=""
+
+      for bin in "${cfg.package}/bin"/*; do
+        if [ -f "$bin" ]; then
+          texlive_fonts_conf="$(
+            sed -n "s|.*FONTCONFIG_FILE=.*'\([^']*fonts\.conf\)'.*|\1|p" "$bin" \
+              | head -n 1
+          )"
+
+          if [ -n "$texlive_fonts_conf" ]; then
+            break
+          fi
+        fi
+      done
+
+      if [ -z "$texlive_fonts_conf" ]; then
+        echo "could not find TeX Live's generated FONTCONFIG_FILE in ${cfg.package}/bin" >&2
+        exit 1
+      fi
+
+      cat > "$out" <<EOF
       <?xml version="1.0"?>
       <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
       <fontconfig>
-        <reset-dirs />
+        <include>$texlive_fonts_conf</include>
         <dir>${windowsFontsPackage}/share/fonts</dir>
       </fontconfig>
+      EOF
     '';
 
     wrappedTexlivePackage = pkgs.symlinkJoin {
@@ -55,9 +77,9 @@ in {
       paths = [ cfg.package ];
       nativeBuildInputs = [ pkgs.makeWrapper ];
       postBuild = ''
-        # TeX engine aliases such as xelatex -> xetex derive formats from the
-        # program name. Build wrappers that call the original package directly
-        # instead of wrapping the symlink-joined aliases in place.
+        # TeX Live's combined package already ships generated launcher wrappers
+        # with their own FONTCONFIG_FILE defaults. Wrap those launchers from the
+        # outside so this fontconfig file wins before the internal launcher runs.
         rm -rf "$out/bin"
         mkdir -p "$out/bin"
 
@@ -66,8 +88,7 @@ in {
 
           if [ -x "$bin" ] && [ ! -d "$bin" ]; then
             makeWrapper "$bin" "$out/bin/$bin_name" \
-              --set FONTCONFIG_FILE "${texliveFontsConf}" \
-              --set OSFONTDIR "${windowsFontsPackage}/share/fonts//"
+              --set FONTCONFIG_FILE "${texliveFontsConf}"
           else
             ln -s "$bin" "$out/bin/$bin_name"
           fi
