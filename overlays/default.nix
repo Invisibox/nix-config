@@ -7,13 +7,15 @@ in {
   nixpkgs.overlays = [
     (final: prev: {
       niri = prev.niri.overrideAttrs (old: {
-        patches = (old.patches or []) ++ [
-          (prev.fetchpatch {
-            name = "niri-support-shm-sharing.patch";
-            url = "https://github.com/wrvsrx/niri/compare/tag_support-shm-sharing_4~19..tag_support-shm-sharing_4.patch";
-            hash = "sha256-mfX0CVJWSFb/Hr1lDvlggphpXc2PI6C5CBa+aGwkVIM=";
-          })
-        ];
+        patches =
+          (old.patches or [])
+          ++ [
+            (prev.fetchpatch {
+              name = "niri-support-shm-sharing.patch";
+              url = "https://github.com/wrvsrx/niri/compare/tag_support-shm-sharing_4~19..tag_support-shm-sharing_4.patch";
+              hash = "sha256-mfX0CVJWSFb/Hr1lDvlggphpXc2PI6C5CBa+aGwkVIM=";
+            })
+          ];
       });
 
       proton-em = prev.callPackage ./proton-em {};

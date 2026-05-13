@@ -7,7 +7,6 @@
   ...
 }: let
   cfg = config.wps;
-
 in {
   options.wps = {
     enable = lib.mkEnableOption "Enable WPS Office (wpsoffice-cn)";
@@ -63,7 +62,7 @@ in {
     # WPS bundles its own Qt stack and may fail to pick up input method settings
     # in some Wayland/XWayland setups. Wrap launchers explicitly for IME env.
     wrappedWpsPackage = cfg.package.overrideAttrs (old: {
-      nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ pkgs.makeWrapper ];
+      nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pkgs.makeWrapper];
       postFixup =
         (old.postFixup or "")
         + ''

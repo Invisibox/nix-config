@@ -13,16 +13,16 @@
       then glob
       else "~/.config/zsh/${glob}";
   in
-  # sh
-  ''
-    ${config.programs.zsh.package}/bin/zsh -dfc '
-      setopt extendedglob globstarshort dotglob nullglob
-      for f in ${globExpr}; do
-        [[ -f $f ]] || continue
-        zcompile -U -- "$f" 2>/dev/null
-      done
-    ' || :
-  '';
+    # sh
+    ''
+      ${config.programs.zsh.package}/bin/zsh -dfc '
+        setopt extendedglob globstarshort dotglob nullglob
+        for f in ${globExpr}; do
+          [[ -f $f ]] || continue
+          zcompile -U -- "$f" 2>/dev/null
+        done
+      ' || :
+    '';
 
   # make a derivation out of a plugin's name and source.
   # will zcompile it automatically. optionally, the unpack

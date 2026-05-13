@@ -4,11 +4,9 @@
   pkgs,
   username,
   ...
-}:
-let
+}: let
   cfg = config.virtualization;
-in
-{
+in {
   options = {
     virtualization = {
       enable = lib.mkEnableOption "Enable virtualization in NixOS & home-manager";
@@ -38,7 +36,7 @@ in
       ];
     };
 
-    networking.firewall.trustedInterfaces = [ "virbr0" ];
+    networking.firewall.trustedInterfaces = ["virbr0"];
 
     programs.virt-manager.enable = true;
 
@@ -62,7 +60,7 @@ in
         enable = true;
         qemu = {
           swtpm.enable = true;
-          vhostUserPackages = with pkgs; [ virtiofsd ];
+          vhostUserPackages = with pkgs; [virtiofsd];
         };
       };
       spiceUSBRedirection.enable = true;
@@ -90,10 +88,10 @@ in
         };
       };
       groups = {
-        nixosvmtest = { };
+        nixosvmtest = {};
       };
     };
 
-    home-manager.users.${username} = { };
+    home-manager.users.${username} = {};
   };
 }

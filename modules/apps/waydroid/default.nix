@@ -31,7 +31,10 @@ in {
 
     package = lib.mkOption {
       type = lib.types.package;
-      default = if preferNftables then pkgs.waydroid-nftables else pkgs.waydroid;
+      default =
+        if preferNftables
+        then pkgs.waydroid-nftables
+        else pkgs.waydroid;
       defaultText = lib.literalExpression ''
         if config.networking.nftables.enable
         || lib.versionAtLeast (lib.getVersion config.boot.kernelPackages.kernel) "6.17"

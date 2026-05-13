@@ -4,8 +4,7 @@
   username,
   pkgs,
   ...
-}:
-let
+}: let
   cfg = config.bottles;
   bottlesPkgs = pkgs.extend (_final: prev: {
     openldap = prev.openldap.overrideAttrs (_: {
@@ -46,15 +45,14 @@ let
       runHook postInstall
     '';
   };
-  mkBottlesComponent =
-    {
-      pname,
-      url,
-      hash,
-      installPath,
-      sourceDir ? "",
-      ...
-    }:
+  mkBottlesComponent = {
+    pname,
+    url,
+    hash,
+    installPath,
+    sourceDir ? "",
+    ...
+  }:
     pkgs.stdenvNoCC.mkDerivation {
       name = pname;
       src = pkgs.fetchurl {
@@ -79,15 +77,14 @@ let
         runHook postInstall
       '';
     };
-  mkBottlesRunner =
-    {
-      pname,
-      url,
-      hash,
-      runnerName,
-      sourceDir ? "",
-      ...
-    }:
+  mkBottlesRunner = {
+    pname,
+    url,
+    hash,
+    runnerName,
+    sourceDir ? "",
+    ...
+  }:
     pkgs.stdenvNoCC.mkDerivation {
       name = pname;
       src = pkgs.fetchurl {
@@ -165,114 +162,122 @@ let
     runnerName = "soda-nix";
     sourceDir = "soda-9.0-1-x86_64";
   };
-  runtimeComponent = mkBottlesComponent (runtimeComponentInfo // {
-    pname = "bottles-${runtimeComponentInfo.name}";
-    installPath = "runtimes/${runtimeComponentInfo.name}";
-  });
-  dxvkComponent = mkBottlesComponent (dxvkComponentInfo // {
-    pname = "bottles-${dxvkComponentInfo.name}";
-    installPath = "dxvk/${dxvkComponentInfo.name}";
-  });
-  vkd3dComponent = mkBottlesComponent (vkd3dComponentInfo // {
-    pname = "bottles-${vkd3dComponentInfo.name}";
-    installPath = "vkd3d/${vkd3dComponentInfo.name}";
-  });
-  nvapiComponent = mkBottlesComponent (nvapiComponentInfo // {
-    pname = "bottles-${nvapiComponentInfo.name}";
-    installPath = "nvapi/${nvapiComponentInfo.name}";
-  });
-  latencyflexComponent = mkBottlesComponent (latencyflexComponentInfo // {
-    pname = "bottles-${latencyflexComponentInfo.name}";
-    installPath = "latencyflex/${latencyflexComponentInfo.name}";
-  });
+  runtimeComponent = mkBottlesComponent (runtimeComponentInfo
+    // {
+      pname = "bottles-${runtimeComponentInfo.name}";
+      installPath = "runtimes/${runtimeComponentInfo.name}";
+    });
+  dxvkComponent = mkBottlesComponent (dxvkComponentInfo
+    // {
+      pname = "bottles-${dxvkComponentInfo.name}";
+      installPath = "dxvk/${dxvkComponentInfo.name}";
+    });
+  vkd3dComponent = mkBottlesComponent (vkd3dComponentInfo
+    // {
+      pname = "bottles-${vkd3dComponentInfo.name}";
+      installPath = "vkd3d/${vkd3dComponentInfo.name}";
+    });
+  nvapiComponent = mkBottlesComponent (nvapiComponentInfo
+    // {
+      pname = "bottles-${nvapiComponentInfo.name}";
+      installPath = "nvapi/${nvapiComponentInfo.name}";
+    });
+  latencyflexComponent = mkBottlesComponent (latencyflexComponentInfo
+    // {
+      pname = "bottles-${latencyflexComponentInfo.name}";
+      installPath = "latencyflex/${latencyflexComponentInfo.name}";
+    });
   caffeRunner = mkBottlesRunner ({
-    pname = caffeRunnerInfo.name;
-  } // caffeRunnerInfo);
+      pname = caffeRunnerInfo.name;
+    }
+    // caffeRunnerInfo);
   sodaRunner = mkBottlesRunner ({
-    pname = sodaRunnerInfo.name;
-  } // sodaRunnerInfo);
-in
-{
+      pname = sodaRunnerInfo.name;
+    }
+    // sodaRunnerInfo);
+in {
   options = {
     bottles = {
       enable = lib.mkEnableOption "Enable Bottles in home-manager";
     };
   };
   config = lib.mkIf cfg.enable {
-    home-manager.users.${username} =
-      { config, pkgs, ... }:
-      {
-        home = {
-          file = {
-            bottles-links-caffe = {
-              source = "${caffeRunner}/share/steam/compatibilitytools.d/caffe-nix";
-              target = "${config.xdg.dataHome}/bottles/runners/caffe-nix";
-            };
-            bottles-links-soda = {
-              source = "${sodaRunner}/share/steam/compatibilitytools.d/soda-nix";
-              target = "${config.xdg.dataHome}/bottles/runners/soda-nix";
-            };
-            bottles-winebridge-version = {
-              source = "${winebridge}/share/bottles/winebridge/VERSION";
-              target = "${config.xdg.dataHome}/bottles/winebridge/VERSION";
-              force = true;
-            };
-            bottles-winebridge-exe = {
-              source = "${winebridge}/share/bottles/winebridge/WineBridge.exe";
-              target = "${config.xdg.dataHome}/bottles/winebridge/WineBridge.exe";
-              force = true;
-            };
-            bottles-runtime = {
-              source = "${runtimeComponent}/share/bottles/runtimes/${runtimeComponentInfo.name}";
-              target = "${config.xdg.dataHome}/bottles/runtimes/${runtimeComponentInfo.name}";
-            };
-            bottles-dxvk = {
-              source = "${dxvkComponent}/share/bottles/dxvk/${dxvkComponentInfo.name}";
-              target = "${config.xdg.dataHome}/bottles/dxvk/${dxvkComponentInfo.name}";
-            };
-            bottles-vkd3d = {
-              source = "${vkd3dComponent}/share/bottles/vkd3d/${vkd3dComponentInfo.name}";
-              target = "${config.xdg.dataHome}/bottles/vkd3d/${vkd3dComponentInfo.name}";
-            };
-            bottles-nvapi = {
-              source = "${nvapiComponent}/share/bottles/nvapi/${nvapiComponentInfo.name}";
-              target = "${config.xdg.dataHome}/bottles/nvapi/${nvapiComponentInfo.name}";
-            };
-            bottles-latencyflex = {
-              source = "${latencyflexComponent}/share/bottles/latencyflex/${latencyflexComponentInfo.name}";
-              target = "${config.xdg.dataHome}/bottles/latencyflex/${latencyflexComponentInfo.name}";
-            };
-            proton-links-proton-em-bottles = {
-              source = pkgs.proton-em.steamcompattool;
-              target = "${config.xdg.dataHome}/bottles/runners/proton-em-nix";
-            };
-            proton-links-proton-ge-bottles = {
-              source = pkgs.proton-ge.steamcompattool;
-              target = "${config.xdg.dataHome}/bottles/runners/proton-ge-nix";
-            };
+    home-manager.users.${username} = {
+      config,
+      pkgs,
+      ...
+    }: {
+      home = {
+        file = {
+          bottles-links-caffe = {
+            source = "${caffeRunner}/share/steam/compatibilitytools.d/caffe-nix";
+            target = "${config.xdg.dataHome}/bottles/runners/caffe-nix";
           };
-          packages = [
-            (bottlesPkgs.bottles.override {
-              removeWarningPopup = true;
-            })
-            pkgs.vulkan-tools
-          ];
-        };
-        xdg = {
-          desktopEntries."com.usebottles.bottles" = {
-            name = "Bottles";
-            comment = "Run Windows software";
-            exec = "env PROTON_ENABLE_HDR=1 PROTON_USE_WOW64=1 PIPEWIRE_NODE=Game PULSE_SINK=Game bottles %u";
-            terminal = false;
-            icon = "com.usebottles.bottles";
-            type = "Application";
-            startupNotify = true;
-            categories = [ "Utility" ];
+          bottles-links-soda = {
+            source = "${sodaRunner}/share/steam/compatibilitytools.d/soda-nix";
+            target = "${config.xdg.dataHome}/bottles/runners/soda-nix";
           };
-          mimeApps.defaultApplications."x-scheme-handler/bottles" = [
-            "com.usebottles.bottles.desktop"
-          ];
+          bottles-winebridge-version = {
+            source = "${winebridge}/share/bottles/winebridge/VERSION";
+            target = "${config.xdg.dataHome}/bottles/winebridge/VERSION";
+            force = true;
+          };
+          bottles-winebridge-exe = {
+            source = "${winebridge}/share/bottles/winebridge/WineBridge.exe";
+            target = "${config.xdg.dataHome}/bottles/winebridge/WineBridge.exe";
+            force = true;
+          };
+          bottles-runtime = {
+            source = "${runtimeComponent}/share/bottles/runtimes/${runtimeComponentInfo.name}";
+            target = "${config.xdg.dataHome}/bottles/runtimes/${runtimeComponentInfo.name}";
+          };
+          bottles-dxvk = {
+            source = "${dxvkComponent}/share/bottles/dxvk/${dxvkComponentInfo.name}";
+            target = "${config.xdg.dataHome}/bottles/dxvk/${dxvkComponentInfo.name}";
+          };
+          bottles-vkd3d = {
+            source = "${vkd3dComponent}/share/bottles/vkd3d/${vkd3dComponentInfo.name}";
+            target = "${config.xdg.dataHome}/bottles/vkd3d/${vkd3dComponentInfo.name}";
+          };
+          bottles-nvapi = {
+            source = "${nvapiComponent}/share/bottles/nvapi/${nvapiComponentInfo.name}";
+            target = "${config.xdg.dataHome}/bottles/nvapi/${nvapiComponentInfo.name}";
+          };
+          bottles-latencyflex = {
+            source = "${latencyflexComponent}/share/bottles/latencyflex/${latencyflexComponentInfo.name}";
+            target = "${config.xdg.dataHome}/bottles/latencyflex/${latencyflexComponentInfo.name}";
+          };
+          proton-links-proton-em-bottles = {
+            source = pkgs.proton-em.steamcompattool;
+            target = "${config.xdg.dataHome}/bottles/runners/proton-em-nix";
+          };
+          proton-links-proton-ge-bottles = {
+            source = pkgs.proton-ge.steamcompattool;
+            target = "${config.xdg.dataHome}/bottles/runners/proton-ge-nix";
+          };
         };
+        packages = [
+          (bottlesPkgs.bottles.override {
+            removeWarningPopup = true;
+          })
+          pkgs.vulkan-tools
+        ];
       };
+      xdg = {
+        desktopEntries."com.usebottles.bottles" = {
+          name = "Bottles";
+          comment = "Run Windows software";
+          exec = "env PROTON_ENABLE_HDR=1 PROTON_USE_WOW64=1 PIPEWIRE_NODE=Game PULSE_SINK=Game bottles %u";
+          terminal = false;
+          icon = "com.usebottles.bottles";
+          type = "Application";
+          startupNotify = true;
+          categories = ["Utility"];
+        };
+        mimeApps.defaultApplications."x-scheme-handler/bottles" = [
+          "com.usebottles.bottles.desktop"
+        ];
+      };
+    };
   };
 }

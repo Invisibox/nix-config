@@ -47,12 +47,20 @@ in {
 
     if [ -f settings.json ]; then
       ${jq} --arg greeterFontFamily "${greeterFontFamily}" \
-        '.greeterShowSeconds = ${if greeterShowSeconds then "true" else "false"} | .greeterFontFamily = $greeterFontFamily' \
+        '.greeterShowSeconds = ${
+      if greeterShowSeconds
+      then "true"
+      else "false"
+    } | .greeterFontFamily = $greeterFontFamily' \
         settings.json > settings.tmp
       mv settings.tmp settings.json
     else
       ${jq} -n --arg greeterFontFamily "${greeterFontFamily}" \
-        '{"greeterShowSeconds": ${if greeterShowSeconds then "true" else "false"}, "greeterFontFamily": $greeterFontFamily}' \
+        '{"greeterShowSeconds": ${
+      if greeterShowSeconds
+      then "true"
+      else "false"
+    }, "greeterFontFamily": $greeterFontFamily}' \
         > settings.json
     fi
   '';

@@ -41,7 +41,7 @@ in {
       then defaultWindowsFontsPackage
       else cfg.windowsFontsPackage;
 
-    texliveFontsConf = pkgs.runCommand "texlive-fonts.conf" { } ''
+    texliveFontsConf = pkgs.runCommand "texlive-fonts.conf" {} ''
       texlive_fonts_conf=""
 
       for bin in "${cfg.package}/bin"/*; do
@@ -74,8 +74,8 @@ in {
 
     wrappedTexlivePackage = pkgs.symlinkJoin {
       name = cfg.package.name or "texlive-combined-full";
-      paths = [ cfg.package ];
-      nativeBuildInputs = [ pkgs.makeWrapper ];
+      paths = [cfg.package];
+      nativeBuildInputs = [pkgs.makeWrapper];
       postBuild = ''
         # TeX Live's combined package already ships generated launcher wrappers
         # with their own FONTCONFIG_FILE defaults. Wrap those launchers from the

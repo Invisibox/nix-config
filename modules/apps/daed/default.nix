@@ -4,8 +4,7 @@
   pkgs,
   inputs,
   ...
-}:
-let
+}: let
   cfg = config.daed;
   system = pkgs.stdenv.hostPlatform.system;
   daePackages = inputs.daeuniverse.packages.${system};
@@ -25,11 +24,10 @@ let
       "--listen"
       listen
     ]
-    ++ lib.optionals cfg.apiOnly [ "--api-only" ]
-    ++ lib.optionals cfg.disableTimestamp [ "--disable-timestamp" ]
+    ++ lib.optionals cfg.apiOnly ["--api-only"]
+    ++ lib.optionals cfg.disableTimestamp ["--disable-timestamp"]
     ++ cfg.extraArgs;
-in
-{
+in {
   options = {
     daed = {
       enable = lib.mkEnableOption "Enable daed network proxy dashboard";
@@ -109,7 +107,7 @@ in
 
       extraArgs = lib.mkOption {
         type = with lib.types; listOf str;
-        default = [ ];
+        default = [];
         description = "Extra command line arguments appended to `daed run`.";
       };
 
@@ -160,12 +158,12 @@ in
     networking.firewall = lib.mkMerge [
       {
         allowedTCPPorts =
-          lib.optionals cfg.openProxyFirewall [ cfg.tproxyPort ]
-          ++ lib.optionals cfg.openDashboardFirewall [ cfg.dashboardPort ];
-        allowedUDPPorts = lib.optionals cfg.openProxyFirewall [ cfg.tproxyPort ];
+          lib.optionals cfg.openProxyFirewall [cfg.tproxyPort]
+          ++ lib.optionals cfg.openDashboardFirewall [cfg.dashboardPort];
+        allowedUDPPorts = lib.optionals cfg.openProxyFirewall [cfg.tproxyPort];
       }
       (lib.mkIf cfg.trustDaeInterface {
-        trustedInterfaces = [ "dae0" ];
+        trustedInterfaces = ["dae0"];
       })
       (lib.mkIf cfg.autoLooseRpFilter {
         checkReversePath = lib.mkDefault "loose";
@@ -178,8 +176,8 @@ in
         "network-online.target"
         "systemd-sysctl.service"
       ];
-      wants = [ "network-online.target" ];
-      wantedBy = [ "multi-user.target" ];
+      wants = ["network-online.target"];
+      wantedBy = ["multi-user.target"];
       serviceConfig = {
         Type = "simple";
         User = "root";
