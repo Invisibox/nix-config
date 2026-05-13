@@ -60,6 +60,8 @@
   } @ inputs: let
     system = "x86_64-linux";
   in {
+    formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
+
     nixosConfigurations.ASUS = nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {

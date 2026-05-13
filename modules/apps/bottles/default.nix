@@ -12,26 +12,40 @@ let
       doCheck = false;
     });
   });
+  archiveNativeBuildInputs = with pkgs; [
+    gnutar
+    gzip
+    unzip
+    xz
+  ];
   winebridgeVersion = "1.2.0";
   winebridgeReleaseTag = "1.2.0";
   winebridgeAsset = "WineBridge-75aa25e.tar.xz";
-  winebridgeHash = "sha256-DxxBS2IWZRsSXzZ5QO6rmJvg4S49l9SSvQzcmIFTiF4=";
-  winebridge = pkgs.runCommand "bottles-winebridge-${winebridgeVersion}" {
-    src = pkgs.fetchzip {
+  winebridgeHash = "sha256-81yuP3fAtCRYw8rNIjd7zswkTNcQxQbICkRkYd1eBrw=";
+  winebridge = pkgs.stdenvNoCC.mkDerivation {
+    pname = "bottles-winebridge";
+    version = winebridgeVersion;
+    src = pkgs.fetchurl {
       url = "https://github.com/bottlesdevs/winebridge/releases/download/${winebridgeReleaseTag}/${winebridgeAsset}";
       hash = winebridgeHash;
-      stripRoot = false;
     };
-  } ''
-    set -euo pipefail
+    nativeBuildInputs = archiveNativeBuildInputs;
+    sourceRoot = ".";
+    dontConfigure = true;
+    dontBuild = true;
+    installPhase = ''
+      runHook preInstall
 
-    mkdir -p "$out/share/bottles/winebridge"
-    cp -a "$src/." "$out/share/bottles/winebridge/"
+      mkdir -p "$out/share/bottles/winebridge"
+      cp -a ./. "$out/share/bottles/winebridge/"
 
-    if [ ! -s "$out/share/bottles/winebridge/VERSION" ]; then
-      printf '%s\n' "${winebridgeVersion}" > "$out/share/bottles/winebridge/VERSION"
-    fi
-  '';
+      if [ ! -s "$out/share/bottles/winebridge/VERSION" ]; then
+        printf '%s\n' "${winebridgeVersion}" > "$out/share/bottles/winebridge/VERSION"
+      fi
+
+      runHook postInstall
+    '';
+  };
   mkBottlesComponent =
     {
       pname,
@@ -41,22 +55,30 @@ let
       sourceDir ? "",
       ...
     }:
-    pkgs.runCommand pname {
-      src = pkgs.fetchzip {
+    pkgs.stdenvNoCC.mkDerivation {
+      name = pname;
+      src = pkgs.fetchurl {
         inherit url hash;
       };
-    } ''
-      set -euo pipefail
+      nativeBuildInputs = archiveNativeBuildInputs;
+      sourceRoot = ".";
+      dontConfigure = true;
+      dontBuild = true;
+      installPhase = ''
+        runHook preInstall
 
-      dest="$out/share/bottles/${installPath}"
-      mkdir -p "$dest"
+        dest="$out/share/bottles/${installPath}"
+        mkdir -p "$dest"
 
-      if [ -n "${sourceDir}" ] && [ -d "$src/${sourceDir}" ]; then
-        cp -a "$src/${sourceDir}/." "$dest/"
-      else
-        cp -a "$src/." "$dest/"
-      fi
-    '';
+        if [ -n "${sourceDir}" ] && [ -d "${sourceDir}" ]; then
+          cp -a "${sourceDir}/." "$dest/"
+        else
+          cp -a ./. "$dest/"
+        fi
+
+        runHook postInstall
+      '';
+    };
   mkBottlesRunner =
     {
       pname,
@@ -66,73 +88,80 @@ let
       sourceDir ? "",
       ...
     }:
-    pkgs.runCommand pname {
-      src = pkgs.fetchzip {
+    pkgs.stdenvNoCC.mkDerivation {
+      name = pname;
+      src = pkgs.fetchurl {
         inherit url hash;
-        stripRoot = false;
       };
-    } ''
-      set -euo pipefail
+      nativeBuildInputs = archiveNativeBuildInputs;
+      sourceRoot = ".";
+      dontConfigure = true;
+      dontBuild = true;
+      installPhase = ''
+        runHook preInstall
 
-      mkdir -p "$out/share/steam/compatibilitytools.d/${runnerName}"
+        mkdir -p "$out/share/steam/compatibilitytools.d/${runnerName}"
 
-      if [ -n "${sourceDir}" ] && [ -d "$src/${sourceDir}" ]; then
-        cp -a "$src/${sourceDir}/." "$out/share/steam/compatibilitytools.d/${runnerName}/"
-      else
-        cp -a "$src/." "$out/share/steam/compatibilitytools.d/${runnerName}/"
-      fi
+        if [ -n "${sourceDir}" ] && [ -d "${sourceDir}" ]; then
+          cp -a "${sourceDir}/." "$out/share/steam/compatibilitytools.d/${runnerName}/"
+        else
+          cp -a ./. "$out/share/steam/compatibilitytools.d/${runnerName}/"
+        fi
 
-      chmod -R u+w "$out/share/steam/compatibilitytools.d/${runnerName}"
-      find "$out/share/steam/compatibilitytools.d/${runnerName}" \
-        -type f \
-        -name winemenubuilder.exe \
-        -exec sh -eu -c '
-          for winemenubuilder do
-            mv "$winemenubuilder" "$winemenubuilder.lock"
-          done
-        ' sh {} +
-    '';
+        chmod -R u+w "$out/share/steam/compatibilitytools.d/${runnerName}"
+        find "$out/share/steam/compatibilitytools.d/${runnerName}" \
+          -type f \
+          -name winemenubuilder.exe \
+          -exec sh -eu -c '
+            for winemenubuilder do
+              mv "$winemenubuilder" "$winemenubuilder.lock"
+            done
+          ' sh {} +
+
+        runHook postInstall
+      '';
+    };
   runtimeComponentInfo = {
     name = "runtime-0.6.3";
     url = "https://github.com/bottlesdevs/runtime/releases/download/0.6.3/runtime-0.6.3.tar.gz";
-    hash = "sha256-ro9DbjGdsf6NuPnbzbd+Ih/wBvpJnYoj1JmvPVwXtic=";
+    hash = "sha256-13SbSJJ714LhKONyodcIUTP74wDrkZMTTrgh9hvF+tY=";
     sourceDir = "runtime-0.6.3";
   };
   dxvkComponentInfo = {
     name = "dxvk-2.7.1";
     url = "https://github.com/doitsujin/dxvk/releases/download/v2.7.1/dxvk-2.7.1.tar.gz";
-    hash = "sha256-Sk8CybV50Ec78DCOfXDL+fCrp0ikwJwybtKWiqOlEDU=";
+    hash = "sha256-2Fznx59X7NdlqqG55wB8uHXm/en20zHfeZvOc9UTzoc=";
     sourceDir = "dxvk-2.7.1";
   };
   vkd3dComponentInfo = {
     name = "vkd3d-proton-3.0.1";
     url = "https://github.com/bottlesdevs/components/releases/download/vkd3d-proton-3.0.1/vkd3d-proton-3.0.1.tar.gz";
-    hash = "sha256-xHJFtVDD/ZHVHF2Fn7TEEX0fMUWJvujNyNt2Xyw9F7o=";
+    hash = "sha256-Fx9L+Vy56upSSc0/IhHmAtlxopKnLEYuwpNEkRK2c/M=";
     sourceDir = "vkd3d-proton-3.0.1";
   };
   nvapiComponentInfo = {
-    name = "dxvk-nvapi-v0.9.1";
-    url = "https://github.com/bottlesdevs/components/releases/download/dxvk-nvapi-v0.9.1/dxvk-nvapi-v0.9.1.tar.gz";
-    hash = "sha256-W5uYE9fjylH2eQFdEH8oELD23h61Jda2g61KJmkmZSI=";
-    sourceDir = "dxvk-nvapi-v0.9.1";
+    name = "dxvk-nvapi-v0.9.2";
+    url = "https://github.com/bottlesdevs/components/releases/download/dxvk-nvapi-v0.9.2/dxvk-nvapi-v0.9.2.tar.gz";
+    hash = "sha256-fXV1wa+j+UtRfZjGrSyaznf3Orzlvr3LuZikSKPB7E0=";
+    sourceDir = "dxvk-nvapi-v0.9.2";
   };
   latencyflexComponentInfo = {
     name = "latencyflex-v0.1.1";
     url = "https://github.com/ishitatsuyuki/LatencyFleX/releases/download/v0.1.1/latencyflex-v0.1.1.tar.xz";
-    hash = "sha256-c/o0wcTZ8TJwLzUHlvmS/kcoOPlfCPHupWFABTVXtok=";
+    hash = "sha256-yZLr0vQ8matKhKb/zmktmq5MwlcVNqWFSuLnm2lR54o=";
     sourceDir = "latencyflex-v0.1.1";
   };
   caffeRunnerInfo = {
     name = "caffe-9.7";
     url = "https://github.com/bottlesdevs/wine/releases/download/caffe-9.7/caffe-9.7-x86_64.tar.xz";
-    hash = "sha256-yYcXJ6TejgasV6F9M4X3QEC7b0ectes5rRQXGMR48No=";
+    hash = "sha256-cRfMHG1OOBheLoXhRqouRU9mK+hTBI/G0f4a9d2FYFc=";
     runnerName = "caffe-nix";
     sourceDir = "caffe-9.7-x86_64";
   };
   sodaRunnerInfo = {
     name = "soda-9.0-1";
     url = "https://github.com/bottlesdevs/wine/releases/download/soda-9.0-1/soda-9.0-1-x86_64.tar.xz";
-    hash = "sha256-DTa36L7abrduqg3BmD/I/uSddgaVfN87qtCgt+0tKqM=";
+    hash = "sha256-w4/grTwSpJth7B/K6lxdjaSj0a/FmRvv4q9rEl8BTCg=";
     runnerName = "soda-nix";
     sourceDir = "soda-9.0-1-x86_64";
   };

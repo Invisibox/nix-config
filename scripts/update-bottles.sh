@@ -123,6 +123,67 @@ source_dir_from_file_name() {
   printf '%s\n' "${source_dir}"
 }
 
+hash_from_digest() {
+  local digest="$1"
+  local hash=""
+
+  if [[ -n "${digest}" && "${digest}" != "null" ]]; then
+    local digest_algo="${digest%%:*}"
+    local digest_hex="${digest#*:}"
+    if [[ "${digest_algo}" == "sha256" && "${digest_hex}" =~ ^[0-9A-Fa-f]{64}$ ]]; then
+      hash="$(nix hash convert --hash-algo sha256 --to sri "${digest_hex}" 2>/dev/null || true)"
+    fi
+  fi
+
+  printf '%s\n' "${hash}"
+}
+
+github_asset_digest_hash() {
+  local url="$1"
+  local asset_name="$2"
+  local hash=""
+
+  if [[ "${url}" =~ ^https://github[.]com/([^/]+)/([^/]+)/releases/download/([^/]+)/(.+)$ ]]; then
+    local owner="${BASH_REMATCH[1]}"
+    local repo="${BASH_REMATCH[2]}"
+    local release_tag="${BASH_REMATCH[3]}"
+    local release_json asset_digest
+
+    release_json="$(curl_fetch "${github_json_headers[@]}" "https://api.github.com/repos/${owner}/${repo}/releases/tags/${release_tag}")"
+    asset_digest="$(
+      jq -r --arg name "${asset_name}" '
+        (
+          [.assets[] | select(.name == $name)]
+          | first
+          | .digest
+        ) // empty
+      ' <<<"${release_json}"
+    )"
+    hash="$(hash_from_digest "${asset_digest}")"
+  fi
+
+  printf '%s\n' "${hash}"
+}
+
+github_asset_hash() {
+  local url="$1"
+  local asset_name="$2"
+  local hash=""
+
+  hash="$(github_asset_digest_hash "${url}" "${asset_name}")"
+
+  if [[ -z "${hash}" || "${hash}" == "null" ]]; then
+    hash="$(nix store prefetch-file --json "${url}" | jq -r '.hash')"
+  fi
+
+  if [[ -z "${hash}" || "${hash}" == "null" ]]; then
+    echo "error: unable to determine hash for ${url}" >&2
+    exit 1
+  fi
+
+  printf '%s\n' "${hash}"
+}
+
 read_info_value() {
   local attr="$1"
   local key="$2"
@@ -159,7 +220,7 @@ update_component() {
 
   manifest_yaml="$(curl_fetch "${github_raw_headers[@]}" "${components_base}/${manifest_dir}/${name}.yml")"
 
-  local file_name url source_dir hash
+  local file_name url source_dir
   file_name="$(manifest_value "file_name")"
   url="$(manifest_value "url")"
   source_dir="$(source_dir_from_file_name "${file_name}")"
@@ -169,24 +230,26 @@ update_component() {
     exit 1
   fi
 
-  hash="$(nix store prefetch-file --json --unpack "${url}" | jq -r '.hash')"
-  if [[ -z "${hash}" || "${hash}" == "null" ]]; then
-    echo "error: unable to determine hash for ${url}" >&2
-    exit 1
-  fi
-
   local current_name current_url current_hash current_source_dir
   current_name="$(read_info_value "${attr}" "name")"
   current_url="$(read_info_value "${attr}" "url")"
   current_hash="$(read_info_value "${attr}" "hash")"
   current_source_dir="$(read_info_value "${attr}" "sourceDir")"
 
+  local hash
+  hash="$(github_asset_digest_hash "${url}" "${file_name}")"
+
   if [[ "${current_name}" == "${name}" \
     && "${current_url}" == "${url}" \
-    && "${current_hash}" == "${hash}" \
-    && "${current_source_dir}" == "${source_dir}" ]]; then
+    && "${current_source_dir}" == "${source_dir}" \
+    && -n "${current_hash}" \
+    && ( -z "${hash}" || "${current_hash}" == "${hash}" ) ]]; then
     echo "${attr} is already up to date (${name})"
     return
+  fi
+
+  if [[ -z "${hash}" || "${hash}" == "null" ]]; then
+    hash="$(github_asset_hash "${url}" "${file_name}")"
   fi
 
   update_info_block "${attr}" "${name}" "${url}" "${hash}" "${source_dir}"
@@ -199,8 +262,8 @@ update_component() {
 }
 
 update_winebridge() {
-  local release_json release_info release_tag asset_name asset_url prefetch_json
-  local hash store_path version current_version current_release_tag current_asset current_hash
+  local release_json release_info release_tag asset_name asset_url asset_digest
+  local hash version current_version current_release_tag current_asset current_hash
 
   release_json="$(curl_fetch "${github_json_headers[@]}" "${winebridge_api_url}")"
 
@@ -213,7 +276,7 @@ update_winebridge() {
         ) as $asset
       | select($release.draft == false)
       | select($asset.browser_download_url != null)
-      | [$release.tag_name, $asset.name, $asset.browser_download_url]
+      | [$release.tag_name, $asset.name, $asset.browser_download_url, ($asset.digest // "")]
       | @tsv
     ' <<<"${release_json}"
   )"
@@ -223,33 +286,27 @@ update_winebridge() {
     exit 1
   fi
 
-  IFS=$'\t' read -r release_tag asset_name asset_url <<<"${release_info}"
-
-  prefetch_json="$(nix store prefetch-file --json --unpack "${asset_url}")"
-  hash="$(jq -r '.hash' <<<"${prefetch_json}")"
-  store_path="$(jq -r '.storePath' <<<"${prefetch_json}")"
-  version="$(sed -n '1{s/[[:space:]]*$//;p;q}' "${store_path}/VERSION" 2>/dev/null || true)"
-
-  if [[ -z "${version}" ]]; then
-    version="${release_tag#v}"
-  fi
-
-  if [[ -z "${hash}" || "${hash}" == "null" ]]; then
-    echo "error: unable to determine hash for ${asset_url}" >&2
-    exit 1
-  fi
+  IFS=$'\t' read -r release_tag asset_name asset_url asset_digest <<<"${release_info}"
+  version="${release_tag#v}"
 
   current_version="$(sed -n 's/^  winebridgeVersion = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
   current_release_tag="$(sed -n 's/^  winebridgeReleaseTag = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
   current_asset="$(sed -n 's/^  winebridgeAsset = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
   current_hash="$(sed -n 's/^  winebridgeHash = "\(sha256-[^"]*\)";$/\1/p' "${target_file}" | head -n1)"
 
+  hash="$(hash_from_digest "${asset_digest}")"
+
   if [[ "${current_version}" == "${version}" \
     && "${current_release_tag}" == "${release_tag}" \
     && "${current_asset}" == "${asset_name}" \
-    && "${current_hash}" == "${hash}" ]]; then
+    && -n "${current_hash}" \
+    && ( -z "${hash}" || "${current_hash}" == "${hash}" ) ]]; then
     echo "winebridge is already up to date (${version})"
     return
+  fi
+
+  if [[ -z "${hash}" || "${hash}" == "null" ]]; then
+    hash="$(github_asset_hash "${asset_url}" "${asset_name}")"
   fi
 
   sed -Ei 's|^  winebridgeVersion = "[^"]+";$|  winebridgeVersion = "'"${version}"'";|' "${target_file}"
