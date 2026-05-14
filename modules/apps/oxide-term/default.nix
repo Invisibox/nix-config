@@ -11,22 +11,57 @@
   version = "1.4.3";
 
   src = pkgs.fetchurl {
-    url = "https://github.com/AnalyseDeCircuit/oxideterm/releases/download/v${version}/OxideTerm_${version}_linux_x64.AppImage";
-    hash = "sha256-3o0Ntez2ETTp6VNRx9PXyMoDBmxpmX3YW298ADNRc78=";
+    url = "https://github.com/AnalyseDeCircuit/oxideterm/releases/download/v${version}/OxideTerm_${version}_linux_x64.deb";
+    hash = "sha256-UlQvPYszvBQduluWxUmXyzP5iWhiO+Jyw5VvSqQeF2E=";
   };
 
-  appimageContents = pkgs.appimageTools.extractType2 {
-    inherit pname version src;
-  };
-
-  oxideTermPackage = pkgs.appimageTools.wrapType2 {
+  oxideTermPackage = pkgs.stdenv.mkDerivation {
     inherit pname version src;
 
-    extraInstallCommands = ''
-      install -Dm444 ${appimageContents}/usr/share/applications/OxideTerm.desktop \
-        $out/share/applications/OxideTerm.desktop
+    nativeBuildInputs = [
+      pkgs.autoPatchelfHook
+      pkgs.dpkg
+      pkgs.wrapGAppsHook3
+    ];
 
-      cp -R ${appimageContents}/usr/share/icons $out/share/
+    buildInputs = with pkgs; [
+      cairo
+      dbus
+      gdk-pixbuf
+      glib
+      glib-networking
+      gtk3
+      libsoup_3
+      webkitgtk_4_1
+    ];
+
+    dontConfigure = true;
+    dontBuild = true;
+
+    unpackPhase = ''
+      runHook preUnpack
+      dpkg-deb -x "$src" .
+      runHook postUnpack
+    '';
+
+    installPhase = ''
+      runHook preInstall
+
+      mkdir -p "$out"
+      cp -R usr/* "$out/"
+      chmod +x "$out/bin/oxideterm"
+      chmod +x "$out/lib/OxideTerm/cli-bin/oxt"
+      chmod +x "$out/lib/OxideTerm/agents/"*
+
+      runHook postInstall
+    '';
+
+    preFixup = ''
+      gappsWrapperArgs+=(
+        --set-default OXIDETERM_LINUX_WEBVIEW_PROFILE safe
+        --set-default WEBKIT_DISABLE_DMABUF_RENDERER 1
+        --set-default WEBKIT_DISABLE_COMPOSITING_MODE 1
+      )
     '';
 
     meta = {

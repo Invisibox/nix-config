@@ -30,7 +30,7 @@ version="${tag_name#v}"
 asset_info="$(jq -r --arg v "${version}" '
   (
     .assets[]
-    | select(.name == ("OxideTerm_" + $v + "_linux_x64.AppImage"))
+    | select(.name == ("OxideTerm_" + $v + "_linux_x64.deb"))
     | [.browser_download_url, (.digest // "")]
     | @tsv
   ) // empty
@@ -40,7 +40,7 @@ if [[ -z "${asset_info}" ]]; then
   asset_info="$(jq -r '
     (
       .assets[]
-      | select(.name | test("(?i)linux_x64\\.AppImage$"))
+      | select(.name | test("(?i)linux_x64\\.deb$"))
       | [.browser_download_url, (.digest // "")]
       | @tsv
     ) // empty
@@ -51,7 +51,7 @@ if [[ -z "${asset_info}" ]]; then
   asset_info="$(jq -r '
     (
       .assets[]
-      | select(.name | test("(?i)\\.AppImage$"))
+      | select(.name | test("(?i)\\.deb$"))
       | [.browser_download_url, (.digest // "")]
       | @tsv
     ) // empty
@@ -59,7 +59,7 @@ if [[ -z "${asset_info}" ]]; then
 fi
 
 if [[ -z "${asset_info}" ]]; then
-  echo "error: unable to find AppImage asset in latest release ${tag_name}" >&2
+  echo "error: unable to find deb asset in latest release ${tag_name}" >&2
   exit 1
 fi
 
