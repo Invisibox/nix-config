@@ -12,6 +12,7 @@
     ./niri
     ./nix-ld
     ./obs
+    ./oxide-term
     ./rustdesk
     ./dms-greeter
     ./steam

@@ -99,8 +99,8 @@
       src = pkgs.fetchFromGitHub {
         owner = "Aloxaf";
         repo = name;
-        rev = "0983009f8666f11e91a2ee1f88cfdb748d14f656";
-        hash = "sha256-yvPQyuK4Dw+LkwxrkWTRcw4PIf/79fW61jWbEg8Pe9Y=";
+        rev = "e394092c17277c84cb3d234917c4ac1073102ba6";
+        hash = "sha256-WlmWLKHrLeptc5rqlHbKvthD73it9ij7IDT9QxN4jCc=";
       };
     };
 

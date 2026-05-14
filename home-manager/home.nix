@@ -44,7 +44,7 @@
     aria2
     v2rayn
     kdePackages.okular
-    # gimp-with-plugins
+    cherry-studio
     qimgv
     amberol
     gnome-calculator

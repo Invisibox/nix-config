@@ -42,9 +42,9 @@
         # # status: https://mirrors.ustc.edu.cn/status/
         "https://mirrors.ustc.edu.cn/nix-channels/store"
         # # status: https://mirrors.sjtug.sjtu.edu.cn/
-        "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store"
+        # # "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store"
         # # status: https://mirrors.tuna.tsinghua.edu.cn/status/
-        # # "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+        "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
 
         "https://cache.nixos.org"
 
