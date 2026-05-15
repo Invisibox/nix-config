@@ -30,7 +30,7 @@ version="${tag_name#v}"
 asset_info="$(jq -r --arg v "${version}" '
   (
     .assets[]
-    | select(.name == ("LobeHub-" + $v + ".AppImage"))
+    | select(.name == ("lobehub-desktop_" + $v + "_amd64.deb"))
     | [.browser_download_url, (.digest // "")]
     | @tsv
   ) // empty
@@ -40,7 +40,7 @@ if [[ -z "${asset_info}" ]]; then
   asset_info="$(jq -r '
     (
       .assets[]
-      | select(.name | test("(?i)\\.AppImage$"))
+      | select(.name | test("(?i)_amd64\\.deb$"))
       | [.browser_download_url, (.digest // "")]
       | @tsv
     ) // empty
@@ -48,7 +48,18 @@ if [[ -z "${asset_info}" ]]; then
 fi
 
 if [[ -z "${asset_info}" ]]; then
-  echo "error: unable to find AppImage asset in latest release ${tag_name}" >&2
+  asset_info="$(jq -r '
+    (
+      .assets[]
+      | select(.name | test("(?i)\\.deb$"))
+      | [.browser_download_url, (.digest // "")]
+      | @tsv
+    ) // empty
+  ' <<<"${release_json}" | head -n1)"
+fi
+
+if [[ -z "${asset_info}" ]]; then
+  echo "error: unable to find deb asset in latest release ${tag_name}" >&2
   exit 1
 fi
 
