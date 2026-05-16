@@ -56,6 +56,10 @@
       runHook postInstall
     '';
 
+    postFixup = ''
+      ln -s "$out/lib/OxideTerm/cli-bin/oxt" "$out/bin/oxt"
+    '';
+
     preFixup = ''
       gappsWrapperArgs+=(
         --set-default OXIDETERM_LINUX_WEBVIEW_PROFILE safe
@@ -85,8 +89,14 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home-manager.users.${username}.home.packages = [
-      cfg.package
-    ];
+    home-manager.users.${username} = {
+      home = {
+        file.".local/bin/oxt".source = "${cfg.package}/lib/OxideTerm/cli-bin/oxt";
+
+        packages = [
+          cfg.package
+        ];
+      };
+    };
   };
 }

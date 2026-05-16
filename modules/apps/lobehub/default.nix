@@ -105,6 +105,7 @@
     nativeBuildInputs = [
       pkgs.autoPatchelfHook
       pkgs.dpkg
+      pkgs.imagemagick
       (pkgs.buildPackages.wrapGAppsHook3.override {makeWrapper = pkgs.buildPackages.makeShellWrapper;})
     ];
 
@@ -130,6 +131,13 @@
       mkdir -p "$out/bin" "$out/opt" "$out/share"
       cp -R opt "$out/"
       cp -R usr/share/* "$out/share/"
+
+      icon_src="$out/share/icons/hicolor/514x514/apps/lobehub-desktop.png"
+      for icon_size in 128 256 512; do
+        install -d "$out/share/icons/hicolor/''${icon_size}x''${icon_size}/apps"
+        magick "$icon_src" -resize "''${icon_size}x''${icon_size}" \
+          "$out/share/icons/hicolor/''${icon_size}x''${icon_size}/apps/lobehub-desktop.png"
+      done
 
       makeWrapper "$out/opt/LobeHub/lobehub-desktop" "$out/bin/lobehub-desktop" \
         --unset ELECTRON_RUN_AS_NODE

@@ -28,6 +28,7 @@ in {
   gamescope = systemPackage "gamescope";
   heroic = hmPackage "heroic";
   lobehub-desktop = config.lobehub.package;
+  netcatty = config.netcatty.package;
   oxide-term = config.oxide-term.package;
   bottles = hmPackage "bottles";
   mpv = config.home-manager.users.zh.programs.mpv.package;

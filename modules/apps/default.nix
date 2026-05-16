@@ -9,6 +9,7 @@
     ./lobehub
     ./localsend
     ./moonlight
+    ./netcatty
     ./niri
     ./nix-ld
     ./obs

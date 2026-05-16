@@ -17,6 +17,7 @@ builds:
     - "packages.*.mpv"
     - "packages.*.nautilus-env"
     - "packages.*.neovim"
+    - "packages.*.netcatty"
     - "packages.*.nh"
     - "packages.*.niri"
     - "packages.*.nodejs"
