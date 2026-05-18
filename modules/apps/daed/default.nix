@@ -9,7 +9,9 @@
   system = pkgs.stdenv.hostPlatform.system;
   daePackages = inputs.daeuniverse.packages.${system};
   daePackageFromFlake = daePackages.dae;
-  daedPackageFromFlake = daePackages.daed;
+  daedPackage = pkgs.callPackage ./package.nix {
+    daeuniverse = inputs.daeuniverse;
+  };
   genAssetsDrv = paths:
     pkgs.symlinkJoin {
       name = "daed-assets";
@@ -34,8 +36,8 @@ in {
 
       package = lib.mkOption {
         type = lib.types.package;
-        default = daedPackageFromFlake;
-        defaultText = lib.literalExpression "inputs.daeuniverse.packages.${system}.daed";
+        default = daedPackage;
+        defaultText = lib.literalExpression "pkgs.callPackage ./package.nix { daeuniverse = inputs.daeuniverse; }";
         description = "The daed package to use.";
       };
 
