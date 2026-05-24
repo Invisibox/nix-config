@@ -44,7 +44,7 @@
     aria2
     v2rayn
     kdePackages.okular
-    cherry-studio
+    # cherry-studio
     qimgv
     amberol
     gnome-calculator
@@ -85,11 +85,11 @@
     jq
     pango
     yazi
-    lazygit
+    # lazygit
     pkg-config
     devbox
     android-tools
-    aircrack-ng
+    # aircrack-ng
     hyperfine
     btop
     wl-clipboard
