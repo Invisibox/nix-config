@@ -8,11 +8,11 @@
   cfg = config.oxide-term;
 
   pname = "oxideterm";
-  version = "1.4.7";
+  version = "1.4.8";
 
   src = pkgs.fetchurl {
     url = "https://github.com/AnalyseDeCircuit/oxideterm/releases/download/v${version}/OxideTerm_${version}_linux_x64.deb";
-    hash = "sha256-m3Wn6fyxNjn7zohp8drmpSOiox7wCT+pr8bx9hq/MeM=";
+    hash = "sha256-QBPHGzvctw6GWnVU5r3/aevb6bXhE1pUncvUxB4Uaiw=";
   };
 
   oxideTermPackage = pkgs.stdenv.mkDerivation {

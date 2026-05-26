@@ -40,6 +40,9 @@
     termius
     tor-browser
     tsukimi
+    
+    claude-code
+    codex
 
     aria2
     v2rayn
