@@ -9,9 +9,41 @@
   system = pkgs.stdenv.hostPlatform.system;
   daePackages = inputs.daeuniverse.packages.${system};
   daePackageFromFlake = daePackages.dae;
-  daedPackage = pkgs.callPackage ./package.nix {
-    daeuniverse = inputs.daeuniverse;
+  daeuniverseWithDaedBuildFixes = pkgs.applyPatches {
+    name = "daeuniverse-daed-build-fixes";
+    src = inputs.daeuniverse;
+    patches = [
+      (pkgs.writeText "fix-daed-pnpm-build.patch" ''
+        diff --git a/metadata.json b/metadata.json
+        --- a/metadata.json
+        +++ b/metadata.json
+        @@ -18,7 +18,7 @@
+               "version": "v1.24.0",
+               "rev": "v1.24.0",
+               "hash": "sha256-vi31roanIqyTDMRjHG54nxx944gicrs03fh4pLEyOS8=",
+        -      "pnpmDepsHash": "sha256-9KfaLlAo//prhA26SQIbEnsk5b7h8+N3V5syickLTWM=",
+        +      "pnpmDepsHash": "sha256-+l10kTcwnBU4/YRiFf21viMYLJGDcpG0A3+z+zJQBtg=",
+               "vendorHash": "sha256-l7jgMvrbpOY2+cvnc0e5cvSgKVm4GcWC+bPbff+PE80="
+             }
+           }
+        diff --git a/daed/package.nix b/daed/package.nix
+        --- a/daed/package.nix
+        +++ b/daed/package.nix
+        @@ -41,9 +41,12 @@ let
+             ];
+
+        +    postPatch = "substituteInPlace package.json --replace-fail '\"packageManager\": \"pnpm@10.24.0\"' '\"packageManager\": \"pnpm@''${pnpm.version}\"'";
+        +
+             buildPhase = '''
+               runHook preBuild
+        +      export NODE_OPTIONS=--max-old-space-size=4096
+               pnpm build
+               runHook postBuild
+             ''';
+      '')
+    ];
   };
+  daedPackage = pkgs.callPackage "${daeuniverseWithDaedBuildFixes}/daed/package.nix" {};
   genAssetsDrv = paths:
     pkgs.symlinkJoin {
       name = "daed-assets";
@@ -37,7 +69,9 @@ in {
       package = lib.mkOption {
         type = lib.types.package;
         default = daedPackage;
-        defaultText = lib.literalExpression "pkgs.callPackage ./package.nix { daeuniverse = inputs.daeuniverse; }";
+        defaultText = lib.literalExpression ''
+          pkgs.callPackage "''${daeuniverseWithDaedBuildFixes}/daed/package.nix" {}
+        '';
         description = "The daed package to use.";
       };
 

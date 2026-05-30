@@ -96,12 +96,5 @@
         }
       ];
     };
-
-    packages.${system} = import ./garnix/cache-targets.nix {
-      inherit inputs system;
-      config = self.nixosConfigurations.ASUS.config;
-      lib = nixpkgs.lib;
-      pkgs = self.nixosConfigurations.ASUS.pkgs;
-    };
   };
 }
