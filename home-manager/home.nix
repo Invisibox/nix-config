@@ -40,6 +40,7 @@
     termius
     tor-browser
     tsukimi
+    pandoc
     
     claude-code
     codex

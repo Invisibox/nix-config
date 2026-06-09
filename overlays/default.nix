@@ -1,8 +1,8 @@
 {...}: let
-  rimeWanxiangVersion = "15.11.2";
+  rimeWanxiangVersion = "15.13.0";
   rimeWanxiangAssetName = "rime-wanxiang-flypy-fuzhu.zip";
-  rimeWanxiangZipHash = "sha256-yX/vI1sZifDDRBUpns80nXdJmwbK0ja3xy6gfAyNCuY=";
-  rimeWanxiangGramHash = "sha256-Pr3wgPM9TzYY8medb540opC9dZBvQrnXU/Yw5RAeVAc=";
+  rimeWanxiangZipHash = "sha256-BGJfe1oTTYL9pyeUNwU09xqKqLBKck0wFZ4i5U0OZxw=";
+  rimeWanxiangGramHash = "sha256-kXLnfXgeqe8C7z26qAQm5ihKzGbySmkuT+iQAT16d7c=";
 in {
   nixpkgs.overlays = [
     (final: prev: {
