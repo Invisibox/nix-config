@@ -1,22 +1,15 @@
-{...}: let
+{inputs, ...}: let
   rimeWanxiangVersion = "15.13.0";
   rimeWanxiangAssetName = "rime-wanxiang-flypy-fuzhu.zip";
   rimeWanxiangZipHash = "sha256-BGJfe1oTTYL9pyeUNwU09xqKqLBKck0wFZ4i5U0OZxw=";
-  rimeWanxiangGramHash = "sha256-kXLnfXgeqe8C7z26qAQm5ihKzGbySmkuT+iQAT16d7c=";
+  rimeWanxiangGramHash = "sha256-Nijh67MFixP2PGMYRvMfxpC+j8zeEp7P2u/HqxZlpu0=";
 in {
   nixpkgs.overlays = [
-    (final: prev: {
-      niri = prev.niri.overrideAttrs (old: {
-        patches =
-          (old.patches or [])
-          ++ [
-            (prev.fetchpatch {
-              name = "niri-support-shm-sharing.patch";
-              url = "https://github.com/wrvsrx/niri/compare/tag_support-shm-sharing_4~19..tag_support-shm-sharing_4.patch";
-              hash = "sha256-mfX0CVJWSFb/Hr1lDvlggphpXc2PI6C5CBa+aGwkVIM=";
-            })
-          ];
-      });
+    (final: prev: let
+      inherit (prev.stdenv.hostPlatform) system;
+    in {
+      niri = inputs.niri-flake.packages.${system}.niri-unstable;
+      xwayland-satellite = inputs.niri-flake.packages.${system}.xwayland-satellite-unstable;
 
       proton-em = prev.callPackage ./proton-em {};
       proton-ge = final.proton-ge-bin.override {

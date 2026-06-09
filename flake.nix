@@ -6,6 +6,8 @@
 
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
 
+    niri-flake.url = "github:sodiboo/niri-flake";
+
     flake-parts.url = "github:hercules-ci/flake-parts";
     systems.url = "github:nix-systems/default";
 
