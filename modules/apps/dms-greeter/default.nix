@@ -19,21 +19,39 @@ in {
 
   programs.dank-material-shell.greeter = {
     enable = true;
-    compositor.name = "niri";
+    compositor = {
+      name = "niri";
+      customConfig = ''
+        hotkey-overlay {
+          skip-at-startup
+        }
+
+        environment {
+          DMS_RUN_GREETER "1"
+        }
+
+        gestures {
+          hot-corners {
+            off
+          }
+        }
+
+        layout {
+          background-color "#000000"
+        }
+
+        cursor {
+          xcursor-theme "${greeterCursorTheme}"
+          xcursor-size ${toString greeterCursorSize}
+        }
+      '';
+    };
     configHome = "/home/${username}";
   };
 
   environment.systemPackages = [
     pkgs.bibata-cursors
   ];
-
-  # dms-greeter's niri launcher auto-includes this file when present.
-  environment.etc."greetd/niri_overrides.kdl".text = ''
-    cursor {
-      xcursor-theme "${greeterCursorTheme}"
-      xcursor-size ${toString greeterCursorSize}
-    }
-  '';
 
   systemd.services.greetd.environment = {
     XCURSOR_THEME = greeterCursorTheme;

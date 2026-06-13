@@ -8,7 +8,7 @@
   cfg = config.netcatty;
 
   pname = "netcatty";
-  version = "1.1.27";
+  version = "1.1.33";
 
   deps = with pkgs; [
     alsa-lib
@@ -60,7 +60,7 @@
 
   src = pkgs.fetchurl {
     url = "https://github.com/binaricat/Netcatty/releases/download/v${version}/Netcatty-${version}-linux-amd64.deb";
-    hash = "sha256-pLAzK6L1WCnghjLdJbhwCdjlrfzHNRSCFAVWqYn04uI=";
+    hash = "sha256-GZHQvv8AlB1AA7EAw0iGpNc3OdGy4BnDIQ4/yBYTi8A=";
   };
 
   sharpLibvipsSrc = pkgs.fetchurl {
@@ -102,9 +102,22 @@
       cp -R usr/share/* "$out/share/"
 
       app_dir="$out/opt/Netcatty"
-      icon_src="$out/share/icons/hicolor/1024x1024/apps/netcatty.png"
       node_modules="$app_dir/resources/app.asar.unpacked/node_modules"
       sharp_libvips_dir="$node_modules/@img/sharp-libvips-linux-x64"
+
+      icon_src=
+      for candidate in 1024 512 256 128 64 48 32 16; do
+        candidate_path="$out/share/icons/hicolor/''${candidate}x''${candidate}/apps/netcatty.png"
+        if [[ -e "$candidate_path" ]]; then
+          icon_src="$candidate_path"
+          break
+        fi
+      done
+
+      if [[ -z "$icon_src" ]]; then
+        echo "missing netcatty icon asset" >&2
+        exit 1
+      fi
 
       for icon_size in 128 256 512; do
         install -d "$out/share/icons/hicolor/''${icon_size}x''${icon_size}/apps"
