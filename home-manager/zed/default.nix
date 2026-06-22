@@ -33,6 +33,9 @@
         thumb = "hover";
       };
       agent_servers = {
+        claude-acp = {
+          type = "registry";
+        };
         codex-acp = {
           type = "registry";
         };
