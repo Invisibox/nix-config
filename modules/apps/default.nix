@@ -2,6 +2,7 @@
   imports = [
     ./brave-origin
     ./bottles
+    ./cc-switch
     ./daed
     ./gamescope
     ./heroic

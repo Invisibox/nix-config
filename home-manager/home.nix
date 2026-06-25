@@ -41,9 +41,10 @@
     tor-browser
     tsukimi
     pandoc
-    
+
     claude-code
     codex
+    ghostty
 
     aria2
     v2rayn

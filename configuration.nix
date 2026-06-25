@@ -222,6 +222,7 @@
 
   brave-origin.enable = true; # Install Brave Origin Nightly via Home Manager.
   lobehub.enable = true; # Enable LobeHub Desktop.
+  cc-switch.enable = true; # Install CC Switch desktop app.
   localsend.enable = true; # Install LocalSend via Home Manager.
   moonlight.enable = true; # Install Moonlight client via Home Manager.
   netcatty.enable = true; # Install Netcatty via Home Manager.

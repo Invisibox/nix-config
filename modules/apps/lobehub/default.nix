@@ -8,7 +8,7 @@
   cfg = config.lobehub;
 
   pname = "lobehub-desktop";
-  version = "2.2.7";
+  version = "2.2.8";
 
   deps = with pkgs; [
     alsa-lib
@@ -96,7 +96,7 @@
 
   src = pkgs.fetchurl {
     url = "https://github.com/lobehub/lobehub/releases/download/v${version}/lobehub-desktop_${version}_amd64.deb";
-    hash = "sha256-3vCsAWf/iiAMi9akCpm33mPVmF6bhnXDAuqqP53xI9E=";
+    hash = "sha256-6Vsjxa+wTMXYtq6WzU3jqrY5pfdWj0gOPS+swkWcErY=";
   };
 
   lobehubPackage = pkgs.stdenv.mkDerivation {
