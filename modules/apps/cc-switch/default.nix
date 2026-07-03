@@ -8,7 +8,7 @@
   cfg = config.cc-switch;
 
   pname = "cc-switch";
-  version = "3.16.4";
+  version = "3.16.5";
 
   deps = with pkgs; [
     alsa-lib
@@ -63,7 +63,7 @@
 
   src = pkgs.fetchurl {
     url = "https://github.com/farion1231/cc-switch/releases/download/v${version}/CC-Switch-v${version}-Linux-x86_64.deb";
-    hash = "sha256-CGN1thG7nLwo4GjzbbqQJmubS2BQd9lO+7l/R5hst9g=";
+    hash = "sha256-uhyTXVbz0b9GCrphRAXLYUlyK3hcjqwmZJD76En/kJY=";
   };
 
   ccSwitchPackage = pkgs.stdenv.mkDerivation {

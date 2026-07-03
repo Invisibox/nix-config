@@ -3,7 +3,7 @@
     enable = true;
     themeFile = "Nord";
     font = {
-      name = "JetBrainsMono Nerd Font";
+      name = "Maple Mono NF CN";
       size = 11;
     };
     settings = {
@@ -16,7 +16,6 @@
       window_margin_width = 3;
       hide_window_decorations = "yes";
       cursor_trail = 3;
-      symbol_map = "U+4e00-U+9fff,U+ff00-U+ffef Sarasa Term SC";
     };
   };
 }

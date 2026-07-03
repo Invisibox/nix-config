@@ -21,6 +21,7 @@
           "DejaVu Serif"
         ];
         monospace = [
+          "Maple Mono NF CN"
           "FiraCode Nerd Font"
           "Sarasa Mono SC"
           "Noto Sans Mono CJK SC"
@@ -55,6 +56,7 @@
           <alias binding="strong">
             <family>monospace</family>
             <prefer>
+              <family>Maple Mono NF CN</family>
               <family>FiraCode Nerd Font</family>
               <family>Sarasa Mono SC</family>
               <family>Noto Sans Mono CJK SC</family>
@@ -94,7 +96,7 @@
               <string>monospace</string>
             </test>
             <edit name="family" mode="prepend">
-              <string>Sarasa Mono SC</string>
+              <string>Maple Mono NF CN</string>
             </edit>
           </match>
 
@@ -118,6 +120,7 @@
       liberation_ttf
       material-symbols
       inter
+      maple-mono.NF-CN
       nerd-fonts.jetbrains-mono
       nerd-fonts.fira-code
       sarasa-gothic

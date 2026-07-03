@@ -1,8 +1,8 @@
 {inputs, ...}: let
-  rimeWanxiangVersion = "15.16.0";
+  rimeWanxiangVersion = "16.0.0";
   rimeWanxiangAssetName = "rime-wanxiang-flypy-fuzhu.zip";
-  rimeWanxiangZipHash = "sha256-JQDHUlidezQq1NIgwJzU9TkgolNSZqwQ2H/IjZ+I7TM=";
-  rimeWanxiangGramHash = "sha256-mZt9rmkWGlAKYGPpjNrXI+TQ8v/2/sZG7GoFehpbeJg=";
+  rimeWanxiangZipHash = "sha256-NnQVfSMr8w4dUZhbNUUWkq+zLWZWAldGvv+ZiiNSLmo=";
+  rimeWanxiangGramHash = "sha256-9LL52zrHfK6boZyqMDcOlN5SvfmCTfLZfye5ZDHv/PA=";
 in {
   nixpkgs.overlays = [
     (final: prev: let
@@ -65,7 +65,10 @@ in {
         installPhase = ''
           runHook preInstall
 
-          rm -rf README.md .git* custom LICENSE
+          rm -rf README.md .git* LICENSE
+          if [ -d custom ]; then
+            find custom -type f ! -name '*.yaml' -delete
+          fi
           if [ -f default.yaml ]; then
             mv default.yaml wanxiang_suggested_default.yaml
           fi
