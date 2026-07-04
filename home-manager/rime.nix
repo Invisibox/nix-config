@@ -1,89 +1,106 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
-  rimeSharedData = "${pkgs.fcitx5-rime.override {
-    rimeDataPkgs = [
-      pkgs.rime-data
-      pkgs.rime-wanxiang
-    ];
-  }}/share/rime-data";
-in {
-  xdg.dataFile."fcitx5/rime/default.custom.yaml".text = ''
-    patch:
-      __include: wanxiang_suggested_default:/
-  '';
+{pkgs, ...}: let
+  rimeWanxiangVersion = "16.0.1";
+  rimeWanxiangAssetName = "rime-wanxiang-flypy-fuzhu.zip";
+  rimeWanxiangZipHash = "sha256-joXwFiVWSKUS0dTEL1uWQq8N8F4s77YEd7JaV5AQxSc=";
+  rimeWanxiangGramHash = "sha256-OZy+/4m9THEMlyYwWwWmnpi/jiT4tHVFxfuXrgRLit0=";
 
-  xdg.dataFile."fcitx5/rime/wanxiang_pro.custom.yaml".text = ''
-    patch:
-      key_binder/bindings/+:
-        - { when: paging, accept: comma, send: Page_Up }
-        - { when: has_menu, accept: period, send: Page_Down }
-      engine/filters:
-        - lua_filter@*wanxiang.auto_phrase
-        - lua_filter@*wanxiang.super_lookup
-        - lua_filter@*wanxiang.super_english
-        - lua_filter@*wanxiang.super_comment_preedit
-        - lua_filter@*wanxiang.super_replacer
-        - lua_filter@*wanxiang.super_filter
-        - lua_filter@*wanxiang.super_sequence*F
-        - lua_filter@*wanxiang.user_predict*F
-        - uniquifier
-      speller/algebra:
-        __patch:
-          - wanxiang_algebra:/pro/小鹤双拼
-          - wanxiang_algebra:/pro/直接辅助
-  '';
+  rimeWanxiang = pkgs.stdenvNoCC.mkDerivation {
+    pname = "rime-wanxiang";
+    version = rimeWanxiangVersion;
 
-  xdg.dataFile."fcitx5/rime/wanxiang_mixedcode.custom.yaml".text = ''
-    patch:
-      speller/algebra:
-        __include: wanxiang_algebra:/mixed/通用派生规则
-        __patch: wanxiang_algebra:/mixed/小鹤双拼
-  '';
+    src = pkgs.fetchurl {
+      url = "https://github.com/amzxyz/rime_wanxiang/releases/download/v${rimeWanxiangVersion}/${rimeWanxiangAssetName}";
+      hash = rimeWanxiangZipHash;
+    };
 
-  xdg.dataFile."fcitx5/rime/wanxiang_reverse.custom.yaml".text = ''
-    patch:
-      speller/algebra:
-        __include: wanxiang_algebra:/reverse/小鹤双拼
-        __patch: wanxiang_algebra:/reverse/hspzn
-  '';
+    nativeBuildInputs = [pkgs.unzip];
 
-  xdg.dataFile."fcitx5/rime/wanxiang_english.custom.yaml".text = ''
-    patch:
-      speller/algebra:
-        __include: wanxiang_algebra:/english/通用规则
-        __patch: wanxiang_algebra:/english/小鹤双拼
-  '';
+    unpackPhase = ''
+      runHook preUnpack
 
-  xdg.dataFile."fcitx5/rime/wanxiang-lts-zh-hans.gram".source = pkgs.rime-wanxiang-lts-gram;
+      unzip -q "$src"
 
-  home.activation.redeployRimeWanxiang = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    rime_dir="${config.xdg.dataHome}/fcitx5/rime"
-    state_file="$rime_dir/.hm-rime-wanxiang-state"
-    state="$(
-      printf '%s\n' '${rimeSharedData}'
-      for file in \
-        default.custom.yaml \
-        wanxiang_pro.custom.yaml \
-        wanxiang_mixedcode.custom.yaml \
-        wanxiang_reverse.custom.yaml \
-        wanxiang_english.custom.yaml \
-        wanxiang-lts-zh-hans.gram
-      do
-        readlink -f "$rime_dir/$file" 2>/dev/null || true
-      done
-    )"
-
-    if [ ! -f "$state_file" ] || [ "$state" != "$(cat "$state_file")" ]; then
-      if [ -d "$rime_dir/build" ]; then
-        mv "$rime_dir/build" "$rime_dir/build.backup-$(date +%Y%m%d%H%M%S)"
+      shopt -s dotglob nullglob
+      entries=(*)
+      if [ "''${#entries[@]}" -eq 1 ] && [ -d "''${entries[0]}" ]; then
+        cd "''${entries[0]}"
       fi
-      mkdir -p "$rime_dir/build"
-      ${pkgs.librime}/bin/rime_deployer --build "$rime_dir" '${rimeSharedData}' "$rime_dir/build"
-      printf '%s' "$state" > "$state_file"
-    fi
-  '';
+
+      runHook postUnpack
+    '';
+
+    installPhase = ''
+      runHook preInstall
+
+      rm -rf README.md .git* LICENSE
+      if [ -d custom ]; then
+        find custom -type f ! -name '*.yaml' -delete
+      fi
+      if [ -f default.yaml ]; then
+        mv default.yaml wanxiang_suggested_default.yaml
+      fi
+
+      mkdir -p "$out/share/rime-data"
+      cp -r . "$out/share/rime-data/"
+
+      runHook postInstall
+    '';
+
+    meta = {
+      changelog = "https://github.com/amzxyz/rime_wanxiang/releases/tag/v${rimeWanxiangVersion}";
+      downloadPage = "https://github.com/amzxyz/rime_wanxiang/releases";
+    };
+  };
+
+  rimeWanxiangLtsGram = pkgs.fetchurl {
+    name = "wanxiang-lts-zh-hans.gram";
+    url = "https://github.com/amzxyz/RIME-LMDG/releases/download/LTS/wanxiang-lts-zh-hans.gram";
+    hash = rimeWanxiangGramHash;
+  };
+in {
+  xdg.dataFile = {
+    "fcitx5/rime" = {
+      source = "${rimeWanxiang}/share/rime-data";
+      recursive = true;
+    };
+
+    "fcitx5/rime/default.custom.yaml".text = ''
+      patch:
+        __include: wanxiang_suggested_default:/
+    '';
+
+    "fcitx5/rime/wanxiang_pro.custom.yaml".text = ''
+      patch:
+        key_binder/bindings/+:
+          - { when: paging, accept: comma, send: Page_Up }
+          - { when: has_menu, accept: period, send: Page_Down }
+        speller/algebra:
+          __patch:
+            - wanxiang_algebra:/pro/小鹤双拼
+            - wanxiang_algebra:/pro/直接辅助
+    '';
+
+    "fcitx5/rime/wanxiang_mixedcode.custom.yaml".text = ''
+      patch:
+        speller/algebra:
+          __include: wanxiang_algebra:/mixed/通用派生规则
+          __patch: wanxiang_algebra:/mixed/小鹤双拼
+    '';
+
+    "fcitx5/rime/wanxiang_reverse.custom.yaml".text = ''
+      patch:
+        speller/algebra:
+          __include: wanxiang_algebra:/reverse/小鹤双拼
+          __patch: wanxiang_algebra:/reverse/hspzn
+    '';
+
+    "fcitx5/rime/wanxiang_english.custom.yaml".text = ''
+      patch:
+        speller/algebra:
+          __include: wanxiang_algebra:/english/通用规则
+          __patch: wanxiang_algebra:/english/小鹤双拼
+    '';
+
+    "fcitx5/rime/wanxiang-lts-zh-hans.gram".source = rimeWanxiangLtsGram;
+  };
 }

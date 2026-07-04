@@ -96,7 +96,6 @@
       (fcitx5-rime.override {
         rimeDataPkgs = [
           rime-data
-          rime-wanxiang
         ];
       })
       fcitx5-gtk

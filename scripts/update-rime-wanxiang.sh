@@ -2,7 +2,7 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-target_file="${repo_root}/overlays/default.nix"
+target_file="${repo_root}/home-manager/rime.nix"
 wanxiang_api_url="https://api.github.com/repos/amzxyz/rime_wanxiang/releases/latest"
 gram_api_url="https://api.github.com/repos/amzxyz/RIME-LMDG/releases/tags/LTS"
 gram_asset_name="wanxiang-lts-zh-hans.gram"

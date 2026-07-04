@@ -1,9 +1,4 @@
-{inputs, ...}: let
-  rimeWanxiangVersion = "16.0.0";
-  rimeWanxiangAssetName = "rime-wanxiang-flypy-fuzhu.zip";
-  rimeWanxiangZipHash = "sha256-NnQVfSMr8w4dUZhbNUUWkq+zLWZWAldGvv+ZiiNSLmo=";
-  rimeWanxiangGramHash = "sha256-9LL52zrHfK6boZyqMDcOlN5SvfmCTfLZfye5ZDHv/PA=";
-in {
+{inputs, ...}: {
   nixpkgs.overlays = [
     (final: prev: let
       inherit (prev.stdenv.hostPlatform) system;
@@ -37,60 +32,6 @@ in {
             prev.gst_all_1.gst-plugins-bad
           ];
       });
-      rime-wanxiang = prev.stdenvNoCC.mkDerivation {
-        pname = "rime-wanxiang";
-        version = rimeWanxiangVersion;
-
-        src = prev.fetchurl {
-          url = "https://github.com/amzxyz/rime_wanxiang/releases/download/v${rimeWanxiangVersion}/${rimeWanxiangAssetName}";
-          hash = rimeWanxiangZipHash;
-        };
-
-        nativeBuildInputs = [prev.unzip];
-
-        unpackPhase = ''
-          runHook preUnpack
-
-          unzip -q "$src"
-
-          shopt -s dotglob nullglob
-          entries=(*)
-          if [ "''${#entries[@]}" -eq 1 ] && [ -d "''${entries[0]}" ]; then
-            cd "''${entries[0]}"
-          fi
-
-          runHook postUnpack
-        '';
-
-        installPhase = ''
-          runHook preInstall
-
-          rm -rf README.md .git* LICENSE
-          if [ -d custom ]; then
-            find custom -type f ! -name '*.yaml' -delete
-          fi
-          if [ -f default.yaml ]; then
-            mv default.yaml wanxiang_suggested_default.yaml
-          fi
-
-          mkdir -p "$out/share/rime-data"
-          cp -r . "$out/share/rime-data/"
-
-          runHook postInstall
-        '';
-
-        meta =
-          (prev.rime-wanxiang.meta or {})
-          // {
-            changelog = "https://github.com/amzxyz/rime_wanxiang/releases/tag/v${rimeWanxiangVersion}";
-            downloadPage = "https://github.com/amzxyz/rime_wanxiang/releases";
-          };
-      };
-      rime-wanxiang-lts-gram = prev.fetchurl {
-        name = "wanxiang-lts-zh-hans.gram";
-        url = "https://github.com/amzxyz/RIME-LMDG/releases/download/LTS/wanxiang-lts-zh-hans.gram";
-        hash = rimeWanxiangGramHash;
-      };
     })
     (self: super: {
       # 我们要覆盖 'wpsoffice-cn' 这个包
