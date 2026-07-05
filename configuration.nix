@@ -232,10 +232,10 @@
 
   # lutris.enable = true; # Enable Lutris.
 
-  # hardware = {
-  #   xone.enable = true;
-  #   xpadneo.enable = true;
-  # };
+  hardware = {
+    xone.enable = true;
+    xpadneo.enable = true;
+  };
 
   virtualization.enable = true;
 
