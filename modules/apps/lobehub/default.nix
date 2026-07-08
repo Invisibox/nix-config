@@ -10,6 +10,8 @@
   pname = "lobehub-desktop";
   version = "2.2.9";
 
+  cliVersion = "0.0.39";
+
   deps = with pkgs; [
     alsa-lib
     at-spi2-atk
@@ -89,15 +91,60 @@
     ];
   };
 
-  binpath = lib.makeBinPath [
-    xdgUtilsShim
-    pkgs.xdg-utils
-  ];
-
   src = pkgs.fetchurl {
     url = "https://github.com/lobehub/lobehub/releases/download/v${version}/lobehub-desktop_${version}_amd64.deb";
     hash = "sha256-eTNRbXonauM9QhYaZiPwPQbAHAT//41zdeZOnn2zVgc=";
   };
+
+  cliSrc = pkgs.fetchurl {
+    url = "https://registry.npmjs.org/@lobehub/cli/-/cli-${cliVersion}.tgz";
+    hash = "sha256-GVeGSXaifb3WUAk7TdLSwhx3IFmWgfdM59dVYg7Zz9o=";
+  };
+
+  lobehubCliPackage = pkgs.stdenvNoCC.mkDerivation {
+    pname = "lobehub-cli";
+    version = cliVersion;
+    src = cliSrc;
+
+    nativeBuildInputs = [
+      pkgs.makeWrapper
+      pkgs.nodejs
+    ];
+
+    dontBuild = true;
+
+    installPhase = ''
+      runHook preInstall
+
+      install -Dm755 dist/index.js "$out/lib/lobehub-cli/dist/index.js"
+      install -Dm644 package.json "$out/lib/lobehub-cli/package.json"
+      patchShebangs "$out/lib/lobehub-cli/dist/index.js"
+
+      makeWrapper "$out/lib/lobehub-cli/dist/index.js" "$out/bin/lh"
+      ln -s "$out/bin/lh" "$out/bin/lobe"
+      ln -s "$out/bin/lh" "$out/bin/lobehub"
+
+      install -Dm644 man/man1/lh.1 "$out/share/man/man1/lh.1"
+      install -Dm644 man/man1/lobe.1 "$out/share/man/man1/lobe.1"
+      install -Dm644 man/man1/lobehub.1 "$out/share/man/man1/lobehub.1"
+
+      runHook postInstall
+    '';
+
+    meta = with lib; {
+      description = "LobeHub command-line interface";
+      homepage = "https://lobehub.com/cli";
+      license = licenses.mit;
+      platforms = ["x86_64-linux"];
+      mainProgram = "lh";
+    };
+  };
+
+  binpath = lib.makeBinPath [
+    xdgUtilsShim
+    pkgs.xdg-utils
+    lobehubCliPackage
+  ];
 
   lobehubPackage = pkgs.stdenv.mkDerivation {
     inherit pname version src;
@@ -176,7 +223,10 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = [cfg.package];
+    environment.systemPackages = [
+      cfg.package
+      lobehubCliPackage
+    ];
 
     home-manager.users.${username}.xdg.mimeApps = {
       enable = true;

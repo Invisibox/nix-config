@@ -125,10 +125,10 @@
     sourceDir = "runtime-0.6.3";
   };
   dxvkComponentInfo = {
-    name = "dxvk-3.0";
-    url = "https://github.com/doitsujin/dxvk/releases/download/v3.0/dxvk-3.0.tar.gz";
-    hash = "sha256-fdMkP+GyYKDpsLnknWcq4y4zmL7hjJfn6FadDvDsqS0=";
-    sourceDir = "dxvk-3.0";
+    name = "dxvk-3.0.1";
+    url = "https://github.com/doitsujin/dxvk/releases/download/v3.0.1/dxvk-3.0.1.tar.gz";
+    hash = "sha256-vrtihNtZBTW3sAXBAuv2hQyYhCz/D97Zqst0urrhTEk=";
+    sourceDir = "dxvk-3.0.1";
   };
   vkd3dComponentInfo = {
     name = "vkd3d-proton-3.0.1";
