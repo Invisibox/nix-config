@@ -230,6 +230,9 @@
 
   local.apps.bottles.enable = true; # Enable Bottles.
 
+  local.desktop.niri.enable = true; # Enable Niri desktop session.
+  local.desktop.dms-greeter.enable = true; # Enable Dank Material Shell greeter.
+
   # lutris.enable = true; # Enable Lutris.
 
   hardware = {

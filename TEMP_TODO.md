@@ -120,12 +120,26 @@
 
 ## 阶段 3：给无开关模块补 `enable`
 
-- [ ] 给 `modules/apps/niri/default.nix` 增加 `local.desktop.niri.enable`。
-- [ ] 给 `modules/apps/dms-greeter/default.nix` 增加 `local.desktop.dms-greeter.enable`。
-- [ ] 检查 import 后直接生效的其他模块。
-- [ ] 将当前行为显式写入配置入口：
+- [x] 给 `modules/apps/niri/default.nix` 增加 `local.desktop.niri.enable`。
+- [x] 给 `modules/apps/dms-greeter/default.nix` 增加 `local.desktop.dms-greeter.enable`。
+- [x] 检查 import 后直接生效的其他模块。
+- [x] 将当前行为显式写入配置入口：
   - `local.desktop.niri.enable = true;`
   - `local.desktop.dms-greeter.enable = true;`
+
+阶段 3 记录：
+
+- `modules/apps/niri/default.nix` 现在只在 `local.desktop.niri.enable = true` 时生效。
+- `modules/apps/dms-greeter/default.nix` 现在只在 `local.desktop.dms-greeter.enable = true` 时配置 greeter。
+- DMS greeter 的 upstream module import 保留在顶层，因为它提供 `programs.dank-material-shell.greeter` option 定义。
+- `configuration.nix` 已显式启用：
+  - `local.desktop.niri.enable = true;`
+  - `local.desktop.dms-greeter.enable = true;`
+- 阶段验证：
+  - `nix fmt .` 通过。
+  - `nix flake check` 通过。
+  - `nixos-rebuild dry-build --flake '.#ASUS'` 通过。
+  - 仍有既有 Steam `closeSteam` 改名警告，按用户要求暂不处理。
 
 验收标准：import 模块本身不再改变系统；只有 enable 后才生效。
 
