@@ -248,13 +248,27 @@
 
 ## 阶段 7：拆大模块里的 package 构建逻辑
 
-- [ ] `modules/apps/brave-origin/default.nix` 拆出 `package.nix`。
-- [ ] `modules/apps/cc-switch/default.nix` 拆出 `package.nix`。
-- [ ] `modules/apps/lobehub/default.nix` 拆出 `package.nix`。
-- [ ] `modules/apps/im/default.nix` 拆出：
+- [x] `modules/apps/brave-origin/default.nix` 拆出 `package.nix`。
+- [x] `modules/apps/cc-switch/default.nix` 拆出 `package.nix`。
+- [x] `modules/apps/lobehub/default.nix` 拆出 `package.nix`。
+- [x] `modules/apps/im/default.nix` 拆出：
   - `wechat-sandbox.nix`
   - `qq-sandbox.nix`
-- [ ] `modules/apps/daed/default.nix` 视情况拆出 package override 辅助文件。
+- [x] `modules/apps/daed/default.nix` 视情况拆出 package override 辅助文件。
+
+阶段 7 记录：
+
+- `modules/apps/brave-origin/package.nix` 承载 Brave Origin Beta derivation。
+- `modules/apps/cc-switch/package.nix` 承载 CC Switch derivation。
+- `modules/apps/lobehub/package.nix` 承载 LobeHub Desktop 和 LobeHub CLI derivation。
+- `modules/apps/im/wechat-sandbox.nix` 承载 WeChat sandbox wrapper。
+- `modules/apps/im/qq-sandbox.nix` 承载 QQ sandbox wrapper。
+- `modules/apps/daed/package.nix` 承载 daed package override 和 pnpm/stdenv 调整。
+- 阶段验证：
+  - `nix fmt .` 通过。
+  - `nix flake check` 通过。
+  - `nixos-rebuild dry-build --flake '.#ASUS'` 通过。
+  - 仍有既有 Steam `closeSteam` 改名警告，按用户要求暂不处理。
 
 验收标准：`default.nix` 主要负责 `options` 和 `config`；打包细节在相邻文件。
 
