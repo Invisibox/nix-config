@@ -191,15 +191,27 @@
 
 ## 阶段 5：建立 host 入口
 
-- [ ] 新建 `hosts/ASUS/default.nix`。
-- [ ] 将当前 `configuration.nix` 的主机专属内容逐步迁入：
+- [x] 新建 `hosts/ASUS/default.nix`。
+- [x] 将当前 `configuration.nix` 的主机专属内容逐步迁入：
   - `networking.hostName = "ASUS";`
   - `hardware-configuration.nix`
   - bootloader
   - timezone/locale
   - 用户基础配置
-- [ ] 修改 `flake.nix` 中 `nixosConfigurations.ASUS.modules` 指向 host 入口。
-- [ ] 保留 `configuration.nix` 作为过渡入口，或在迁移完成后删除。
+- [x] 修改 `flake.nix` 中 `nixosConfigurations.ASUS.modules` 指向 host 入口。
+- [x] 保留 `configuration.nix` 作为过渡入口，或在迁移完成后删除。
+
+阶段 5 记录：
+
+- 当前主机配置已迁移到 `hosts/ASUS/default.nix`。
+- `flake.nix` 的 `nixosConfigurations.ASUS.modules` 已指向 `./hosts/ASUS`。
+- 根目录 `configuration.nix` 保留为过渡 wrapper，只导入 `./hosts/ASUS`。
+- `hosts/ASUS/default.nix` 内部导入路径已改为相对仓库根的 `../../...` 路径。
+- 阶段验证：
+  - `nix fmt .` 通过。
+  - `nix flake check` 通过。
+  - `nixos-rebuild dry-build --flake '.#ASUS'` 通过。
+  - 仍有既有 Steam `closeSteam` 改名警告，按用户要求暂不处理。
 
 验收标准：`flake.nix` 的 NixOS 配置入口是 `./hosts/ASUS`。
 
