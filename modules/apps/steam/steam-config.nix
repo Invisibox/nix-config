@@ -12,6 +12,7 @@
     PROTON_FSR4_RDNA3_UPGRADE = "1";
     PROTON_USE_NTSYNC = "1";
     PROTON_USE_WOW64 = "1";
+    STEAM_GAMESCOPE = "1";
     WINEDLLOVERRIDES = "dinput8,dxgi,dsound,ddraw=n,b";
   };
   defaultOptions = {

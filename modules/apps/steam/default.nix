@@ -6,7 +6,11 @@
   ...
 }: let
   cfg = config.local.gaming.steam;
-  steamGameWrapper = pkgs.callPackage ./game-wrapper.nix {};
+  gamescopeEnabled = config.local.gaming.gamescope.enable;
+  gamescopePackage = config.programs.gamescope.package;
+  steamGameWrapper = pkgs.callPackage ./game-wrapper.nix {
+    gamescope = gamescopePackage;
+  };
   steamRuntimeEnv = {
     PIPEWIRE_NODE = "Game";
     PULSE_SINK = "Game";
@@ -50,6 +54,7 @@ in {
       ];
       extraPackages = [
         pkgs.gamemode
+        gamescopePackage
         pkgs.mangohud
         pkgs.obs-studio-plugins.obs-vkcapture
       ];
@@ -93,6 +98,14 @@ in {
           steamGameWrapper
           steamcmd
         ];
+      };
+      xdg.desktopEntries.steam-gamescope = lib.mkIf gamescopeEnabled {
+        name = "Steam (Gamescope)";
+        genericName = "Steam running inside Gamescope";
+        exec = "steam-gamescope";
+        icon = "steam";
+        terminal = false;
+        categories = ["Game"];
       };
       # https://github.com/different-name/steam-config-nix
       programs.steam.config = import ./steam-config.nix {inherit lib pkgs config steamGameWrapper;};

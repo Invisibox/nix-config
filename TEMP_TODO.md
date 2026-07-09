@@ -31,6 +31,7 @@
 - 当前自定义启用入口在 `configuration.nix`：
   - `nix-ld.enable = true;`
   - `steam.enable = true;`
+  - `gamescope.enable = true;`
   - `heroic.enable = true;`
   - `brave-origin.enable = true;`
   - `lobehub.enable = true;`
@@ -92,6 +93,7 @@
   - `wemeet.enable` -> `local.apps.wemeet.enable`
 - [x] 将 gaming 类 option 迁移到 `local.gaming.*`：
   - `steam.enable` -> `local.gaming.steam.enable`
+  - `gamescope.enable` -> `local.gaming.gamescope.enable`
   - `heroic.enable` -> `local.gaming.heroic.enable`
 - [x] 将 service/dev/system 类 option 迁移：
   - `daed.enable` -> `local.services.daed.enable`
@@ -105,8 +107,7 @@
 
 - 已迁移 `configuration.nix` 中的自定义 feature enable 入口到 `local.*`。
 - 已迁移各 feature module 内部的 `cfg = config.*` 和 `options.*` 到对应 `local.*` 路径。
-- 已按后续要求移除 standalone gamescope feature，不再保留 `local.gaming.gamescope`。
-- Steam wrapper 不再默认通过 gamescope 启动游戏。
+- `steam` 对 `gamescope` 的依赖已从 `config.gamescope.enable` 改为 `config.local.gaming.gamescope.enable`。
 - `wemeet` 内部默认值回写已从 `wemeet.*` 改为 `local.apps.wemeet.*`。
 - `daed` assertion 提示文案已同步为 `local.services.daed.*`。
 - 阶段验证：
@@ -136,6 +137,7 @@
   - 字体/主题/portal/桌面基础项，视情况迁移
 - [ ] 新建 `profiles/gaming.nix`：
   - Steam
+  - Gamescope
   - Heroic
   - gamepad 相关硬件项
 - [ ] 新建 `profiles/apps.nix`：

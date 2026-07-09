@@ -1,0 +1,35 @@
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}: let
+  cfg = config.local.gaming.gamescope;
+in {
+  options = {
+    local.gaming.gamescope = {
+      enable = lib.mkEnableOption "Enable gamescope in NixOS & home-manager";
+    };
+  };
+  config = lib.mkIf cfg.enable {
+    programs.gamescope = {
+      enable = true;
+      package = pkgs.gamescope.overrideAttrs (
+        final: prev: {
+          # https://github.com/ValveSoftware/gamescope/issues/1622
+          NIX_CFLAGS_COMPILE = (prev.NIX_CFLAGS_COMPILE or []) ++ ["-fno-fast-math"];
+          patches =
+            (prev.patches or [])
+            ++ [
+              # Fix Gamescope not closing https://github.com/ValveSoftware/gamescope/pull/1908
+              (pkgs.fetchpatch {
+                url = "https://github.com/ValveSoftware/gamescope/commit/fa900b0694ffc8b835b91ef47a96ed90ac94823b.patch?full_index=1";
+                hash = "sha256-eIHhgonP6YtSqvZx2B98PT1Ej4/o0pdU+4ubdiBgBM4=";
+              })
+            ];
+        }
+      );
+      capSysNice = false; # 'true' breaks gamescope for Steam https://github.com/NixOS/nixpkgs/issues/292620#issuecomment-2143529075
+    };
+  };
+}

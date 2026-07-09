@@ -210,6 +210,10 @@
     fixDownloadSpeed = true; # Fix slow download speeds in Steam.
   };
 
+  local.gaming.gamescope = {
+    enable = true; # Enable Gamescope.
+  };
+
   local.gaming.heroic = {
     enable = true; # Enable Heroic Games Launcher.
     enableNative = true; # Enable native Heroic client.
