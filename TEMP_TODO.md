@@ -217,18 +217,32 @@
 
 ## 阶段 6：拆分 Home Manager 大文件
 
-- [ ] 从 `home-manager/home.nix` 拆出：
+- [x] 从 `home-manager/home.nix` 拆出：
   - `home-manager/features/packages.nix`
   - `home-manager/features/mime.nix`
   - `home-manager/features/git.nix`
   - `home-manager/features/theme.nix`
   - `home-manager/features/cli.nix`
-- [ ] 保持 `home-manager/home.nix` 只做：
+- [x] 保持 `home-manager/home.nix` 只做：
   - `home.username`
   - `home.homeDirectory`
   - imports
   - `home.stateVersion`
-- [ ] 对和 NixOS feature 强相关的 HM 配置，优先考虑并回对应 `modules/*` feature。
+- [x] 对和 NixOS feature 强相关的 HM 配置，优先考虑并回对应 `modules/*` feature。
+
+阶段 6 记录：
+
+- 新增 `home-manager/features/packages.nix`，承载原 `home.packages`。
+- 新增 `home-manager/features/mime.nix`，承载 MIME 默认应用绑定。
+- 新增 `home-manager/features/git.nix`，承载 Git 用户配置。
+- 新增 `home-manager/features/theme.nix`，承载 session variables、cursor、GTK 和 Qt。
+- 新增 `home-manager/features/cli.nix`，承载 Atuin、fzf 和 eza。
+- `home-manager/home.nix` 已收敛为用户名、home 目录、imports 和 `home.stateVersion`。
+- 阶段验证：
+  - `nix fmt .` 通过。
+  - `nix flake check` 通过。
+  - `nixos-rebuild dry-build --flake '.#ASUS'` 通过。
+  - 仍有既有 Steam `closeSteam` 改名警告，按用户要求暂不处理。
 
 验收标准：`home-manager/home.nix` 不再承载大包列表和大量业务配置。
 
