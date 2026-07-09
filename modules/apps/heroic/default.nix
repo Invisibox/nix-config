@@ -1,11 +1,11 @@
 {
   lib,
   config,
-  username,
   pkgs,
   ...
 }: let
   cfg = config.local.gaming.heroic;
+  localUserName = config.local.user.name;
   protonCachyos =
     pkgs.runCommand "proton-cachyos-10.0-20260410-slr" {
       src = pkgs.fetchzip {
@@ -27,7 +27,7 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    home-manager.users.${username} = {config, ...}: {
+    home-manager.users.${localUserName} = {config, ...}: {
       home.file = {
         wine-links-proton-cachyos-heroic = {
           enable = cfg.enableNative;

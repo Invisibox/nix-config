@@ -3,10 +3,10 @@
   config,
   pkgs,
   inputs,
-  username,
   ...
 }: let
   cfg = config.local.apps.wemeet;
+  localUserName = config.local.user.name;
 in {
   options.local.apps.wemeet = {
     enable = lib.mkEnableOption "Enable sandboxed WeMeet";
@@ -167,7 +167,7 @@ in {
     # Install sandboxed WeMeet by default.
     local.apps.wemeet.package = lib.mkDefault wemeetSandboxed;
 
-    home-manager.users.${username}.home.packages = [
+    home-manager.users.${localUserName}.home.packages = [
       cfg.package
     ];
   });

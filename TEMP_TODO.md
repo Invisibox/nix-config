@@ -274,10 +274,24 @@
 
 ## 阶段 8：清理参数传递
 
-- [ ] 模块内逐步用 `config.local.user.name` 替代 `username` specialArg。
-- [ ] 检查是否还能减少 `home-manager.extraSpecialArgs`。
-- [ ] `inputs` 暂时可以继续通过 specialArgs 传入，不急于替换。
-- [ ] 等后续考虑 flake-parts 时，再整理 inputs 访问方式。
+- [x] 模块内逐步用 `config.local.user.name` 替代 `username` specialArg。
+  - 已移除 flake `specialArgs.username`。
+  - NixOS app modules 改为通过 `config.local.user.name` 派生 Home Manager / system user 键。
+  - `dms-greeter` 改为通过 `config.local.user.home` 设置 `configHome`。
+- [x] 检查是否还能减少 `home-manager.extraSpecialArgs`。
+  - 暂不减少：`home-manager/dms`、`home-manager/niri`、`home-manager/spotify`、`home-manager/features/packages.nix` 仍直接使用 `inputs`。
+- [x] `inputs` 暂时可以继续通过 specialArgs 传入，不急于替换。
+  - NixOS `specialArgs` 和 Home Manager `extraSpecialArgs` 仍仅传递 `inputs`。
+- [x] 等后续考虑 flake-parts 时，再整理 inputs 访问方式。
+  - flake-parts 阶段再统一评估 inputs 访问方式。
+
+验证：
+
+- [x] `nix fmt .`
+- [x] `nix flake check`
+  - 通过；仅保留已知 `programs.steam.config.closeSteam` 重命名警告。
+- [x] `nixos-rebuild dry-build --flake '.#ASUS'`
+  - 通过；仅保留已知 `programs.steam.config.closeSteam` 重命名警告。
 
 验收标准：用户名不再通过 specialArgs 散落传递；模块对本机用户名的依赖集中。
 

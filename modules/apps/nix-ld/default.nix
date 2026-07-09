@@ -1,11 +1,11 @@
 {
   lib,
   config,
-  username,
   pkgs,
   ...
 }: let
   cfg = config.local.dev.nix-ld;
+  localUserName = config.local.user.name;
 in {
   options = {
     local.dev.nix-ld = {
@@ -47,6 +47,6 @@ in {
           vulkan-loader
         ];
     };
-    home-manager.users.${username} = {};
+    home-manager.users.${localUserName} = {};
   };
 }

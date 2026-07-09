@@ -3,10 +3,10 @@
   config,
   pkgs,
   inputs,
-  username,
   ...
 }: let
   cfg = config.local.apps.wps;
+  localUserName = config.local.user.name;
 in {
   options.local.apps.wps = {
     enable = lib.mkEnableOption "Enable WPS Office (wpsoffice-cn)";
@@ -78,7 +78,7 @@ in {
         '';
     });
   in {
-    home-manager.users.${username}.home.packages = [
+    home-manager.users.${localUserName}.home.packages = [
       wrappedWpsPackage
     ];
   });

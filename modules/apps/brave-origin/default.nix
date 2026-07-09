@@ -1,11 +1,11 @@
 {
   lib,
   config,
-  username,
   pkgs,
   ...
 }: let
   cfg = config.local.apps.brave-origin;
+  localUserName = config.local.user.name;
   braveOriginBeta = import ./package.nix {inherit lib pkgs;};
 in {
   options.local.apps.brave-origin = {
@@ -19,7 +19,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home-manager.users.${username}.home.packages = [
+    home-manager.users.${localUserName}.home.packages = [
       cfg.package
     ];
   };

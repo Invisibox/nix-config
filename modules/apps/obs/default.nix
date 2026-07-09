@@ -1,11 +1,11 @@
 {
   lib,
   config,
-  username,
   pkgs,
   ...
 }: let
   cfg = config.local.apps.obs;
+  localUserName = config.local.user.name;
 in {
   options = {
     local.apps.obs = {
@@ -21,7 +21,7 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    home-manager.users.${username} = {
+    home-manager.users.${localUserName} = {
       home = {
         packages = with pkgs;
           lib.mkIf cfg.enableNative [

@@ -2,10 +2,10 @@
   lib,
   config,
   pkgs,
-  username,
   ...
 }: let
   cfg = config.local.virtualisation;
+  localUserName = config.local.user.name;
 in {
   options = {
     local.virtualisation = {
@@ -73,7 +73,7 @@ in {
     };
     users = {
       users = {
-        ${username} = {
+        ${localUserName} = {
           extraGroups = [
             "kvm"
             "libvirtd"
@@ -92,6 +92,6 @@ in {
       };
     };
 
-    home-manager.users.${username} = {};
+    home-manager.users.${localUserName} = {};
   };
 }

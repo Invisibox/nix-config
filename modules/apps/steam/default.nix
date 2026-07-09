@@ -1,11 +1,11 @@
 {
   lib,
   config,
-  username,
   pkgs,
   ...
 }: let
   cfg = config.local.gaming.steam;
+  localUserName = config.local.user.name;
   gamescopeEnabled = config.local.gaming.gamescope.enable;
   gamescopePackage = config.programs.gamescope.package;
   steamGameWrapper = pkgs.callPackage ./game-wrapper.nix {
@@ -67,8 +67,8 @@ in {
       enable = true;
       settings.general.renice = 10;
     };
-    users.users.${username}.extraGroups = ["gamemode"];
-    home-manager.users.${username} = {
+    users.users.${localUserName}.extraGroups = ["gamemode"];
+    home-manager.users.${localUserName} = {
       pkgs,
       config,
       ...

@@ -68,7 +68,6 @@
       inherit system;
       specialArgs = {
         inherit inputs;
-        username = "zh";
       };
       modules = [
         ./hosts/ASUS
@@ -78,10 +77,19 @@
         # 将 home-manager 配置为 nixos 的一个 module
         # 这样在 nixos-rebuild switch 时，home-manager 配置也会被自动部署
         home-manager.nixosModules.home-manager
-        {
+        ({config, ...}: let
+          localUserName = config.local.user.name;
+          localUserHome = config.local.user.home;
+        in {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.zh = import ./home-manager/home.nix;
+          home-manager.users.${localUserName} = {
+            imports = [./home-manager/home.nix];
+            home = {
+              username = localUserName;
+              homeDirectory = localUserHome;
+            };
+          };
 
           home-manager.backupFileExtension = "hm-back";
 
@@ -90,10 +98,9 @@
             inputs.steam-config-nix.homeModules.default
           ];
 
-          # 使用 home-manager.extraSpecialArgs 自定义传递给 ./home.nix 的参数
-          # 取消注释下面这一行，就可以在 home.nix 中使用 flake 的所有 inputs 参数了
+          # Home Manager modules still consume flake inputs directly.
           home-manager.extraSpecialArgs = {inherit inputs;};
-        }
+        })
       ];
     };
   };

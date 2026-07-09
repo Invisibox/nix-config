@@ -3,10 +3,10 @@
   pkgs,
   inputs,
   config,
-  username,
   ...
 }: let
   cfg = config.local.desktop.dms-greeter;
+  localUserHome = config.local.user.home;
   greeterCursorTheme = "Bibata-Modern-Ice";
   greeterCursorSize = 22;
   greeterShowSeconds = true;
@@ -53,7 +53,7 @@ in {
           }
         '';
       };
-      configHome = "/home/${username}";
+      configHome = localUserHome;
     };
 
     environment.systemPackages = [

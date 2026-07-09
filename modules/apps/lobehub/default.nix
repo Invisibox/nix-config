@@ -1,11 +1,11 @@
 {
   lib,
   config,
-  username,
   pkgs,
   ...
 }: let
   cfg = config.local.apps.lobehub;
+  localUserName = config.local.user.name;
   lobehubPackages = import ./package.nix {inherit lib pkgs;};
 in {
   options.local.apps.lobehub = {
@@ -24,7 +24,7 @@ in {
       lobehubPackages.cliPackage
     ];
 
-    home-manager.users.${username}.xdg.mimeApps = {
+    home-manager.users.${localUserName}.xdg.mimeApps = {
       enable = true;
       defaultApplications."x-scheme-handler/lobehub" = ["lobehub-desktop.desktop"];
     };

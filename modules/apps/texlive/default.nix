@@ -3,10 +3,10 @@
   config,
   pkgs,
   inputs,
-  username,
   ...
 }: let
   cfg = config.local.apps.texlive;
+  localUserName = config.local.user.name;
 in {
   options.local.apps.texlive = {
     enable = lib.mkEnableOption "Enable TeX Live via Home Manager";
@@ -96,7 +96,7 @@ in {
       '';
     };
   in {
-    home-manager.users.${username}.home.packages = [
+    home-manager.users.${localUserName}.home.packages = [
       wrappedTexlivePackage
     ];
   });

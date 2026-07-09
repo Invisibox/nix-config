@@ -2,10 +2,10 @@
   lib,
   config,
   pkgs,
-  username,
   ...
 }: let
   cfg = config.local.apps.im;
+  localUserName = config.local.user.name;
   wechatSandboxed = import ./wechat-sandbox.nix {
     inherit pkgs;
     basePackage = cfg.wechatBasePackage;
@@ -38,7 +38,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home-manager.users.${username}.home.packages = [
+    home-manager.users.${localUserName}.home.packages = [
       cfg.wechatPackage
       qqSandboxed
     ];

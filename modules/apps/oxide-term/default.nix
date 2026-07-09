@@ -1,11 +1,11 @@
 {
   lib,
   config,
-  username,
   pkgs,
   ...
 }: let
   cfg = config.local.apps.oxide-term;
+  localUserName = config.local.user.name;
 
   pname = "oxideterm";
   version = "1.6.12";
@@ -89,7 +89,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home-manager.users.${username} = {
+    home-manager.users.${localUserName} = {
       home = {
         file.".local/bin/oxt".source = "${cfg.package}/lib/OxideTerm/cli-bin/oxt";
 

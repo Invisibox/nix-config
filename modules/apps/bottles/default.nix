@@ -1,11 +1,11 @@
 {
   lib,
   config,
-  username,
   pkgs,
   ...
 }: let
   cfg = config.local.apps.bottles;
+  localUserName = config.local.user.name;
   bottlesPkgs = pkgs.extend (_final: prev: {
     openldap = prev.openldap.overrideAttrs (_: {
       doCheck = false;
@@ -202,7 +202,7 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    home-manager.users.${username} = {
+    home-manager.users.${localUserName} = {
       config,
       pkgs,
       ...
