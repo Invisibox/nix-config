@@ -145,16 +145,16 @@
 
 ## 阶段 4：整理启用入口为 profiles
 
-- [ ] 新建 `profiles/desktop.nix`：
+- [x] 新建 `profiles/desktop.nix`：
   - Niri
   - DMS greeter
   - 字体/主题/portal/桌面基础项，视情况迁移
-- [ ] 新建 `profiles/gaming.nix`：
+- [x] 新建 `profiles/gaming.nix`：
   - Steam
   - Gamescope
   - Heroic
   - gamepad 相关硬件项
-- [ ] 新建 `profiles/apps.nix`：
+- [x] 新建 `profiles/apps.nix`：
   - Brave Origin
   - LobeHub
   - LocalSend
@@ -162,16 +162,30 @@
   - Netcatty
   - OxideTerm
   - IM/WPS/WeMeet/TeX Live 等
-- [ ] 新建 `profiles/dev.nix`：
+- [x] 新建 `profiles/dev.nix`：
   - nix-ld
   - dev packages
   - Neovim/CLI 工具，视情况迁移
-- [ ] 新建 `profiles/services.nix`：
+- [x] 新建 `profiles/services.nix`：
   - daed
   - postgresql
   - tailscale
   - printing/network 相关项，视情况迁移
-- [ ] `configuration.nix` 只负责导入 profiles 和保留少量主机基础项。
+- [x] `configuration.nix` 只负责导入 profiles 和保留少量主机基础项。
+
+阶段 4 记录：
+
+- 新增 `profiles/desktop.nix`，承载 Niri、DMS greeter 和 GVFS。
+- 新增 `profiles/gaming.nix`，承载 Steam、Gamescope、Heroic 和手柄硬件支持。
+- 新增 `profiles/apps.nix`，承载 GUI/app feature 启用组合。
+- 新增 `profiles/dev.nix`，承载 nix-ld、virtualisation、系统工具包和 Neovim。
+- 新增 `profiles/services.nix`，承载 Tailscale、PostgreSQL 和 daed。
+- `configuration.nix` 已导入上述 profiles，并移出 `local.*` feature 启用组合。
+- 阶段验证：
+  - `nix fmt .` 通过。
+  - `nix flake check` 通过。
+  - `nixos-rebuild dry-build --flake '.#ASUS'` 通过。
+  - 仍有既有 Steam `closeSteam` 改名警告，按用户要求暂不处理。
 
 验收标准：启用组合从 `configuration.nix` 主体中移出；主文件明显变薄。
 

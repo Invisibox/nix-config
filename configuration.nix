@@ -16,6 +16,11 @@
     ./printing.nix
     ./modules
     ./overlays
+    ./profiles/desktop.nix
+    ./profiles/gaming.nix
+    ./profiles/apps.nix
+    ./profiles/dev.nix
+    ./profiles/services.nix
   ];
 
   # Bootloader.
@@ -146,16 +151,6 @@
     #media-session.enable = true;
   };
 
-  services.tailscale.enable = true;
-
-  services.postgresql = {
-    enable = true;
-    package = pkgs.postgresql_16; # 选择版本
-    # 其他配置...
-  };
-  # 禁用开机自启
-  systemd.services.postgresql.wantedBy = pkgs.lib.mkForce [];
-
   environment.sessionVariables = {
     # this is a lazy way to do it. it works because
     # user vars come after setting this dummy var to 1.
@@ -198,105 +193,10 @@
 
   users.defaultUserShell = pkgs.zsh;
 
-  # Enable nix ld.
-  local.dev.nix-ld.enable = true;
-
-  services.gvfs.enable = true;
-
-  local.gaming.steam = {
-    enable = true;
-    enableNative = true; # Enable native Steam client.
-    enableSteamBeta = true; # Enable Steam Beta client.
-    fixDownloadSpeed = true; # Fix slow download speeds in Steam.
-  };
-
-  local.gaming.gamescope = {
-    enable = true; # Enable Gamescope.
-  };
-
-  local.gaming.heroic = {
-    enable = true; # Enable Heroic Games Launcher.
-    enableNative = true; # Enable native Heroic client.
-  };
-
-  local.apps.brave-origin.enable = true; # Install Brave Origin Nightly via Home Manager.
-  local.apps.lobehub.enable = true; # Enable LobeHub Desktop.
-  local.apps.cc-switch.enable = true; # Install CC Switch desktop app.
-  local.apps.localsend.enable = true; # Install LocalSend via Home Manager.
-  local.apps.moonlight.enable = true; # Install Moonlight client via Home Manager.
-  local.apps.netcatty.enable = true; # Install Netcatty via Home Manager.
-  local.apps.oxide-term.enable = true; # Install OxideTerm via Home Manager.
-  local.apps.im.enable = true; # Install sandboxed WeChat/QQ via Home Manager.
-
-  local.apps.bottles.enable = true; # Enable Bottles.
-
-  local.desktop.niri.enable = true; # Enable Niri desktop session.
-  local.desktop.dms-greeter.enable = true; # Enable Dank Material Shell greeter.
-
   # lutris.enable = true; # Enable Lutris.
-
-  hardware = {
-    xone.enable = true;
-    xpadneo.enable = true;
-  };
-
-  local.virtualisation.enable = true;
-
-  local.apps.waydroid = {
-    enable = true;
-    initSystemType = "GAPPS";
-    package = pkgs.waydroid-nftables; # linux 6.19 上 legacy iptables 模式会因缺少 ip_tables 失败
-  };
-
-  local.apps.obs = {
-    enable = true;
-    enableNative = true;
-    silenceOutput = true;
-  };
-
-  local.services.daed = {
-    enable = true;
-    dashboardAddress = "127.0.0.1";
-    dashboardPort = 2023;
-    openDashboardFirewall = false;
-    tproxyPort = 12345;
-  };
-
-  local.apps.texlive.enable = true;
-  local.apps.wps.enable = true;
-  local.apps.wemeet.enable = true;
 
   # Disable nano, as it is not needed.
   programs.nano.enable = false;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    git
-    wget
-    curl
-    htop
-    eza
-    bun
-    uv
-    gcc
-    go
-    libgcc
-    ncurses
-    btrfs-progs
-    compsize
-    xsettingsd
-    xrdb
-    xdg-desktop-portal-gtk
-    vulkan-tools
-    pavucontrol
-    dconf-editor
-  ];
-
-  programs.neovim = {
-    enable = true;
-    vimAlias = true;
-  };
 
   # environment.variables = {
   #   EDITOR = "neovim";
