@@ -8,6 +8,10 @@
   localUserName = config.local.user.name;
   gamescopeEnabled = config.local.gaming.gamescope.enable;
   gamescopePackage = config.programs.gamescope.package;
+  protonEmPackage = config.local.gaming.proton-em.package;
+  protonGePackage = pkgs.proton-ge-bin.override {
+    steamDisplayName = "Proton GE";
+  };
   steamGameWrapper = pkgs.callPackage ./game-wrapper.nix {
     gamescope = gamescopePackage;
   };
@@ -48,9 +52,9 @@ in {
         '';
         privateTmp = false; # https://github.com/NixOS/nixpkgs/issues/381923
       };
-      extraCompatPackages = with pkgs; [
-        proton-em
-        proton-ge
+      extraCompatPackages = [
+        protonEmPackage
+        protonGePackage
       ];
       extraPackages = [
         pkgs.gamemode

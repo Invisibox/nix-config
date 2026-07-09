@@ -2,7 +2,7 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-target_file="${repo_root}/overlays/proton-em/default.nix"
+target_file="${repo_root}/modules/apps/proton-em/package.nix"
 api_url="https://api.github.com/repos/Etaash-mathamsetty/Proton/releases?per_page=30"
 channel="${PROTON_EM_CHANNEL:-stable}"
 requested_version="${PROTON_EM_VERSION:-}"
@@ -12,7 +12,7 @@ if [[ ! -f "${target_file}" ]]; then
   exit 1
 fi
 
-for cmd in curl jq nix sed; do
+for cmd in curl head jq nix sed; do
   if ! command -v "${cmd}" >/dev/null 2>&1; then
     echo "error: missing command: ${cmd}" >&2
     exit 1
@@ -92,44 +92,38 @@ if [[ -z "${release_info}" ]]; then
   exit 1
 fi
 
-IFS=$'\t' read -r tag_name version asset_url asset_digest sha256_url <<<"${release_info}"
+IFS=$'\t' read -r tag_name version asset_url _asset_digest _sha256_url <<<"${release_info}"
 
-hash=""
-if [[ -n "${asset_digest}" ]]; then
-  digest_algo="${asset_digest%%:*}"
-  digest_hex="${asset_digest#*:}"
-  if [[ "${digest_algo}" == "sha256" && "${digest_hex}" =~ ^[0-9A-Fa-f]{64}$ ]]; then
-    hash="$(nix hash convert --hash-algo sha256 --to sri "${digest_hex}" 2>/dev/null || true)"
-  fi
-fi
-
-if [[ -z "${hash}" || "${hash}" == "null" ]]; then
-  if [[ -z "${sha256_url}" ]]; then
-    echo "error: unable to find a digest or sha256sum asset for ${tag_name}" >&2
-    exit 1
-  fi
-
-  sha256_hex="$(curl_fetch "${github_headers[@]}" "${sha256_url}" | sed -n '0,/^\([0-9A-Fa-f]\{64\}\).*/s//\1/p')"
-  if [[ -n "${sha256_hex}" ]]; then
-    hash="$(nix hash convert --hash-algo sha256 --to sri "${sha256_hex}" 2>/dev/null || true)"
-  fi
-fi
+hash="$(nix store prefetch-file --json --unpack "${asset_url}" | jq -r '.hash')"
 
 if [[ -z "${hash}" || "${hash}" == "null" ]]; then
   echo "error: unable to determine hash for ${asset_url}" >&2
   exit 1
 fi
 
-current_version="$(sed -n 's/^      version = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
-current_hash="$(sed -n 's/^        hash = "\(sha256-[^"]*\)";$/\1/p' "${target_file}" | head -n1)"
+current_version="$(sed -n 's/^  version = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
+current_hash="$(sed -n 's/^    hash = "\(sha256-[^"]*\)";$/\1/p' "${target_file}" | head -n1)"
+
+if [[ -z "${current_version}" || -z "${current_hash}" ]]; then
+  echo "error: unable to locate current version/hash in ${target_file}" >&2
+  exit 1
+fi
 
 if [[ "${current_version}" == "${version}" && "${current_hash}" == "${hash}" ]]; then
   echo "proton-em is already up to date (${version})"
   exit 0
 fi
 
-sed -Ei 's|^      version = "[^"]+";$|      version = "'"${version}"'";|' "${target_file}"
-sed -Ei 's|^        hash = "sha256-[^"]+";$|        hash = "'"${hash}"'";|' "${target_file}"
+sed -Ei 's|^  version = "[^"]+";$|  version = "'"${version}"'";|' "${target_file}"
+sed -Ei 's|^    hash = "sha256-[^"]+";$|    hash = "'"${hash}"'";|' "${target_file}"
+
+updated_version="$(sed -n 's/^  version = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
+updated_hash="$(sed -n 's/^    hash = "\(sha256-[^"]*\)";$/\1/p' "${target_file}" | head -n1)"
+
+if [[ "${updated_version}" != "${version}" || "${updated_hash}" != "${hash}" ]]; then
+  echo "error: failed to update version/hash in ${target_file}" >&2
+  exit 1
+fi
 
 echo "updated ${target_file}"
 echo "  channel: ${channel}"

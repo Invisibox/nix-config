@@ -7,6 +7,9 @@
 } @ args: let
   cfg = config.modules.desktop.niri;
   confPath = "${config.home.homeDirectory}/Documents/nix-config/home-manager/niri";
+  system = pkgs.stdenv.hostPlatform.system;
+  niriPackage = inputs.niri-flake.packages.${system}.niri-unstable;
+  xwaylandSatellitePackage = inputs.niri-flake.packages.${system}.xwayland-satellite-unstable;
 in {
   imports = [
     # 保持这两个，DMS 需要它们
@@ -23,7 +26,7 @@ in {
       {
         programs.niri = {
           enable = true;
-          package = pkgs.niri;
+          package = niriPackage;
 
           # 🟢 修正：不要设置 config = {}，DMS 的模块可能改变了 config 的类型定义
           # 直接留空，让 DMS 模块去生成它所需的默认值，或者依靠下面的配置文件覆盖
@@ -31,7 +34,7 @@ in {
 
         # 这一段保持不变
         home.packages = with pkgs; [
-          xwayland-satellite
+          xwaylandSatellitePackage
           brightnessctl
           ddcutil
           libnotify

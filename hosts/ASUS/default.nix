@@ -15,7 +15,6 @@
     ../../nix.nix
     ../../printing.nix
     ../../modules
-    ../../overlays
     ../../profiles/desktop.nix
     ../../profiles/gaming.nix
     ../../profiles/apps.nix

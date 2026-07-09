@@ -6,6 +6,10 @@
 }: let
   cfg = config.local.apps.bottles;
   localUserName = config.local.user.name;
+  protonEmPackage = config.local.gaming.proton-em.package;
+  protonGePackage = pkgs.proton-ge-bin.override {
+    steamDisplayName = "Proton GE";
+  };
   bottlesPkgs = pkgs.extend (_final: prev: {
     openldap = prev.openldap.overrideAttrs (_: {
       doCheck = false;
@@ -248,11 +252,11 @@ in {
             target = "${config.xdg.dataHome}/bottles/latencyflex/${latencyflexComponentInfo.name}";
           };
           proton-links-proton-em-bottles = {
-            source = pkgs.proton-em.steamcompattool;
+            source = protonEmPackage.steamcompattool;
             target = "${config.xdg.dataHome}/bottles/runners/proton-em-nix";
           };
           proton-links-proton-ge-bottles = {
-            source = pkgs.proton-ge.steamcompattool;
+            source = protonGePackage.steamcompattool;
             target = "${config.xdg.dataHome}/bottles/runners/proton-ge-nix";
           };
         };

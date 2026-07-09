@@ -2,9 +2,13 @@
   pkgs,
   lib,
   config,
+  inputs,
   ...
 }: let
   cfg = config.local.desktop.niri;
+  system = pkgs.stdenv.hostPlatform.system;
+  niriPackage = inputs.niri-flake.packages.${system}.niri-unstable;
+  xwaylandSatellitePackage = inputs.niri-flake.packages.${system}.xwayland-satellite-unstable;
 in {
   options.local.desktop.niri = {
     enable = lib.mkEnableOption "Enable Niri desktop session";
@@ -14,7 +18,7 @@ in {
     # Enable Niri
     programs.niri = {
       enable = true;
-      package = pkgs.niri;
+      package = niriPackage;
     };
 
     # 图形界面权限管理
@@ -56,7 +60,7 @@ in {
     };
 
     environment.systemPackages = with pkgs; [
-      xwayland-satellite
+      xwaylandSatellitePackage
       slurp
       grim
       satty

@@ -6,6 +6,9 @@
 }: let
   cfg = config.local.gaming.heroic;
   localUserName = config.local.user.name;
+  protonGePackage = pkgs.proton-ge-bin.override {
+    steamDisplayName = "Proton GE";
+  };
   protonCachyos =
     pkgs.runCommand "proton-cachyos-10.0-20260410-slr" {
       src = pkgs.fetchzip {
@@ -36,7 +39,7 @@ in {
         };
         wine-links-proton-ge-heroic = {
           enable = cfg.enableNative;
-          source = "${pkgs.proton-ge.steamcompattool}";
+          source = "${protonGePackage.steamcompattool}";
           target = "${config.xdg.configHome}/heroic/tools/proton/proton-ge-nix";
         };
       };

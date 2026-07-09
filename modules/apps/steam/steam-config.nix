@@ -25,7 +25,7 @@
   };
 in {
   enable = true;
-  closeSteam = true;
+  onSteamRunning = "close";
   defaultCompatTool = "Proton GE";
   apps =
     lib.mapAttrs

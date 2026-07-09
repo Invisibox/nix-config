@@ -1,15 +1,24 @@
 {pkgs, ...}: let
+  nautilusWithGst = pkgs.nautilus.overrideAttrs (nprev: {
+    buildInputs =
+      (nprev.buildInputs or [])
+      ++ [
+        pkgs.gst_all_1.gst-plugins-good
+        pkgs.gst_all_1.gst-plugins-bad
+      ];
+  });
+
   nautEnv = pkgs.buildEnv {
     name = "nautilus-env";
 
-    paths = with pkgs; [
-      nautilus
-      nautilus-python
-      nautilus-open-any-terminal
-      code-nautilus
-      gnomeExtensions.flickernaut
-      gnome.gvfs
-      sushi
+    paths = [
+      nautilusWithGst
+      pkgs.nautilus-python
+      pkgs.nautilus-open-any-terminal
+      pkgs.code-nautilus
+      pkgs.gnomeExtensions.flickernaut
+      pkgs.gnome.gvfs
+      pkgs.sushi
     ];
   };
 in {

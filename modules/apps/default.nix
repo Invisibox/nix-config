@@ -15,6 +15,7 @@
     ./nix-ld
     ./obs
     ./oxide-term
+    ./proton-em
     ./dms-greeter
     ./steam
     ./texlive
