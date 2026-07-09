@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  cfg = config.netcatty;
+  cfg = config.local.apps.netcatty;
 
   pname = "netcatty";
   version = "1.1.60";
@@ -169,7 +169,7 @@
     };
   };
 in {
-  options.netcatty = {
+  options.local.apps.netcatty = {
     enable = lib.mkEnableOption "Enable Netcatty via Home Manager";
 
     package = lib.mkOption {

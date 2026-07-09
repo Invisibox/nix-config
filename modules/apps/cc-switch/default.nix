@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  cfg = config.cc-switch;
+  cfg = config.local.apps.cc-switch;
 
   pname = "cc-switch";
   version = "3.16.5";
@@ -144,7 +144,7 @@
     };
   };
 in {
-  options.cc-switch = {
+  options.local.apps.cc-switch = {
     enable = lib.mkEnableOption "Enable CC Switch";
 
     package = lib.mkOption {

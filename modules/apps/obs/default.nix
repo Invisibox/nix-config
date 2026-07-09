@@ -5,10 +5,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.obs;
+  cfg = config.local.apps.obs;
 in {
   options = {
-    obs = {
+    local.apps.obs = {
       enable = lib.mkEnableOption "Enable obs in home-manager";
       enableNative = lib.mkOption {
         type = lib.types.bool;

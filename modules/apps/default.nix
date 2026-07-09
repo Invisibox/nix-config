@@ -4,7 +4,6 @@
     ./bottles
     ./cc-switch
     ./daed
-    ./gamescope
     ./heroic
     ./im
     ./lobehub

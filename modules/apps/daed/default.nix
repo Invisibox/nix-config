@@ -5,7 +5,7 @@
   inputs,
   ...
 }: let
-  cfg = config.daed;
+  cfg = config.local.services.daed;
   system = pkgs.stdenv.hostPlatform.system;
   daePackages = inputs.daeuniverse.packages.${system};
   daePackage = daePackages.dae;
@@ -62,7 +62,7 @@
     ++ cfg.extraArgs;
 in {
   options = {
-    daed = {
+    local.services.daed = {
       enable = lib.mkEnableOption "Enable daed network proxy dashboard";
 
       package = lib.mkOption {
@@ -233,8 +233,8 @@ in {
       {
         assertion = lib.pathExists (toString (genAssetsDrv cfg.assets) + "/share/v2ray");
         message = ''
-          Packages in `daed.assets` do not provide `share/v2ray`.
-          Please set `daed.assetsPath` manually.
+          Packages in `local.services.daed.assets` do not provide `share/v2ray`.
+          Please set `local.services.daed.assetsPath` manually.
         '';
       }
     ];

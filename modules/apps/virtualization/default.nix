@@ -5,10 +5,10 @@
   username,
   ...
 }: let
-  cfg = config.virtualization;
+  cfg = config.local.virtualisation;
 in {
   options = {
-    virtualization = {
+    local.virtualisation = {
       enable = lib.mkEnableOption "Enable virtualization in NixOS & home-manager";
     };
   };

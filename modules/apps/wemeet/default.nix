@@ -6,9 +6,9 @@
   username,
   ...
 }: let
-  cfg = config.wemeet;
+  cfg = config.local.apps.wemeet;
 in {
-  options.wemeet = {
+  options.local.apps.wemeet = {
     enable = lib.mkEnableOption "Enable sandboxed WeMeet";
 
     basePackage = lib.mkOption {
@@ -162,10 +162,10 @@ in {
     };
   in {
     # Default to stable wrapped XWayland WeMeet as sandbox base package.
-    wemeet.basePackage = lib.mkDefault wemeetX11;
+    local.apps.wemeet.basePackage = lib.mkDefault wemeetX11;
 
     # Install sandboxed WeMeet by default.
-    wemeet.package = lib.mkDefault wemeetSandboxed;
+    local.apps.wemeet.package = lib.mkDefault wemeetSandboxed;
 
     home-manager.users.${username}.home.packages = [
       cfg.package

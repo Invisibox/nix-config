@@ -5,9 +5,9 @@
   username,
   ...
 }: let
-  cfg = config.moonlight;
+  cfg = config.local.apps.moonlight;
 in {
-  options.moonlight = {
+  options.local.apps.moonlight = {
     enable = lib.mkEnableOption "Enable Moonlight via Home Manager";
 
     package = lib.mkOption {

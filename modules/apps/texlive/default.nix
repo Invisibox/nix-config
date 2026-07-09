@@ -6,9 +6,9 @@
   username,
   ...
 }: let
-  cfg = config.texlive;
+  cfg = config.local.apps.texlive;
 in {
-  options.texlive = {
+  options.local.apps.texlive = {
     enable = lib.mkEnableOption "Enable TeX Live via Home Manager";
 
     package = lib.mkOption {
@@ -22,7 +22,7 @@ in {
       default = null;
       defaultText = lib.literalExpression ''
         null
-        # fallback when texlive.enable = true:
+        # fallback when local.apps.texlive.enable = true:
         # inputs.chinese-fonts-overlay.packages.${pkgs.stdenv.hostPlatform.system}.windows-fonts
       '';
       description = ''

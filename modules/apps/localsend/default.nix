@@ -5,9 +5,9 @@
   pkgs,
   ...
 }: let
-  cfg = config.localsend;
+  cfg = config.local.apps.localsend;
 in {
-  options.localsend = {
+  options.local.apps.localsend = {
     enable = lib.mkEnableOption "Enable LocalSend via Home Manager";
 
     package = lib.mkOption {

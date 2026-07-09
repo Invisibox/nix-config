@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  cfg = config.bottles;
+  cfg = config.local.apps.bottles;
   bottlesPkgs = pkgs.extend (_final: prev: {
     openldap = prev.openldap.overrideAttrs (_: {
       doCheck = false;
@@ -197,7 +197,7 @@
     // sodaRunnerInfo);
 in {
   options = {
-    bottles = {
+    local.apps.bottles = {
       enable = lib.mkEnableOption "Enable Bottles in home-manager";
     };
   };

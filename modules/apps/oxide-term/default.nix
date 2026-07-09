@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  cfg = config.oxide-term;
+  cfg = config.local.apps.oxide-term;
 
   pname = "oxideterm";
   version = "1.6.12";
@@ -78,7 +78,7 @@
     };
   };
 in {
-  options.oxide-term = {
+  options.local.apps.oxide-term = {
     enable = lib.mkEnableOption "Enable OxideTerm via Home Manager";
 
     package = lib.mkOption {

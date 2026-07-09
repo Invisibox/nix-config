@@ -5,7 +5,7 @@
   username,
   ...
 }: let
-  cfg = config.im;
+  cfg = config.local.apps.im;
   wechatBasePackage = cfg.wechatBasePackage;
   qqBasePackage = cfg.qqPackage;
   wechatRunScript = pkgs.writeShellScript "wechat-sandbox-run" ''
@@ -176,7 +176,7 @@
       };
   };
 in {
-  options.im = {
+  options.local.apps.im = {
     enable = lib.mkEnableOption "Enable sandboxed WeChat and QQ managed by Home Manager";
 
     wechatBasePackage = lib.mkOption {

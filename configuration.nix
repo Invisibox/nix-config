@@ -199,36 +199,32 @@
   users.defaultUserShell = pkgs.zsh;
 
   # Enable nix ld.
-  nix-ld.enable = true;
+  local.dev.nix-ld.enable = true;
 
   services.gvfs.enable = true;
 
-  steam = {
+  local.gaming.steam = {
     enable = true;
     enableNative = true; # Enable native Steam client.
     enableSteamBeta = true; # Enable Steam Beta client.
     fixDownloadSpeed = true; # Fix slow download speeds in Steam.
   };
 
-  gamescope = {
-    enable = true; # Enable Gamescope.
-  };
-
-  heroic = {
+  local.gaming.heroic = {
     enable = true; # Enable Heroic Games Launcher.
     enableNative = true; # Enable native Heroic client.
   };
 
-  brave-origin.enable = true; # Install Brave Origin Nightly via Home Manager.
-  lobehub.enable = true; # Enable LobeHub Desktop.
-  cc-switch.enable = true; # Install CC Switch desktop app.
-  localsend.enable = true; # Install LocalSend via Home Manager.
-  moonlight.enable = true; # Install Moonlight client via Home Manager.
-  netcatty.enable = true; # Install Netcatty via Home Manager.
-  oxide-term.enable = true; # Install OxideTerm via Home Manager.
-  im.enable = true; # Install sandboxed WeChat/QQ via Home Manager.
+  local.apps.brave-origin.enable = true; # Install Brave Origin Nightly via Home Manager.
+  local.apps.lobehub.enable = true; # Enable LobeHub Desktop.
+  local.apps.cc-switch.enable = true; # Install CC Switch desktop app.
+  local.apps.localsend.enable = true; # Install LocalSend via Home Manager.
+  local.apps.moonlight.enable = true; # Install Moonlight client via Home Manager.
+  local.apps.netcatty.enable = true; # Install Netcatty via Home Manager.
+  local.apps.oxide-term.enable = true; # Install OxideTerm via Home Manager.
+  local.apps.im.enable = true; # Install sandboxed WeChat/QQ via Home Manager.
 
-  bottles.enable = true; # Enable Bottles.
+  local.apps.bottles.enable = true; # Enable Bottles.
 
   # lutris.enable = true; # Enable Lutris.
 
@@ -237,21 +233,21 @@
     xpadneo.enable = true;
   };
 
-  virtualization.enable = true;
+  local.virtualisation.enable = true;
 
-  waydroid = {
+  local.apps.waydroid = {
     enable = true;
     initSystemType = "GAPPS";
     package = pkgs.waydroid-nftables; # linux 6.19 上 legacy iptables 模式会因缺少 ip_tables 失败
   };
 
-  obs = {
+  local.apps.obs = {
     enable = true;
     enableNative = true;
     silenceOutput = true;
   };
 
-  daed = {
+  local.services.daed = {
     enable = true;
     dashboardAddress = "127.0.0.1";
     dashboardPort = 2023;
@@ -259,9 +255,9 @@
     tproxyPort = 12345;
   };
 
-  texlive.enable = true;
-  wps.enable = true;
-  wemeet.enable = true;
+  local.apps.texlive.enable = true;
+  local.apps.wps.enable = true;
+  local.apps.wemeet.enable = true;
 
   # Disable nano, as it is not needed.
   programs.nano.enable = false;

@@ -5,12 +5,8 @@
   pkgs,
   ...
 }: let
-  cfg = config.steam;
-  gamescopeEnabled = config.gamescope.enable;
-  gamescopePackage = config.programs.gamescope.package;
-  steamGameWrapper = pkgs.callPackage ./game-wrapper.nix {
-    gamescope = gamescopePackage;
-  };
+  cfg = config.local.gaming.steam;
+  steamGameWrapper = pkgs.callPackage ./game-wrapper.nix {};
   steamRuntimeEnv = {
     PIPEWIRE_NODE = "Game";
     PULSE_SINK = "Game";
@@ -21,7 +17,7 @@
     PROTON_USE_WOW64 = "1";
   };
 in {
-  options.steam = {
+  options.local.gaming.steam = {
     enable = lib.mkEnableOption "Enable Steam in NixOS";
     enableNative = lib.mkOption {
       type = lib.types.bool;
@@ -54,7 +50,6 @@ in {
       ];
       extraPackages = [
         pkgs.gamemode
-        gamescopePackage
         pkgs.mangohud
         pkgs.obs-studio-plugins.obs-vkcapture
       ];
@@ -98,14 +93,6 @@ in {
           steamGameWrapper
           steamcmd
         ];
-      };
-      xdg.desktopEntries.steam-gamescope = lib.mkIf gamescopeEnabled {
-        name = "Steam (Gamescope)";
-        genericName = "Steam running inside Gamescope";
-        exec = "steam-gamescope";
-        icon = "steam";
-        terminal = false;
-        categories = ["Game"];
       };
       # https://github.com/different-name/steam-config-nix
       programs.steam.config = import ./steam-config.nix {inherit lib pkgs config steamGameWrapper;};

@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  cfg = config.lobehub;
+  cfg = config.local.apps.lobehub;
 
   pname = "lobehub-desktop";
   version = "2.2.9";
@@ -212,7 +212,7 @@
     };
   };
 in {
-  options.lobehub = {
+  options.local.apps.lobehub = {
     enable = lib.mkEnableOption "Enable LobeHub Desktop";
 
     package = lib.mkOption {

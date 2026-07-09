@@ -31,7 +31,6 @@
 - 当前自定义启用入口在 `configuration.nix`：
   - `nix-ld.enable = true;`
   - `steam.enable = true;`
-  - `gamescope.enable = true;`
   - `heroic.enable = true;`
   - `brave-origin.enable = true;`
   - `lobehub.enable = true;`
@@ -78,7 +77,7 @@
 
 ## 阶段 2：迁移顶层自定义 option 路径
 
-- [ ] 将 app 类 option 从顶层迁移到 `local.apps.*`：
+- [x] 将 app 类 option 从顶层迁移到 `local.apps.*`：
   - `brave-origin.enable` -> `local.apps.brave-origin.enable`
   - `cc-switch.enable` -> `local.apps.cc-switch.enable`
   - `lobehub.enable` -> `local.apps.lobehub.enable`
@@ -91,17 +90,30 @@
   - `texlive.enable` -> `local.apps.texlive.enable`
   - `wps.enable` -> `local.apps.wps.enable`
   - `wemeet.enable` -> `local.apps.wemeet.enable`
-- [ ] 将 gaming 类 option 迁移到 `local.gaming.*`：
+- [x] 将 gaming 类 option 迁移到 `local.gaming.*`：
   - `steam.enable` -> `local.gaming.steam.enable`
-  - `gamescope.enable` -> `local.gaming.gamescope.enable`
   - `heroic.enable` -> `local.gaming.heroic.enable`
-- [ ] 将 service/dev/system 类 option 迁移：
+- [x] 将 service/dev/system 类 option 迁移：
   - `daed.enable` -> `local.services.daed.enable`
   - `nix-ld.enable` -> `local.dev.nix-ld.enable`
   - `virtualization.enable` -> `local.virtualisation.enable`
   - `waydroid.enable` -> `local.apps.waydroid.enable`
   - `obs.enable` -> `local.apps.obs.enable`
-- [ ] 每次迁移少量模块，避免一次性大改。
+- [x] 每次迁移少量模块，避免一次性大改。
+
+阶段 2 记录：
+
+- 已迁移 `configuration.nix` 中的自定义 feature enable 入口到 `local.*`。
+- 已迁移各 feature module 内部的 `cfg = config.*` 和 `options.*` 到对应 `local.*` 路径。
+- 已按后续要求移除 standalone gamescope feature，不再保留 `local.gaming.gamescope`。
+- Steam wrapper 不再默认通过 gamescope 启动游戏。
+- `wemeet` 内部默认值回写已从 `wemeet.*` 改为 `local.apps.wemeet.*`。
+- `daed` assertion 提示文案已同步为 `local.services.daed.*`。
+- 阶段验证：
+  - `nix fmt .` 通过。
+  - `nix flake check` 通过。
+  - `nixos-rebuild dry-build --flake '.#ASUS'` 通过。
+  - 仍有既有 Steam `closeSteam` 改名警告，按用户要求暂不处理。
 
 验收标准：`configuration.nix` 中不再出现自定义顶层 enable；上游 NixOS option 保持原名。
 
@@ -124,7 +136,6 @@
   - 字体/主题/portal/桌面基础项，视情况迁移
 - [ ] 新建 `profiles/gaming.nix`：
   - Steam
-  - Gamescope
   - Heroic
   - gamepad 相关硬件项
 - [ ] 新建 `profiles/apps.nix`：

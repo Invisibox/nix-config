@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  cfg = config.waydroid;
+  cfg = config.local.apps.waydroid;
   kernelVersion = lib.getVersion config.boot.kernelPackages.kernel;
   preferNftables = config.networking.nftables.enable || lib.versionAtLeast kernelVersion "6.17";
   waydroidInitDefault = pkgs.writeShellApplication {
@@ -26,7 +26,7 @@
     '';
   };
 in {
-  options.waydroid = {
+  options.local.apps.waydroid = {
     enable = lib.mkEnableOption "Enable Waydroid on NixOS";
 
     package = lib.mkOption {

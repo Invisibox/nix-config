@@ -6,9 +6,9 @@
   username,
   ...
 }: let
-  cfg = config.wps;
+  cfg = config.local.apps.wps;
 in {
-  options.wps = {
+  options.local.apps.wps = {
     enable = lib.mkEnableOption "Enable WPS Office (wpsoffice-cn)";
 
     package = lib.mkOption {
@@ -22,7 +22,7 @@ in {
       default = null;
       defaultText = lib.literalExpression ''
         null
-        # fallback when wps.enable = true:
+        # fallback when local.apps.wps.enable = true:
         # inputs.chinese-fonts-overlay.packages.${pkgs.stdenv.hostPlatform.system}.windows-fonts
       '';
       description = ''

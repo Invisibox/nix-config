@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  cfg = config.brave-origin;
+  cfg = config.local.apps.brave-origin;
 
   pname = "brave-origin-beta";
   version = "1.93.113";
@@ -190,7 +190,7 @@
     };
   };
 in {
-  options.brave-origin = {
+  options.local.apps.brave-origin = {
     enable = lib.mkEnableOption "Enable Brave Origin Beta via Home Manager";
 
     package = lib.mkOption {

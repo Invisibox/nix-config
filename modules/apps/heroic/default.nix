@@ -5,7 +5,7 @@
   pkgs,
   ...
 }: let
-  cfg = config.heroic;
+  cfg = config.local.gaming.heroic;
   protonCachyos =
     pkgs.runCommand "proton-cachyos-10.0-20260410-slr" {
       src = pkgs.fetchzip {
@@ -18,7 +18,7 @@
     '';
 in {
   options = {
-    heroic = {
+    local.gaming.heroic = {
       enable = lib.mkEnableOption "Enable heroic in home-manager";
       enableNative = lib.mkOption {
         type = lib.types.bool;

@@ -5,10 +5,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.nix-ld;
+  cfg = config.local.dev.nix-ld;
 in {
   options = {
-    nix-ld = {
+    local.dev.nix-ld = {
       enable = lib.mkEnableOption "Enable nix-ld in NixOS";
     };
   };
