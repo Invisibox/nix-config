@@ -15,6 +15,11 @@
     QT_QPA_PLATFORMTHEME_QT6 = "qt6ct";
   };
 
+  home.packages = with pkgs; [
+    adw-gtk3
+    gsettings-desktop-schemas
+  ];
+
   home.pointerCursor = {
     enable = true;
     gtk.enable = true;

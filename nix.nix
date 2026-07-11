@@ -9,6 +9,41 @@
     "jitsi-meet-1.0.8792"
   ];
 
+  # click-threading's legacy docs/conf.py imports the removed pkg_resources.
+  # Restrict pytest to the package's actual test suite instead of collecting docs.
+  nixpkgs.overlays = [
+    (final: prev: {
+      pythonPackagesExtensions =
+        prev.pythonPackagesExtensions
+        ++ [
+          (pythonFinal: pythonPrev: {
+            click-threading = pythonPrev.click-threading.overridePythonAttrs (old: {
+              pytestFlags = (old.pytestFlags or []) ++ ["tests"];
+            });
+
+            # file 5.47 identifies compressed tar fixtures by their outer
+            # compression MIME type, while patool's tests still expect x-tar.
+            patool = pythonPrev.patool.overridePythonAttrs (old: {
+              disabledTests =
+                (old.disabledTests or [])
+                ++ [
+                  "test_py_tarfile_bz2"
+                  "test_py_tarfile_bz2_file"
+                  "test_tar_lzma"
+                  "test_tar_xz"
+                  "test_tar_bz2"
+                  "test_tar_bz2_file"
+                  "test_tar_lzip"
+                  "test_tar_xz_file"
+                  "test_mime_file"
+                  "test_mime_file_bzip"
+                ];
+            });
+          })
+        ];
+    })
+  ];
+
   # do garbage collection weekly to keep disk usage low
   nix = {
     gc = {

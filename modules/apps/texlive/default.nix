@@ -13,7 +13,7 @@ in {
 
     package = lib.mkOption {
       type = lib.types.package;
-      default = pkgs.texlive.combined.scheme-full;
+      default = pkgs.texliveFull;
       description = "TeX Live package installed for the user through Home Manager.";
     };
 
@@ -73,13 +73,12 @@ in {
     '';
 
     wrappedTexlivePackage = pkgs.symlinkJoin {
-      name = cfg.package.name or "texlive-combined-full";
+      name = cfg.package.name or "texlive-full";
       paths = [cfg.package];
       nativeBuildInputs = [pkgs.makeWrapper];
       postBuild = ''
-        # TeX Live's combined package already ships generated launcher wrappers
-        # with their own FONTCONFIG_FILE defaults. Wrap those launchers from the
-        # outside so this fontconfig file wins before the internal launcher runs.
+        # TeX Live ships generated launchers with their own FONTCONFIG_FILE
+        # defaults. Wrap them from the outside so this fontconfig file wins.
         rm -rf "$out/bin"
         mkdir -p "$out/bin"
 

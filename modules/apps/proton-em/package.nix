@@ -6,11 +6,11 @@
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "proton-em";
-  version = "10.0-37-HDR";
+  version = "10.0-34";
 
   src = fetchzip {
     url = "https://github.com/Etaash-mathamsetty/Proton/releases/download/EM-${finalAttrs.version}/proton-EM-${finalAttrs.version}.tar.xz";
-    hash = "sha256-yap/7G6TeJ9vMtc5H/iWu8w3sM8mI6762G+K2JzSlgk=";
+    hash = "sha256-Jik8sItUz8qFbVUjUGNUgobDCGi0Bp0GuDoNtsinNDA=";
   };
 
   dontUnpack = true;

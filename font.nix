@@ -125,6 +125,7 @@
       nerd-fonts.fira-code
       sarasa-gothic
       lxgw-wenkai
+      hanazono
     ];
   };
 }
