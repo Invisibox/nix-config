@@ -9,10 +9,18 @@
     "jitsi-meet-1.0.8792"
   ];
 
-  # click-threading's legacy docs/conf.py imports the removed pkg_resources.
-  # Restrict pytest to the package's actual test suite instead of collecting docs.
   nixpkgs.overlays = [
     (final: prev: {
+      # Readest's TypeScript check exceeds Node's default 2 GiB heap limit.
+      readest = prev.readest.overrideAttrs (old: {
+        NODE_OPTIONS = prev.lib.concatStringsSep " " (
+          prev.lib.optional (old ? NODE_OPTIONS) old.NODE_OPTIONS
+          ++ ["--max-old-space-size=4096"]
+        );
+      });
+
+      # click-threading's legacy docs/conf.py imports the removed pkg_resources.
+      # Restrict pytest to the package's actual test suite instead of collecting docs.
       pythonPackagesExtensions =
         prev.pythonPackagesExtensions
         ++ [

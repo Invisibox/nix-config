@@ -1,8 +1,8 @@
 {pkgs, ...}: let
-  rimeWanxiangVersion = "16.0.1";
+  rimeWanxiangVersion = "16.1.0";
   rimeWanxiangAssetName = "rime-wanxiang-flypy-fuzhu.zip";
-  rimeWanxiangZipHash = "sha256-joXwFiVWSKUS0dTEL1uWQq8N8F4s77YEd7JaV5AQxSc=";
-  rimeWanxiangGramHash = "sha256-SSJ2bxMLtC6sSOuPCii6K4eSgLGHWc37VY36C2Z60zg=";
+  rimeWanxiangZipHash = "sha256-8Cagd5K/SgxvVxbFjJBuEr3SYaGMTDbFdtNk2shGzs4=";
+  rimeWanxiangGramHash = "sha256-Ij+OfaQGjp2jmrYzNwNnZRlAxFSACuQ9RsM0ubBZwok=";
 
   rimeWanxiang = pkgs.stdenvNoCC.mkDerivation {
     pname = "rime-wanxiang";

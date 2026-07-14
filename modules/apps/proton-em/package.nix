@@ -1,19 +1,18 @@
 {
   lib,
   stdenvNoCC,
-  fetchzip,
+  fetchurl,
   steamDisplayName ? "Proton EM",
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "proton-em";
   version = "10.0-34";
 
-  src = fetchzip {
+  src = fetchurl {
     url = "https://github.com/Etaash-mathamsetty/Proton/releases/download/EM-${finalAttrs.version}/proton-EM-${finalAttrs.version}.tar.xz";
-    hash = "sha256-Jik8sItUz8qFbVUjUGNUgobDCGi0Bp0GuDoNtsinNDA=";
+    hash = "sha256-2WgF5x+34PkViHVYYL10Jl0RGye9QMXhrNNXMBeVRro=";
   };
 
-  dontUnpack = true;
   dontConfigure = true;
   dontBuild = true;
 
@@ -28,9 +27,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     echo "${finalAttrs.pname} should not be installed into environments. Please use programs.steam.extraCompatPackages instead." > $out
 
     mkdir $steamcompattool
-    ln -s $src/* $steamcompattool
-    rm $steamcompattool/compatibilitytool.vdf
-    cp $src/compatibilitytool.vdf $steamcompattool
+    cp -r ./. $steamcompattool
 
     runHook postInstall
   '';

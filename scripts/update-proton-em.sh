@@ -12,7 +12,7 @@ if [[ ! -f "${target_file}" ]]; then
   exit 1
 fi
 
-for cmd in curl head jq nix sed; do
+for cmd in awk curl head jq nix sed; do
   if ! command -v "${cmd}" >/dev/null 2>&1; then
     echo "error: missing command: ${cmd}" >&2
     exit 1
@@ -92,9 +92,36 @@ if [[ -z "${release_info}" ]]; then
   exit 1
 fi
 
-IFS=$'\t' read -r tag_name version asset_url _asset_digest _sha256_url <<<"${release_info}"
+IFS=$'\t' read -r tag_name version asset_url asset_digest sha256_url <<<"${release_info}"
 
-hash="$(nix store prefetch-file --json --unpack "${asset_url}" | jq -r '.hash')"
+digest_hex=""
+if [[ "${asset_digest}" == sha256:* ]]; then
+  digest_hex="${asset_digest#sha256:}"
+fi
+
+if [[ ! "${digest_hex}" =~ ^[0-9a-fA-F]{64}$ && -n "${sha256_url}" ]]; then
+  checksum_file="$(curl_fetch "${sha256_url}")"
+  digest_hex="$(
+    awk -v asset_name="proton-EM-${version}.tar.xz" '
+      $1 ~ /^[0-9a-fA-F]{64}$/ {
+        file = $2
+        sub(/^\*/, "", file)
+        sub(/^.*\//, "", file)
+        if (file == asset_name) {
+          print $1
+          exit
+        }
+      }
+    ' <<<"${checksum_file}"
+  )"
+fi
+
+if [[ ! "${digest_hex}" =~ ^[0-9a-fA-F]{64}$ ]]; then
+  echo "error: release does not provide a valid SHA-256 digest for ${asset_url}" >&2
+  exit 1
+fi
+
+hash="$(nix hash convert --hash-algo sha256 --to sri "${digest_hex}")"
 
 if [[ -z "${hash}" || "${hash}" == "null" ]]; then
   echo "error: unable to determine hash for ${asset_url}" >&2

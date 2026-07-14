@@ -1,16 +1,5 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{...}: {
   services.tailscale.enable = true;
-
-  services.postgresql = {
-    enable = true;
-    package = pkgs.postgresql_16;
-  };
-  # 禁用开机自启
-  systemd.services.postgresql.wantedBy = lib.mkForce [];
 
   local.services.daed = {
     enable = true;
