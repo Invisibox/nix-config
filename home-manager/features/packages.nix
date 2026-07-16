@@ -47,6 +47,7 @@
     keyguard
     anki
     hmcl
+    element-desktop
     dig
 
     inputs.zen-browser.packages."${stdenv.hostPlatform.system}".default
