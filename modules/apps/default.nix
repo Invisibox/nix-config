@@ -14,6 +14,7 @@
     ./niri
     ./nix-ld
     ./obs
+    ./omp
     ./oxide-term
     ./proton-em
     ./dms-greeter

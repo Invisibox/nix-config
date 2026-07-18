@@ -39,6 +39,11 @@
         codex-acp = {
           type = "registry";
         };
+        omp = {
+          type = "custom";
+          command = "omp";
+          args = ["acp"];
+        };
       };
       lsp = {
         nil = {
