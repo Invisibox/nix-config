@@ -8,7 +8,7 @@
   localUserName = config.local.user.name;
 
   pname = "netcatty";
-  version = "1.1.68";
+  version = "1.1.70";
 
   deps = with pkgs; [
     alsa-lib
@@ -60,7 +60,7 @@
 
   src = pkgs.fetchurl {
     url = "https://github.com/binaricat/Netcatty/releases/download/v${version}/Netcatty-${version}-linux-amd64.deb";
-    hash = "sha256-lL8XvnSg2eLaCAZOeBq8QlFSL0ya/G5qvrIMd8H8I0g=";
+    hash = "sha256-wa1lkqz5yRPZZt/oqQI+1/vpXNYTRK7NcqIJmnD9VYg=";
   };
 
   sharpLibvipsSrc = pkgs.fetchurl {

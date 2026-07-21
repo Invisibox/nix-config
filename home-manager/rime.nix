@@ -1,8 +1,13 @@
-{pkgs, ...}: let
-  rimeWanxiangVersion = "16.1.3";
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  rimeWanxiangVersion = "16.1.4";
   rimeWanxiangAssetName = "rime-wanxiang-flypy-fuzhu.zip";
-  rimeWanxiangZipHash = "sha256-rvdRU/K/3VkuR//qp4KYeJ8HX8IKZYPltUhJApO2fwY=";
-  rimeWanxiangGramHash = "sha256-jRCkhNG0AZsMfPTk6IP8KWGy+qQOqsRGFpw4FAn5OYM=";
+  rimeWanxiangZipHash = "sha256-EVLArHi578S1RZbaeWGNEDOBKX9j/yU+bf70uamNxR4=";
+  rimeWanxiangGramHash = "sha256-e3Hh2H2tCXG42NPZE0k7/ZOXDli2C7hCqq4ibNYNbv4=";
 
   rimeWanxiang = pkgs.stdenvNoCC.mkDerivation {
     pname = "rime-wanxiang";
@@ -57,6 +62,10 @@
     url = "https://github.com/amzxyz/RIME-LMDG/releases/download/LTS/wanxiang-lts-zh-hans.gram";
     hash = rimeWanxiangGramHash;
   };
+
+  rimeSharedData = "${pkgs.fcitx5-rime.override {
+    rimeDataPkgs = [pkgs.rime-data];
+  }}/share/rime-data";
 in {
   xdg.dataFile = {
     "fcitx5/rime" = {
@@ -103,4 +112,40 @@ in {
 
     "fcitx5/rime/wanxiang-lts-zh-hans.gram".source = rimeWanxiangLtsGram;
   };
+
+  home.activation.redeployRimeWanxiang = lib.hm.dag.entryAfter ["linkGeneration"] ''
+    rime_dir="${config.xdg.dataHome}/fcitx5/rime"
+    state_file="$rime_dir/.hm-rime-wanxiang-state"
+    state="$(
+      printf '%s\n' '${rimeSharedData}'
+      printf '%s\n' '${rimeWanxiang}/share/rime-data'
+      for file in \
+        default.custom.yaml \
+        wanxiang_pro.custom.yaml \
+        wanxiang_mixedcode.custom.yaml \
+        wanxiang_reverse.custom.yaml \
+        wanxiang_english.custom.yaml \
+        wanxiang-lts-zh-hans.gram
+      do
+        readlink -f "$rime_dir/$file" 2>/dev/null || true
+      done
+    )"
+
+    if [ ! -f "$state_file" ] || [ "$state" != "$(cat "$state_file")" ]; then
+      rm -rf "$rime_dir/build"
+      mkdir -p "$rime_dir/build"
+      ${pkgs.librime}/bin/rime_deployer --build "$rime_dir" '${rimeSharedData}' "$rime_dir/build"
+      printf '%s' "$state" > "$state_file"
+
+      if [ "$(
+        ${pkgs.systemd}/bin/busctl --user call \
+          org.fcitx.Fcitx5 /controller org.fcitx.Fcitx.Controller1 CanRestart \
+          2>/dev/null || true
+      )" = "b true" ]; then
+        ${pkgs.systemd}/bin/busctl --user call \
+          org.fcitx.Fcitx5 /controller org.fcitx.Fcitx.Controller1 Restart \
+          >/dev/null 2>&1 || true
+      fi
+    fi
+  '';
 }
