@@ -1,4 +1,5 @@
 {pkgs, ...}: {
+  local.apps.baidunetdisk.enable = true;
   local.apps.brave-origin.enable = true;
   local.apps.lobehub.enable = true;
   local.apps.cc-switch.enable = true;

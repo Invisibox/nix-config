@@ -1,5 +1,6 @@
 {
   imports = [
+    ./baidunetdisk
     ./brave-origin
     ./bottles
     ./cc-switch
