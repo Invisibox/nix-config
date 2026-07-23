@@ -43,12 +43,13 @@
     servo
     planify
     mangayomi
-    fluffychat
-    keyguard
+    # fluffychat
+    # keyguard
     anki
     hmcl
     element-desktop
-    dig
+    # dig
+    # winboat
 
     inputs.zen-browser.packages."${stdenv.hostPlatform.system}".default
 

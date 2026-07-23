@@ -3,14 +3,14 @@
   pkgs,
 }: let
   pname = "oh-my-pi";
-  version = "17.0.6";
+  version = "17.0.7";
 in
   pkgs.stdenv.mkDerivation {
     inherit pname version;
 
     src = pkgs.fetchurl {
       url = "https://github.com/can1357/oh-my-pi/releases/download/v${version}/omp-linux-x64";
-      hash = "sha256-J/7BQ6pkbK5erps6BnfFTUNGX8SaebFhusc527okTIw=";
+      hash = "sha256-kxXHBeSzlIYK1ceZ9xyegZEEgAfEtacESV2YRbt/dbk=";
     };
 
     dontUnpack = true;
