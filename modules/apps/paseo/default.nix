@@ -4,17 +4,17 @@
   pkgs,
   ...
 }: let
-  cfg = config.local.apps.orca;
+  cfg = config.local.apps.paseo;
   localUserName = config.local.user.name;
-  orca = import ./package.nix {inherit lib pkgs;};
+  paseo = import ./package.nix {inherit lib pkgs;};
 in {
-  options.local.apps.orca = {
-    enable = lib.mkEnableOption "Enable Orca via Home Manager";
+  options.local.apps.paseo = {
+    enable = lib.mkEnableOption "Enable Paseo via Home Manager";
 
     package = lib.mkOption {
       type = lib.types.package;
-      default = orca;
-      description = "The Orca package installed for the user.";
+      default = paseo;
+      description = "The Paseo package installed for the user.";
     };
   };
 

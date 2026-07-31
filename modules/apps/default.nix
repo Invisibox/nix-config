@@ -16,7 +16,7 @@
     ./nix-ld
     ./obs
     ./omp
-    ./orca
+    ./paseo
     ./oxide-term
     ./proton-em
     ./dms-greeter
