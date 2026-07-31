@@ -4,9 +4,13 @@
 }: let
   runScript = pkgs.writeShellScript "baidunetdisk-sandbox-run" ''
     unset ELECTRON_RUN_AS_NODE
+    export GDK_BACKEND="x11"
+    export ELECTRON_OZONE_PLATFORM_HINT="x11"
     export TMPDIR="/tmp/baidunetdisk"
     mkdir -p "$TMPDIR"
-    exec ${basePackage}/opt/baidunetdisk/baidunetdisk --no-sandbox "$@"
+    exec ${basePackage}/opt/baidunetdisk/baidunetdisk \
+      --ozone-platform=x11 \
+      "$@"
   '';
 in
   pkgs.buildFHSEnvBubblewrap {
