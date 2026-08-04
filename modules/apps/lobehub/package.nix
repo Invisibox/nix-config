@@ -3,7 +3,7 @@
   pkgs,
 }: let
   pname = "lobehub-desktop";
-  version = "2.2.12";
+  version = "2.2.13";
 
   cliVersion = "0.0.39";
 
@@ -88,7 +88,7 @@
 
   src = pkgs.fetchurl {
     url = "https://github.com/lobehub/lobehub/releases/download/v${version}/lobehub-desktop_${version}_amd64.deb";
-    hash = "sha256-jToP0YjTWqXOp2Jh1/m5YuFLi7N20w00UZsrp4LBSr4=";
+    hash = "sha256-7bQ2nWRp69qLpPtCaueGyOMr640kdjr+I1fQg6knPOc=";
   };
 
   cliSrc = pkgs.fetchurl {

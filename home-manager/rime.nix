@@ -4,9 +4,9 @@
   pkgs,
   ...
 }: let
-  rimeWanxiangVersion = "16.4.1";
+  rimeWanxiangVersion = "17.1.0";
   rimeWanxiangAssetName = "rime-wanxiang-flypy-fuzhu.zip";
-  rimeWanxiangZipHash = "sha256-qFpK4G6iiYJfFtm9gegMxHRP1ZKNo7GtfLQajM3nLp8=";
+  rimeWanxiangZipHash = "sha256-kEDa+tMU6xc6fKN+8HPeRTKmtreMIVbVtAteQDXOSqE=";
   rimeWanxiangGramHash = "sha256-mdab7x5ErrKP9+6Eg5ClfFoQTTsdH0gns+jRR14aCvU=";
 
   rimeWanxiang = pkgs.stdenvNoCC.mkDerivation {
