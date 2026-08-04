@@ -45,7 +45,7 @@
     mangayomi
     # fluffychat
     # keyguard
-    anki
+    # anki
     hmcl
     element-desktop
     # dig
