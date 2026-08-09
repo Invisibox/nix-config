@@ -3,7 +3,6 @@
     ./baidunetdisk
     ./brave-origin
     ./bottles
-    # ./cc-switch
     ./daed
     ./gamescope
     ./heroic
@@ -15,8 +14,6 @@
     ./niri
     ./nix-ld
     ./obs
-    # ./omp
-    # ./paseo
     ./oxide-term
     ./proton-em
     ./dms-greeter
