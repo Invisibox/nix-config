@@ -7,7 +7,7 @@
   rimeWanxiangVersion = "17.2.4";
   rimeWanxiangAssetName = "rime-wanxiang-flypy-fuzhu.zip";
   rimeWanxiangZipHash = "sha256-7TMQcH0UaemlVJ+mvIKu9Zj7+IKn1D5qX4cyXCcg0CM=";
-  rimeWanxiangGramHash = "sha256-BRpVq7OCT+EDp68QuKyWtatOlwZ6HAzxyWiEHqKhw5E=";
+  rimeWanxiangGramHash = "sha256-MW285vytIy2GebvKOdWmggyHCz/pVKW5jkg4remyqDE=";
 
   rimeWanxiang = pkgs.stdenvNoCC.mkDerivation {
     pname = "rime-wanxiang";
