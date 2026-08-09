@@ -3,7 +3,7 @@
   pkgs,
 }: let
   pname = "cc-switch";
-  version = "3.19.1";
+  version = "3.19.2";
 
   deps = with pkgs; [
     alsa-lib
@@ -58,7 +58,7 @@
 
   src = pkgs.fetchurl {
     url = "https://github.com/farion1231/cc-switch/releases/download/v${version}/CC-Switch-v${version}-Linux-x86_64.deb";
-    hash = "sha256-PVK8AQNAd843oSbH+o46fopT0XjpLY89wE8YA0TzfYc=";
+    hash = "sha256-5TDzWxKePeNNqkvpoG5YdkLljQpodPdVkT000BQmd/I=";
   };
 in
   pkgs.stdenv.mkDerivation {
