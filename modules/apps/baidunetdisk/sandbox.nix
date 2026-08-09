@@ -4,11 +4,14 @@
 }: let
   runScript = pkgs.writeShellScript "baidunetdisk-sandbox-run" ''
     unset ELECTRON_RUN_AS_NODE
+    unset WAYLAND_DISPLAY
+    unset WAYLAND_SOCKET
     export GDK_BACKEND="x11"
     export ELECTRON_OZONE_PLATFORM_HINT="x11"
     export TMPDIR="/tmp/baidunetdisk"
     mkdir -p "$TMPDIR"
     exec ${basePackage}/opt/baidunetdisk/baidunetdisk \
+      --no-sandbox \
       --ozone-platform=x11 \
       "$@"
   '';
@@ -53,6 +56,11 @@ in
 
     # The persistent virtual home and all user-selected files live under this one directory.
     extraBwrapArgs = [
+      # buildFHSEnvBubblewrap normally exposes all host devices. Match
+      # Flatpak's --device=dri permission with a minimal /dev plus DRI only.
+      "--dev /dev"
+      "--dir /dev/dri"
+      "--dev-bind-try /dev/dri /dev/dri"
       "--tmpfs /home"
       "--tmpfs /root"
       "--tmpfs /dev/shm"
@@ -62,11 +70,8 @@ in
     ];
 
     unshareUser = true;
-    # Flatpak shares IPC for this client; its native service uses it at startup.
-    unshareIpc = false;
-    # The vendor main process deliberately keeps netdisk_service outside its
-    # process group; a PID namespace kills that helper when Electron exits.
-    unsharePid = false;
+    unshareIpc = true;
+    unsharePid = true;
     unshareNet = false;
     unshareUts = true;
     unshareCgroup = true;
