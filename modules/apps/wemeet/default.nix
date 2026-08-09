@@ -30,48 +30,29 @@ in {
       config.allowUnfree = true;
     };
 
-    # Keep stable XWayland startup path for better runtime compatibility.
-    wemeetX11 = pkgs.symlinkJoin {
-      name = "wemeet-native-x11";
-      paths = [pkgsStable.wemeet];
-      nativeBuildInputs = [pkgs.makeWrapper];
-      postBuild = ''
-        rm -f "$out/bin/wemeet"
-        # Avoid Qt's xcb GLX integration aborting during WebEngine startup.
-        makeWrapper "${pkgsStable.wemeet}/bin/wemeet-xwayland" "$out/bin/wemeet" \
-          --set QT_QPA_PLATFORM "xcb" \
-          --set QT_XCB_GL_INTEGRATION "none" \
-          --set SDL_VIDEODRIVER "x11" \
-          --set GDK_BACKEND "x11" \
-          --unset WAYLAND_DISPLAY \
-          --set __EGL_VENDOR_LIBRARY_FILENAMES "${pkgsStable.mesa}/share/glvnd/egl_vendor.d/50_mesa.json"
-      '';
-    };
+    # Follow Flathub's native Wayland path. The upstream client supports
+    # Wayland screensharing now, so do not inject the obsolete X11 capture hook.
+    wemeetNativeWayland = pkgsStable.wemeet.overrideAttrs (old: {
+      pname = "wemeet-native-wayland";
+      postFixup =
+        (old.postFixup or "")
+        + ''
+            rm -f "$out/app/wemeet/bin/xcast.conf"
+            printf '%s\n' '{}' > "$out/app/wemeet/bin/xcast.conf"
+
+          for launcher in "$out/bin/wemeet" "$out/bin/wemeet-xwayland"; do
+            sed -i '/wemeet-wayland-screenshare/d' "$launcher"
+            if grep -q 'wemeet-wayland-screenshare' "$launcher"; then
+              echo "failed to remove obsolete wemeet-wayland-screenshare hook" >&2
+              exit 1
+            fi
+          done
+        '';
+    });
 
     wemeetBase = cfg.basePackage;
 
     wemeetRunScript = pkgs.writeShellScript "wemeet-sandbox-run" ''
-      # Keep WeMeet on X11/XWayland path for IME/input behavior.
-      unset WAYLAND_DISPLAY
-      export NIXOS_OZONE_WL=""
-      export ELECTRON_OZONE_PLATFORM_HINT=x11
-      export QT_QPA_PLATFORM=xcb
-      # Avoid Qt's xcb GLX integration aborting during WebEngine startup.
-      export QT_XCB_GL_INTEGRATION=none
-      export SDL_VIDEODRIVER=x11
-      export GDK_BACKEND=x11
-
-      if [[ "''${XMODIFIERS:-}" == *fcitx* ]]; then
-        export QT_IM_MODULE=fcitx
-        export GTK_IM_MODULE=fcitx
-        export XMODIFIERS=@im=fcitx
-      elif [[ "''${XMODIFIERS:-}" == *ibus* ]]; then
-        export QT_IM_MODULE=ibus
-        export GTK_IM_MODULE=ibus
-        export IBUS_USE_PORTAL=1
-        export XMODIFIERS=@im=ibus
-      fi
-
       exec ${wemeetBase}/bin/wemeet "$@"
     '';
 
@@ -161,8 +142,8 @@ in {
         };
     };
   in {
-    # Default to stable wrapped XWayland WeMeet as sandbox base package.
-    local.apps.wemeet.basePackage = lib.mkDefault wemeetX11;
+    # Default to stable WeMeet using its native Wayland screenshare path.
+    local.apps.wemeet.basePackage = lib.mkDefault wemeetNativeWayland;
 
     # Install sandboxed WeMeet by default.
     local.apps.wemeet.package = lib.mkDefault wemeetSandboxed;
