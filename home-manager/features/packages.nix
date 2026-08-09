@@ -2,7 +2,9 @@
   pkgs,
   inputs,
   ...
-}: {
+}: let
+  llmAgents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+in {
   # 通过 home.packages 安装一些常用的软件
   # 这些软件将仅在当前用户下可用，不会影响系统级别的配置
   # 建议将所有 GUI 软件，以及与 OS 关系不大的 CLI 软件，都通过 home.packages 安装
@@ -22,8 +24,17 @@
     tsukimi
     pandoc
 
-    claude-code
-    codex
+    # Replaced by llm-agents.nix packages below.
+    # claude-code
+    # codex
+    # llmAgents.oh-my-codex
+    llmAgents.omp
+    llmAgents.pi
+    llmAgents.codex
+    llmAgents.claude-code
+    llmAgents.oh-my-claudecode
+    llmAgents.cc-switch-cli
+    llmAgents.paseo-desktop
     ghostty
 
     aria2
@@ -45,7 +56,7 @@
     mangayomi
     # fluffychat
     # keyguard
-    # anki
+    anki
     hmcl
     element-desktop
     # dig
