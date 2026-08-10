@@ -6,6 +6,7 @@
   pkgs,
   lib,
   config,
+  inputs,
   ...
 }: {
   imports = [
@@ -58,8 +59,11 @@
     ];
   };
 
-  # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  nixpkgs.overlays = [inputs.nix-cachyos-kernel.overlays.pinned];
+
+  # Ryzen 7 6800U supports x86-64-v3. Keep LTO and alternate schedulers out
+  # of the initial AMDGPU regression test.
+  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v3;
 
   networking.hostName = "ASUS"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
