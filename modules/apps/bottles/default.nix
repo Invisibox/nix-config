@@ -153,11 +153,11 @@
     sourceDir = "latencyflex-v0.1.1";
   };
   caffeRunnerInfo = {
-    name = "caffe-9.7";
-    url = "https://github.com/bottlesdevs/wine/releases/download/caffe-9.7/caffe-9.7-x86_64.tar.xz";
-    hash = "sha256-cRfMHG1OOBheLoXhRqouRU9mK+hTBI/G0f4a9d2FYFc=";
+    name = "caffe-10.0";
+    url = "https://github.com/bottlesdevs/wine/releases/download/caffe-10.0/caffe-10.0-x86_64.tar.xz";
+    hash = "sha256-z+lkL8Tb+736Kw78OT+x0j2Raq0VNcEE/fQ72VatZjY=";
     runnerName = "caffe-nix";
-    sourceDir = "caffe-9.7-x86_64";
+    sourceDir = "caffe-10.0-x86_64";
   };
   sodaRunnerInfo = {
     name = "soda-11.0-4";
