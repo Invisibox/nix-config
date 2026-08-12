@@ -6,7 +6,6 @@
 }: let
   cfg = config.local.apps.bottles;
   localUserName = config.local.user.name;
-  protonEmPackage = config.local.gaming.proton-em.package;
   protonGePackage = pkgs.proton-ge-bin.override {
     steamDisplayName = "Proton GE";
   };
@@ -160,11 +159,11 @@
     sourceDir = "caffe-10.0-x86_64";
   };
   sodaRunnerInfo = {
-    name = "soda-11.0-4";
-    url = "https://github.com/bottlesdevs/wine/releases/download/soda-11.0-4/soda-11.0-4-x86_64.tar.xz";
-    hash = "sha256-lYM5IDsnnHu9/CmRivlxtdtWGva7Kx/JskiDGNxxx/s=";
+    name = "soda-11.0-5";
+    url = "https://github.com/bottlesdevs/wine/releases/download/soda-11.0-5/soda-11.0-5-x86_64.tar.xz";
+    hash = "sha256-Y9+gWu6L46lbq0h1pd1p9DJnDsuChJFFO/xeI45vFZU=";
     runnerName = "soda-nix";
-    sourceDir = "soda-11.0-4-x86_64";
+    sourceDir = "soda-11.0-5-x86_64";
   };
   runtimeComponent = mkBottlesComponent (runtimeComponentInfo
     // {
@@ -250,10 +249,6 @@ in {
           bottles-latencyflex = {
             source = "${latencyflexComponent}/share/bottles/latencyflex/${latencyflexComponentInfo.name}";
             target = "${config.xdg.dataHome}/bottles/latencyflex/${latencyflexComponentInfo.name}";
-          };
-          proton-links-proton-em-bottles = {
-            source = protonEmPackage.steamcompattool;
-            target = "${config.xdg.dataHome}/bottles/runners/proton-em-nix";
           };
           proton-links-proton-ge-bottles = {
             source = protonGePackage.steamcompattool;
