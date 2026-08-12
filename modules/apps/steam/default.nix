@@ -8,7 +8,6 @@
   localUserName = config.local.user.name;
   gamescopeEnabled = config.local.gaming.gamescope.enable;
   gamescopePackage = config.programs.gamescope.package;
-  protonEmPackage = config.local.gaming.proton-em.package;
   protonGePackage = pkgs.proton-ge-bin.override {
     steamDisplayName = "Proton GE";
   };
@@ -42,6 +41,17 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
+    boot.kernelModules = ["ntsync"];
+    services.udev.packages = [
+      (pkgs.writeTextFile {
+        name = "ntsync-udev-rule";
+        destination = "/etc/udev/rules.d/70-ntsync.rules";
+        text = ''
+          KERNEL=="ntsync", MODE="0660", TAG+="uaccess"
+        '';
+      })
+    ];
+
     programs.steam = {
       enable = cfg.enableNative;
       package = pkgs.steam.override {
@@ -53,7 +63,6 @@ in {
         privateTmp = false; # https://github.com/NixOS/nixpkgs/issues/381923
       };
       extraCompatPackages = [
-        protonEmPackage
         protonGePackage
       ];
       extraPackages = [
