@@ -1,16 +1,13 @@
 {
   imports = [
-    ./baidunetdisk
     ./brave-origin
     ./bottles
     ./daed
     ./gamescope
     ./heroic
-    ./im
     ./lobehub
     ./localsend
     ./moonlight
-    ./netcatty
     ./niri
     ./nix-ld
     ./obs
@@ -20,7 +17,6 @@
     ./texlive
     ./virtualization
     ./waydroid
-    ./wemeet
     ./wps
   ];
 }

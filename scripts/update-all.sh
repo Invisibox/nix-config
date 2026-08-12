@@ -5,14 +5,6 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "${script_dir}/.." && pwd)"
 self_name="${BASH_SOURCE[0]##*/}"
 
-# These applications are temporarily managed through Flathub.
-skip_scripts=(
-  "update-baidunetdisk.sh"
-  "update-wechat.sh"
-  "update-qq.sh"
-  "update-wemeet.sh"
-)
-
 update_scripts=()
 shopt -s nullglob
 for script_path in "${script_dir}"/update-*.sh; do
@@ -20,12 +12,6 @@ for script_path in "${script_dir}"/update-*.sh; do
   if [[ "${script_name}" == "${self_name}" ]]; then
     continue
   fi
-
-  case "${script_name}" in
-    "${skip_scripts[0]}"|"${skip_scripts[1]}"|"${skip_scripts[2]}"|"${skip_scripts[3]}")
-      continue
-      ;;
-  esac
 
   update_scripts+=("${script_path}")
 done
