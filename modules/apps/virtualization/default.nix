@@ -52,9 +52,10 @@ in {
       podman = {
         enable = true;
         defaultNetwork.settings.dns_enabled = true;
-        #dockerCompat = true;
-        dockerSocket.enable = true;
+        dockerCompat = false;
+        dockerSocket.enable = false;
       };
+      docker.enable = true;
       libvirtd = {
         # Make sure you run this once: "sudo virsh net-autostart default"
         enable = true;
@@ -78,6 +79,7 @@ in {
             "kvm"
             "libvirtd"
             "podman"
+            "docker"
           ];
         };
 
