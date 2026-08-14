@@ -6,6 +6,8 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
+    # Required by winboat-0.9.0; remove when nixpkgs updates it past Electron 40.
+    "electron-40.10.5"
     "jitsi-meet-1.0.8792"
   ];
 

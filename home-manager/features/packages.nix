@@ -49,6 +49,7 @@ in {
     discord
     _64gram
     vial
+    motrix-next
     thunderbird
     qbittorrent-enhanced
     servo
@@ -60,7 +61,7 @@ in {
     hmcl
     element-desktop
     # dig
-    # winboat
+    winboat
 
     inputs.zen-browser.packages."${stdenv.hostPlatform.system}".default
 
