@@ -9,6 +9,16 @@
   protonGePackage = pkgs.proton-ge-bin.override {
     steamDisplayName = "Proton GE";
   };
+  protonCachyos =
+    pkgs.runCommand "proton-cachyos-10.0-20260410-slr" {
+      src = pkgs.fetchzip {
+        url = "https://github.com/CachyOS/proton-cachyos/releases/download/cachyos-10.0-20260410-slr/proton-cachyos-10.0-20260410-slr-x86_64_v3.tar.xz";
+        hash = "sha256-t38hmJPUuifBCFbi6F5ACiqVS/HygQQOQpn0fvQMd8g=";
+      };
+    } ''
+      mkdir -p "$out/share/steam/compatibilitytools.d/proton-cachyos"
+      cp -r "$src"/* "$out/share/steam/compatibilitytools.d/proton-cachyos"
+    '';
   bottlesPkgs = pkgs.extend (_final: prev: {
     openldap = prev.openldap.overrideAttrs (_: {
       doCheck = false;
@@ -253,6 +263,10 @@ in {
           proton-links-proton-ge-bottles = {
             source = protonGePackage.steamcompattool;
             target = "${config.xdg.dataHome}/bottles/runners/proton-ge-nix";
+          };
+          proton-links-proton-cachyos-bottles = {
+            source = "${protonCachyos}/share/steam/compatibilitytools.d/proton-cachyos";
+            target = "${config.xdg.dataHome}/bottles/runners/proton-cachyos-nix";
           };
         };
         packages = [
