@@ -2,14 +2,9 @@
   lib,
   config,
   pkgs,
-  inputs,
   ...
 }: let
   cfg = config.local.services.daed;
-  system = pkgs.stdenv.hostPlatform.system;
-  daePackages = inputs.daeuniverse.packages.${system};
-  daePackage = daePackages.dae;
-  daedPackage = import ./package.nix {inherit pkgs inputs;};
   genAssetsDrv = paths:
     pkgs.symlinkJoin {
       name = "daed-assets";
@@ -34,14 +29,8 @@ in {
 
       package = lib.mkOption {
         type = lib.types.package;
-        default = daedPackage;
-        defaultText = lib.literalExpression ''
-          pkgs.callPackage "''${inputs.daeuniverse.outPath}/daed/package.nix" {
-            fetchPnpmDeps = args: pkgs.fetchPnpmDeps (args // {
-              prePnpmInstall = (args.prePnpmInstall or "") + "...";
-            });
-          }
-        '';
+        default = pkgs.daed;
+        defaultText = lib.literalExpression "pkgs.daed";
         description = "The daed package to use.";
       };
 
@@ -143,7 +132,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [
-      daePackage
+      pkgs.dae
       cfg.package
     ];
 
