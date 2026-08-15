@@ -56,6 +56,8 @@
       "boot.shell_on_fail"
       "udev.log_priority=3"
       "rd.systemd.show_status=auto"
+      # Avoid eDP panel stalls caused by AMDGPU Panel Self Refresh.
+      "amdgpu.dcdebugmask=0x10"
     ];
   };
 
