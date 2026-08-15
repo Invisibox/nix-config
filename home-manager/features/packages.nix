@@ -5,98 +5,105 @@
 }: let
   llmAgents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
 in {
-  # 通过 home.packages 安装一些常用的软件
-  # 这些软件将仅在当前用户下可用，不会影响系统级别的配置
-  # 建议将所有 GUI 软件，以及与 OS 关系不大的 CLI 软件，都通过 home.packages 安装
   home.packages = with pkgs; [
-    file-roller
-    papirus-icon-theme
-    fastfetch
-    vscode
-    obsidian
-    zotero
-    papers
-    folio
-    # calibre
-    readest
-    termius
-    tor-browser
-    tsukimi
-    pandoc
-
+    # AI coding assistants
     # Replaced by llm-agents.nix packages below.
-    # claude-code
-    # codex
     # llmAgents.oh-my-codex
-    llmAgents.omp
-    llmAgents.pi
-    llmAgents.codex
-    llmAgents.claude-code
-    llmAgents.oh-my-claudecode
     llmAgents.cc-switch-cli
+    llmAgents.claude-code
+    llmAgents.codex
+    llmAgents.oh-my-claudecode
+    llmAgents.omp
     llmAgents.paseo-desktop
-    ghostty
+    llmAgents.pi
 
-    aria2
-    v2rayn
-    # cherry-studio
-    qimgv
-    amberol
-    gnome-calculator
-    fluent-reader
-    piliplus
-    winbox
-    discord
-    _64gram
-    vial
-    motrix-next
-    thunderbird
-    qbittorrent-enhanced
-    servo
-    planify
-    mangayomi
-    # fluffychat
-    # keyguard
-    anki
-    hmcl
-    element-desktop
+    # development and build tools
+    android-tools
+    cmake
+    devbox
+    gh
+    graphviz
+    nodejs
+    pandoc
+    pkg-config
+    pnpm
+    vscode
+
+    # terminal and command-line tools
+    btop
+    compsize
     # dig
-    winboat
-
-    inputs.zen-browser.packages."${stdenv.hostPlatform.system}".default
-
-    # archives
-    zip
-    xz
-    unzip
-    p7zip
-    rar
-
-    curtail
-
-    # utils
-    eza # A modern replacement for ‘ls’
-    fzf # A command-line fuzzy finder
-    ripgrep
-    socat
+    eza # A modern replacement for 'ls'
+    fastfetch
     fd
+    fzf # A command-line fuzzy finder
+    ghostty
+    hyperfine
+    inetutils
     jq
     pango
-    yazi
-    pkg-config
-    devbox
-    android-tools
-    hyperfine
-    btop
+    ripgrep
+    socat
+    termius
     tokei
     wl-clipboard
-    graphviz
-    inetutils
-    cmake
-    nodejs
-    pnpm
+    yazi
 
+    # archives
+    p7zip
+    rar
+    unzip
+    xz
+    zip
+
+    # networking, downloads, and browsers
+    aria2
+    motrix-next
+    qbittorrent-enhanced
+    # servo
+    tor-browser
+    v2rayn
+    inputs.zen-browser.packages."${stdenv.hostPlatform.system}".default
+
+    # communication and news readers
+    _64gram
+    # cherry-studio
+    discord
+    element-desktop
+    # fluffychat
+    fluent-reader
+    # keyguard
+    thunderbird
+
+    # knowledge management and productivity
+    anki
+    # calibre
+    folio
+    mangayomi
+    obsidian
+    papers
+    planify
+    # readest
+    zotero
+
+    # media and images
+    amberol
+    curtail
+    piliplus
+    qimgv
+    tsukimi
+
+    # desktop and system tools
+    file-roller
+    gnome-calculator
+    hmcl
+    vial
+    winboat
+    winbox
+
+    # themes and Qt configuration
     libsForQt5.qt5ct
+    papirus-icon-theme
     qt6Packages.qt6ct
   ];
 }
