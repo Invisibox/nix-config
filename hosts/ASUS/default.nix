@@ -157,12 +157,6 @@
   };
 
   environment.sessionVariables = {
-    # this is a lazy way to do it. it works because
-    # user vars come after setting this dummy var to 1.
-    __NIXOS_SET_ENVIRONMENT_DONE = "";
-
-    NIXOS_OZONE_WL = "1";
-
     XDG_CACHE_HOME = "$HOME/.cache";
     XDG_CONFIG_HOME = "$HOME/.config";
     XDG_DATA_HOME = "$HOME/.local/share";
@@ -177,6 +171,8 @@
     # allows using $PAGER as the pager for systemctl commands
     SYSTEMD_PAGERSECURE = "false";
   };
+
+  environment.variables.EDITOR = "neovim";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.zh = {
@@ -202,12 +198,6 @@
 
   # Disable nano, as it is not needed.
   programs.nano.enable = false;
-
-  # environment.variables = {
-  #   EDITOR = "neovim";
-  #   QT_QPA_PLATFORMTHEME = "qt6ct";
-  #   QT_QPA_PLATFORMTHEME_QT6 = "qt6ct";
-  # };
 
   services.kanata = {
     enable = true;

@@ -167,7 +167,6 @@ in
       }
         --set CHROME_WRAPPER ${pname}
         --add-flags "--disable-features=OutdatedBuildDetector"
-        --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto}}"
       )
     '';
 
