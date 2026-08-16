@@ -6,8 +6,7 @@
   home.sessionVariables = {
     EDITOR = "neovim";
     XCURSOR_THEME = "Bibata-Modern-Ice";
-    XCURSOR_SIZE = "20";
-    XCURSOR_PATH = "${pkgs.bibata-cursors}/share/icons:/run/current-system/sw/share/icons";
+    XCURSOR_SIZE = "22";
     QT_QPA_PLATFORMTHEME_QT6 = "qt6ct";
   };
 
@@ -26,7 +25,7 @@
     x11.enable = true;
     name = "Bibata-Modern-Ice";
     package = pkgs.bibata-cursors;
-    size = 20;
+    size = 22;
   };
 
   gtk = {
