@@ -21,7 +21,6 @@ in {
     android-tools
     cmake
     devbox
-    gh
     graphviz
     nodejs
     pandoc
@@ -71,8 +70,9 @@ in {
     discord
     element-desktop
     # fluffychat
-    fluent-reader
+    # fluent-reader
     # keyguard
+    newsflash
     thunderbird
 
     # knowledge management and productivity
@@ -94,9 +94,11 @@ in {
     tsukimi
 
     # desktop and system tools
+    # dnscontrol
     file-roller
     gnome-calculator
     hmcl
+    resources
     vial
     winboat
     winbox
