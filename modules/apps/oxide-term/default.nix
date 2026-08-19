@@ -8,11 +8,11 @@
   localUserName = config.local.user.name;
 
   pname = "oxideterm";
-  version = "2.0.20";
+  version = "2.0.21";
 
   src = pkgs.fetchurl {
     url = "https://github.com/AnalyseDeCircuit/oxideterm/releases/download/v${version}/OxideTerm_${version}_linux_x64.deb";
-    hash = "sha256-j5wBFdzUnkmwlZPHwwDlrc4zE8QgFjIAWkLFHIshn3U=";
+    hash = "sha256-t2+Zu1/2oJR2Vb3pqtYiKN9EE81ExBP6F7WMuLIANZM=";
   };
 
   oxideTermPackage = pkgs.stdenv.mkDerivation {
