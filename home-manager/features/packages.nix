@@ -23,6 +23,7 @@ in {
     devbox
     graphviz
     nodejs
+    openssl
     pandoc
     pkg-config
     pnpm
