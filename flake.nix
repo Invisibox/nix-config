@@ -8,6 +8,21 @@
 
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
 
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v1.1.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     niri-flake.url = "github:sodiboo/niri-flake";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -69,14 +84,18 @@
   in {
     formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
 
-    nixosConfigurations.ASUS = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.thinkpad-t14s-gen5 = nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {
         inherit inputs;
       };
       modules = [
         inputs.nix-flatpak.nixosModules.nix-flatpak
-        ./hosts/ASUS
+        inputs.disko.nixosModules.disko
+        inputs.lanzaboote.nixosModules.lanzaboote
+        inputs.nixos-hardware.nixosModules.common-cpu-intel
+        inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t14s
+        ./hosts/thinkpad-t14s-gen5
 
         # stylix.nixosModules.stylix
 
