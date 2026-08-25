@@ -55,11 +55,15 @@
     name = "lobehub-xdg-utils";
     paths = [
       (pkgs.writeShellScriptBin "xdg-mime" ''
-        if [[ "$1" == "default" && " $* " == *" x-scheme-handler/lobehub "* ]]; then
-          exit 0
+        if [ "''${1-}" = "default" ]; then
+          case " $* " in
+            *" x-scheme-handler/lobehub "*) exit 0 ;;
+          esac
         fi
 
-        if [[ "$1" == "query" && "$2" == "default" && "$3" == "x-scheme-handler/lobehub" ]]; then
+        if [ "''${1-}" = "query" ] \
+          && [ "''${2-}" = "default" ] \
+          && [ "''${3-}" = "x-scheme-handler/lobehub" ]; then
           echo "lobehub-desktop.desktop"
           exit 0
         fi
@@ -67,17 +71,23 @@
         exec ${pkgs.xdg-utils}/bin/xdg-mime "$@"
       '')
       (pkgs.writeShellScriptBin "xdg-settings" ''
-        if [[ "$1" == "set" && "$2" == "default-url-scheme-handler" && "$3" == "lobehub" ]]; then
+        if [ "''${1-}" = "set" ] \
+          && [ "''${2-}" = "default-url-scheme-handler" ] \
+          && [ "''${3-}" = "lobehub" ]; then
           exit 0
         fi
 
-        if [[ "$1" == "get" && "$2" == "default-url-scheme-handler" && "$3" == "lobehub" ]]; then
+        if [ "''${1-}" = "get" ] \
+          && [ "''${2-}" = "default-url-scheme-handler" ] \
+          && [ "''${3-}" = "lobehub" ]; then
           echo "lobehub-desktop.desktop"
           exit 0
         fi
 
-        if [[ "$1" == "check" && "$2" == "default-url-scheme-handler" && "$3" == "lobehub" ]]; then
-          [[ "$4" == "lobehub-desktop.desktop" ]]
+        if [ "''${1-}" = "check" ] \
+          && [ "''${2-}" = "default-url-scheme-handler" ] \
+          && [ "''${3-}" = "lobehub" ]; then
+          [ "''${4-}" = "lobehub-desktop.desktop" ]
           exit $?
         fi
 
