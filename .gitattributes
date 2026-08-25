@@ -1,0 +1,2 @@
+# Nix and shell sources are consumed directly by Unix build tools.
+* text=auto eol=lf
