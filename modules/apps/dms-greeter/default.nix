@@ -9,9 +9,6 @@
   localUserHome = config.local.user.home;
   greeterCursorTheme = "Bibata-Modern-Ice";
   greeterCursorSize = 22;
-  greeterShowSeconds = true;
-  greeterFontFamily = "Inter Variable";
-  jq = lib.getExe pkgs.jq;
 in {
   imports = [
     inputs.dms.nixosModules.greeter
@@ -65,29 +62,5 @@ in {
       XCURSOR_SIZE = toString greeterCursorSize;
       XCURSOR_PATH = "${pkgs.bibata-cursors}/share/icons:/run/current-system/sw/share/icons";
     };
-
-    # Keep user settings intact: only patch greeter cache copy.
-    systemd.services.greetd.preStart = lib.mkAfter ''
-      cd /var/lib/dms-greeter
-
-      if [ -f settings.json ]; then
-        ${jq} --arg greeterFontFamily "${greeterFontFamily}" \
-          '.greeterShowSeconds = ${
-        if greeterShowSeconds
-        then "true"
-        else "false"
-      } | .greeterFontFamily = $greeterFontFamily' \
-          settings.json > settings.tmp
-        mv settings.tmp settings.json
-      else
-        ${jq} -n --arg greeterFontFamily "${greeterFontFamily}" \
-          '{"greeterShowSeconds": ${
-        if greeterShowSeconds
-        then "true"
-        else "false"
-      }, "greeterFontFamily": $greeterFontFamily}' \
-          > settings.json
-      fi
-    '';
   };
 }
