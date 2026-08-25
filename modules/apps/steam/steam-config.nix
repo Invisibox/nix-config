@@ -37,8 +37,7 @@ in {
         ]
     )
     {
-      hlbs = {
-        id = 130;
+      "130" = {
         launchOptions = {
           env = {
             MESA_LOADER_DRIVER_OVERRIDE = "zink";
