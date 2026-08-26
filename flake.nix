@@ -94,7 +94,10 @@
       };
       modules = [
         inputs.nix-flatpak.nixosModules.nix-flatpak
-        inputs.disko.nixosModules.disko
+        # Import only the NixOS module. Referencing the flake output also
+        # evaluates Disko's CLI package, which still uses deprecated stdenv
+        # platform aliases.
+        (inputs.disko + "/module.nix")
         inputs.lanzaboote.nixosModules.lanzaboote
         inputs.nixos-hardware.nixosModules.common-cpu-intel
         inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t14s
