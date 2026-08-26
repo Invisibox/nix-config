@@ -10,9 +10,9 @@
     ./moonlight
     ./niri
     ./nix-ld
+    ./noctalia-greeter
     ./obs
     ./oxide-term
-    ./dms-greeter
     ./steam
     ./texlive
     ./virtualization

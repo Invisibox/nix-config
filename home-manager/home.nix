@@ -6,7 +6,8 @@
     ./features/theme.nix
     ./features/cli.nix
 
-    ./dms
+    ./niri
+    ./noctalia
     ./nautilus
     ./spotify
     ./zed

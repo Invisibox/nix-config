@@ -52,8 +52,11 @@
       inputs.systems.follows = "systems";
     };
 
-    dms = {
-      url = "github:AvengeMedia/DankMaterialShell/stable";
+    # Noctalia v5. The cachix branch tracks main and keeps binary cache support.
+    noctalia.url = "github:noctalia-dev/noctalia/cachix";
+
+    noctalia-greeter = {
+      url = "github:noctalia-dev/noctalia-greeter";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

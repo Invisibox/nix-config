@@ -99,6 +99,8 @@
 
         "https://niri.cachix.org"
 
+        "https://noctalia.cachix.org"
+
         "https://cache.numtide.com"
 
         "https://attic.xuyh0120.win/lantian"
@@ -113,6 +115,8 @@
         "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
 
         "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
+
+        "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
 
         "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
 
