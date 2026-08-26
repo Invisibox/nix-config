@@ -5,10 +5,6 @@
     drivers = [
       # HP LaserJet Pro M401dn
       pkgs.hplip
-
-      # HP Laser MFP 136w uses Samsung ULD lineage; in CUPS pick the M2070
-      # family PPD if 136w is not listed directly.
-      pkgs.samsung-unified-linux-driver_1_00_37
     ];
   };
 
