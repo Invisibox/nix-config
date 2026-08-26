@@ -19,6 +19,51 @@ in {
     profiles.default = {
       settings."zen.widget.linux.transparency" = true;
 
+      search = {
+        force = true;
+        default = "kagi";
+        privateDefault = "kagi";
+
+        engines = {
+          mynixos = {
+            name = "My NixOS";
+            urls = [
+              {
+                template = "https://mynixos.com/search?q={searchTerms}";
+                params = [
+                  {
+                    name = "query";
+                    value = "searchTerms";
+                  }
+                ];
+              }
+            ];
+            icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+            definedAliases = ["@nx"];
+          };
+
+          github = {
+            name = "GitHub Search";
+            urls = [
+              {
+                template = "https://github.com/search?q={searchTerms}";
+              }
+            ];
+            definedAliases = ["@gh"];
+          };
+
+          kagi = {
+            name = "Kagi";
+            urls = [
+              {
+                template = "https://kagi.com/search?q={searchTerms}";
+              }
+            ];
+            definedAliases = ["@kagi"];
+          };
+        };
+      };
+
       extraConfig = ''
         ${builtins.readFile "${betterfoxSource}/user.js"}
         ${builtins.readFile "${betterfoxSource}/Securefox.js"}
