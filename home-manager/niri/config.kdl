@@ -69,9 +69,7 @@ layout {
     struts {
         left -8
         right -8
-        // Noctalia's 34 px bar does not reserve an exclusive zone. Keep the
-        // previous window position while allowing shadows into the bar area.
-        top 26
+        top -12
         bottom -8
     }
 
@@ -82,10 +80,11 @@ layout {
 }
 
 blur {
-    passes 3
-    offset 3.5
-    noise 0.01
-    saturation 0.9
+    // Broad, subtly textured blur with the restrained color lift of macOS materials.
+    passes 4
+    offset 4.0
+    noise 0.015
+    saturation 1.2
 }
 
 xwayland-satellite {
@@ -131,16 +130,10 @@ window-rule {
 }
 
 window-rule {
-    match app-id=r#"^zen$"#
+    match app-id=r#"^zen(-beta)?$"#
     background-effect {
         blur true
-    }
-}
-
-window-rule {
-    match app-id=r#"^zen-beta$"#
-    background-effect {
-        blur true
+        xray true
     }
 }
 
