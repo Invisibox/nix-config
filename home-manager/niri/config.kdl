@@ -138,7 +138,7 @@ window-rule {
 }
 
 window-rule {
-    match app-id=r#"^zen(-beta)?$"# title=r#"(?i)bitwarden"#
+    match app-id=r#"^zen-beta$"# title=r#"^Extension: \(Bitwarden Password Manager\) - Bitwarden — Zen Browser$"#
     open-floating true
 }
 
