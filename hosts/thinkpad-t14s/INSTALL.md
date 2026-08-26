@@ -18,9 +18,9 @@ From the repository root in the live installer:
 ```console
 sudo nix --extra-experimental-features "nix-command flakes" \
   run github:nix-community/disko/latest -- \
-  --mode destroy,format,mount ./hosts/thinkpad-t14s-gen5/disko.nix
+  --mode destroy,format,mount ./hosts/thinkpad-t14s/disko.nix
 
-sudo nixos-install --flake .#thinkpad-t14s-gen5
+sudo nixos-install --flake .#thinkpad-t14s
 ```
 
 The first installation is allowed to write unsigned boot artifacts because the
@@ -30,7 +30,7 @@ replace the initial boot artifacts with signed ones:
 
 ```console
 sudo systemctl status generate-sb-keys.service
-sudo nixos-rebuild switch --flake .#thinkpad-t14s-gen5
+sudo nixos-rebuild switch --flake .#thinkpad-t14s
 sudo sbctl verify
 ```
 

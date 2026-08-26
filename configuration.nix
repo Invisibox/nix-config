@@ -1,5 +1,5 @@
 {
   imports = [
-    ./hosts/thinkpad-t14s-gen5
+    ./hosts/thinkpad-t14s
   ];
 }

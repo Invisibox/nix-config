@@ -84,7 +84,7 @@
   in {
     formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
 
-    nixosConfigurations.thinkpad-t14s-gen5 = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.thinkpad-t14s = nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {
         inherit inputs;
@@ -95,7 +95,7 @@
         inputs.lanzaboote.nixosModules.lanzaboote
         inputs.nixos-hardware.nixosModules.common-cpu-intel
         inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t14s
-        ./hosts/thinkpad-t14s-gen5
+        ./hosts/thinkpad-t14s
 
         # stylix.nixosModules.stylix
 
