@@ -17,7 +17,15 @@ in {
     setAsDefaultBrowser = true;
 
     profiles.default = {
-      settings."zen.widget.linux.transparency" = true;
+      settings = {
+        "browser.ai.control.translations" = "blocked";
+        "browser.translations.automaticallyPopup" = false;
+        "browser.translations.enable" = false;
+        "browser.translations.quickAction.enabled" = false;
+        "browser.translations.select.enable" = false;
+
+        "zen.widget.linux.transparency" = true;
+      };
 
       search = {
         force = true;
