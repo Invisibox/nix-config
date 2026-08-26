@@ -169,11 +169,11 @@
     sourceDir = "caffe-10.0-x86_64";
   };
   sodaRunnerInfo = {
-    name = "soda-mcsoda-11.0-4";
-    url = "https://github.com/bottlesdevs/wine/releases/download/mcsoda-11.0-4/mcsoda-11.0-4-x86_64.tar.xz";
-    hash = "sha256-hWnvDxhVEFQE0KP8S/WG7wYMBYuLJCrrqSSA3XGLbbs=";
+    name = "soda-11.0-6";
+    url = "https://github.com/bottlesdevs/wine/releases/download/soda-11.0-6/soda-11.0-6-x86_64.tar.xz";
+    hash = "sha256-s/vYBU/kftId5hnuFfi9o0D9Ayh0PUPULbThxa1WHtg=";
     runnerName = "soda-nix";
-    sourceDir = "mcsoda-11.0-4-x86_64";
+    sourceDir = "soda-11.0-6-x86_64";
   };
   runtimeComponent = mkBottlesComponent (runtimeComponentInfo
     // {
