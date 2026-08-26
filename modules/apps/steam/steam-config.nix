@@ -16,12 +16,10 @@
     WINEDLLOVERRIDES = "dinput8,dxgi,dsound,ddraw=n,b";
   };
   defaultOptions = {
-    launchOptions = {
-      env = lib.mapAttrs (_: value: lib.mkDefault value) steamRuntimeEnv;
-      wrappers = [
-        (lib.getExe steamGameWrapper)
-      ];
-    };
+    env = lib.mapAttrs (_: value: lib.mkDefault value) steamRuntimeEnv;
+    wrappers = [
+      (lib.getExe steamGameWrapper)
+    ];
   };
 in {
   enable = true;
@@ -38,10 +36,8 @@ in {
     )
     {
       "130" = {
-        launchOptions = {
-          env = {
-            MESA_LOADER_DRIVER_OVERRIDE = "zink";
-          };
+        env = {
+          MESA_LOADER_DRIVER_OVERRIDE = "zink";
         };
       };
     };
