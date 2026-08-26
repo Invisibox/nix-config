@@ -63,7 +63,6 @@ in {
     # servo
     tor-browser
     v2rayn
-    inputs.zen-browser.packages."${stdenv.hostPlatform.system}".default
 
     # communication and news readers
     _64gram

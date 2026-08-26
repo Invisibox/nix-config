@@ -11,6 +11,7 @@
     ./nautilus
     ./spotify
     ./zed
+    ./zen-browser.nix
     ./mpv.nix
     ./rime.nix
     ./kitty.nix
