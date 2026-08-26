@@ -22,7 +22,7 @@ in {
       search = {
         force = true;
         default = "kagi";
-        privateDefault = "kagi";
+        privateDefault = "ddg";
 
         engines = {
           mynixos = {
