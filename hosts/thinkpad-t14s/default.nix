@@ -128,6 +128,22 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+
+    wireplumber.extraConfig."51-prefer-internal-speaker" = {
+      "device.profile.priority.rules" = [
+        {
+          matches = [
+            {
+              "device.name" = "alsa_card.pci-0000_00_1f.3-platform-skl_hda_dsp_generic";
+            }
+          ];
+          actions.update-props.priorities = [
+            "HiFi (HDMI1, HDMI2, HDMI3, Mic1, Mic2, Speaker)"
+            "HiFi (HDMI1, HDMI2, HDMI3, Headphones, Mic1, Mic2)"
+          ];
+        }
+      ];
+    };
   };
 
   environment.sessionVariables = {
