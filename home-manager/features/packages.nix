@@ -81,9 +81,11 @@ in {
     folio
     mangayomi
     obsidian
+    onlyoffice-desktopeditors
     papers
     planify
     # readest
+    typst
     zotero
 
     # media and images

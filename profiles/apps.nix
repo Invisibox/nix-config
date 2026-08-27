@@ -18,8 +18,9 @@
     silenceOutput = true;
   };
 
-  local.apps.texlive.enable = true;
-  local.apps.wps.enable = true;
+  # Temporarily replaced by Typst and OnlyOffice.
+  # local.apps.texlive.enable = true;
+  # local.apps.wps.enable = true;
   services.flatpak = {
     enable = true;
     update.onActivation = true;

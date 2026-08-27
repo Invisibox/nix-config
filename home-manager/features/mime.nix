@@ -16,7 +16,7 @@
       "x-scheme-handler/https" = ["zen-beta.desktop"];
 
       # Documents and text
-      "application/pdf" = ["wps-office-pdf.desktop"];
+      "application/pdf" = ["onlyoffice-desktopeditors.desktop"];
       "text/plain" = ["org.kde.kate.desktop"];
       "text/markdown" = ["org.kde.kate.desktop"];
       "application/json" = ["org.kde.kate.desktop"];
