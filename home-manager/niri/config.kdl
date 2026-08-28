@@ -30,6 +30,10 @@ input {
 
 prefer-no-csd
 
+hotkey-overlay {
+    skip-at-startup
+}
+
 layout {
     gaps 13
     empty-workspace-above-first
