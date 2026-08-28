@@ -2,14 +2,8 @@
   programs.mpv = {
     enable = true;
 
-    # 使用 mpv.override 替代 mpv-unwrapped.wrapper
+    # 添加脚本
     package = pkgs.mpv.override {
-      # 覆盖底层的 mpv-unwrapped，使用 ffmpeg-full 和启用 Wayland
-      mpv-unwrapped = pkgs.mpv-unwrapped.override {
-        ffmpeg = pkgs.ffmpeg-full;
-        waylandSupport = true;
-      };
-      # 添加脚本
       scripts = with pkgs.mpvScripts; [
         uosc
         thumbfast
@@ -21,14 +15,15 @@
     config = {
       # --- 原有的配置 ---
       profile = "high-quality";
-      "ytdl-format" = "bestvideo+bestaudio";
-      "cache-default" = 1000000;
+      "ytdl-format" = "bestvideo[height<=1440][fps>30]+bestaudio/bestvideo[height<=1440]+bestaudio/best[height<=1440]";
+      cache = "auto";
+      "demuxer-max-bytes" = "1GiB";
 
       # --- 从 mpv.conf 迁移过来的配置 ---
       hwdec = "auto-safe";
-      vo = "gpu";
+      vo = "gpu-next";
       "save-position-on-quit" = true;
-      "no-input-builtin-bindings" = true;
+      "input-builtin-bindings" = false;
       "sub-auto" = "fuzzy";
       alang = "en,eng,chi,zho,zh,zh-CN,zh-TW,zh-HK,zh-MO";
       slang = "chi,zho,zh,zh-CN,zh-TW,zh-HK,zh-MO";
@@ -68,7 +63,7 @@
       "LEFT" = "seek -5";
       "RIGHT" = "seek 5";
       "Shift+LEFT" = "seek -60";
-      "Shift+RIGHT" = "seek 87 exact";
+      "Shift+RIGHT" = "seek 60 exact";
 
       # --- 音频与字幕同步 ---
       "Ctrl+UP" = "add audio-delay -0.1";
