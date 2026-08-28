@@ -9,7 +9,8 @@
     settings = {
       confirm_os_window_close = 0;
       background_opacity = 0.6;
-      background_blur = 1;
+      # Let niri own the blur region; kitty's Wayland blur region can lag behind resizes.
+      background_blur = 0;
       initial_window_width = 880;
       initial_window_height = 600;
       remember_window_size = "no";

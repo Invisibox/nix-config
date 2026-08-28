@@ -117,6 +117,15 @@ window-rule {
     draw-border-with-background false
 }
 
+// Keep kitty blurred through niri instead of kitty's resize-sensitive blur region.
+window-rule {
+    match app-id=r#"^kitty$"#
+    background-effect {
+        xray true
+        blur true
+    }
+}
+
 window-rule {
     match app-id=r#"zen$"# title="^画中画$"
     open-floating true
