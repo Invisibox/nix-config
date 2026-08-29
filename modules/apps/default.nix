@@ -12,6 +12,7 @@
     ./nix-ld
     ./noctalia-greeter
     ./obs
+    ./onlyoffice
     ./oxide-term
     ./steam
     ./texlive

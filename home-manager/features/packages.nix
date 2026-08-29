@@ -12,8 +12,8 @@ in {
     llmAgents.cc-switch-cli
     llmAgents.claude-code
     llmAgents.codex
-    llmAgents.oh-my-claudecode
-    llmAgents.omp
+    # llmAgents.oh-my-claudecode
+    # llmAgents.omp
     llmAgents.paseo-desktop
     llmAgents.pi
 
@@ -81,7 +81,6 @@ in {
     folio
     mangayomi
     obsidian
-    onlyoffice-desktopeditors
     papers
     planify
     # readest
@@ -96,6 +95,7 @@ in {
     tsukimi
 
     # desktop and system tools
+    ddcutil
     # dnscontrol
     file-roller
     gnome-calculator

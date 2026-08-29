@@ -9,7 +9,7 @@
     ./niri
     ./noctalia
     ./nautilus
-    ./spotify
+    # ./spotify
     ./zed
     ./zen-browser.nix
     ./mpv.nix
