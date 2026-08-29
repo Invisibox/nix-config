@@ -39,7 +39,9 @@ layout {
     empty-workspace-above-first
     center-focused-column "on-overflow"
     always-center-single-column
-    background-color "transparent"
+    // Keep empty workspaces visible in the overview. With a transparent
+    // background and overview shadows disabled, they blend into the backdrop.
+    // background-color "transparent"
 
     // You can customize the widths that "switch-preset-column-width" (Mod+R) toggles between.
     preset-column-widths {
@@ -212,10 +214,8 @@ layer-rule {
     place-within-backdrop true
 }
 
-layer-rule {
-    match namespace="^noctalia-wallpaper"
-    place-within-backdrop true
-}
+// Keep the wallpaper in each workspace so it remains visible in the overview
+// thumbnails. The separate Noctalia backdrop layer stays stationary behind them.
 
 layer-rule {
     match namespace="noctalia-window-switcher"

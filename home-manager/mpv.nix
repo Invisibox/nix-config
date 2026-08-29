@@ -13,13 +13,10 @@
 
     # mpv.conf
     config = {
-      # --- 原有的配置 ---
       profile = "high-quality";
       "ytdl-format" = "bestvideo[height<=1440][fps>30]+bestaudio/bestvideo[height<=1440]+bestaudio/best[height<=1440]";
       cache = "auto";
       "demuxer-max-bytes" = "1GiB";
-
-      # --- 从 mpv.conf 迁移过来的配置 ---
       hwdec = "auto-safe";
       vo = "gpu-next";
       "save-position-on-quit" = true;
@@ -45,8 +42,8 @@
       "WHEEL_DOWN" = "add volume -5";
 
       # --- 触摸板/平滑滚动 ---
-      "AXIS_UP" = "add volume -1";
-      "AXIS_DOWN" = "add volume 1";
+      "AXIS_UP" = "add volume 1";
+      "AXIS_DOWN" = "add volume -1";
       "AXIS_LEFT" = "seek 1";
       "AXIS_RIGHT" = "seek -1";
 
