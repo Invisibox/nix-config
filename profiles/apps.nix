@@ -1,4 +1,5 @@
 {pkgs, ...}: {
+  local.apps.bitwarden.enable = true;
   local.apps.brave-origin.enable = true;
   local.apps.lobehub.enable = true;
   local.apps.localsend.enable = true;

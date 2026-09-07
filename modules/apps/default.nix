@@ -1,5 +1,6 @@
 {
   imports = [
+    ./bitwarden
     ./brave-origin
     ./bottles
     ./daed

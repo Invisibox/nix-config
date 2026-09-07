@@ -69,9 +69,15 @@
   };
 
   services.fwupd.enable = true;
-  services.fprintd.enable = true;
   services.thermald.enable = true;
   services.hardware.bolt.enable = true;
+
+  # This reader uses Lenovo's Goodix 550a TOD driver. Keep the selection at
+  # the host level so other machines can choose their own fingerprint driver.
+  local.security.fingerprint.tod = {
+    enable = true;
+    driver = pkgs.libfprint-2-tod1-goodix-550a;
+  };
 
   zramSwap = {
     enable = true;
