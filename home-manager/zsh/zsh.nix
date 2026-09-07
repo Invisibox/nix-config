@@ -57,8 +57,8 @@
       src = pkgs.fetchFromGitHub {
         owner = "zdharma-continuum";
         repo = name;
-        rev = "3d574ccf48804b10dca52625df13da5edae7f553";
-        hash = "sha256-ZihUL4JAVk9V+IELSakytlb24BvEEJ161CQEHZYYoSA=";
+        rev = "4672ad5dd9ad68a7effc1476d65afb7c584ce2b3";
+        hash = "sha256-gXTJv+k4OSgwiM7vy91v7tLLHre0f5XeSor3n/b2euI=";
       };
     };
 

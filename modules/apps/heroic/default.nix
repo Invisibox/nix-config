@@ -6,9 +6,9 @@
 }: let
   cfg = config.local.gaming.heroic;
   localUserName = config.local.user.name;
-  protonGePackage = pkgs.proton-ge-bin.override {
+  protonGePackage = pkgs.proton-ge-bin.overrideAttrs (_: {
     steamDisplayName = "Proton GE";
-  };
+  });
   protonCachyos =
     pkgs.runCommand "proton-cachyos-10.0-20260410-slr" {
       src = pkgs.fetchzip {

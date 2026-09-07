@@ -8,9 +8,9 @@
   localUserName = config.local.user.name;
   gamescopeEnabled = config.local.gaming.gamescope.enable;
   gamescopePackage = config.programs.gamescope.package;
-  protonGePackage = pkgs.proton-ge-bin.override {
+  protonGePackage = pkgs.proton-ge-bin.overrideAttrs (_: {
     steamDisplayName = "Proton GE";
-  };
+  });
   steamGameWrapper = pkgs.callPackage ./game-wrapper.nix {
     gamescope = gamescopePackage;
   };

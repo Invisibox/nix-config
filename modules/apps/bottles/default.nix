@@ -6,9 +6,9 @@
 }: let
   cfg = config.local.apps.bottles;
   localUserName = config.local.user.name;
-  protonGePackage = pkgs.proton-ge-bin.override {
+  protonGePackage = pkgs.proton-ge-bin.overrideAttrs (_: {
     steamDisplayName = "Proton GE";
-  };
+  });
   protonCachyos =
     pkgs.runCommand "proton-cachyos-10.0-20260410-slr" {
       src = pkgs.fetchzip {
@@ -169,11 +169,11 @@
     sourceDir = "caffe-10.0-x86_64";
   };
   sodaRunnerInfo = {
-    name = "soda-11.0-6";
-    url = "https://github.com/bottlesdevs/wine/releases/download/soda-11.0-6/soda-11.0-6-x86_64.tar.xz";
-    hash = "sha256-s/vYBU/kftId5hnuFfi9o0D9Ayh0PUPULbThxa1WHtg=";
+    name = "soda-11.0-9";
+    url = "https://github.com/bottlesdevs/wine/releases/download/soda-11.0-9/soda-11.0-9-x86_64.tar.xz";
+    hash = "sha256-KIR7jA/J+Wmj6gh6FccGkoyRWnd5AI7ENAsWB0M0w4Y=";
     runnerName = "soda-nix";
-    sourceDir = "soda-11.0-6-x86_64";
+    sourceDir = "soda-11.0-9-x86_64";
   };
   runtimeComponent = mkBottlesComponent (runtimeComponentInfo
     // {
