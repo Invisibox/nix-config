@@ -41,4 +41,10 @@
     enable = true;
     platformTheme.name = "qtct";
   };
+
+  dconf.settings = {
+    "org/gnome/desktop/sound" = {
+      "theme-name" = "Oxygen";
+    };
+  };
 }

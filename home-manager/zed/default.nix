@@ -32,6 +32,12 @@
         show = "auto";
         thumb = "hover";
       };
+      project_panel = {
+        dock = "left";
+      };
+      git_panel = {
+        dock = "left";
+      };
       agent_servers = {
         claude-acp = {
           type = "registry";

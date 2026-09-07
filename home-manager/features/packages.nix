@@ -20,11 +20,11 @@ in {
     # development and build tools
     android-tools
     cmake
-    devbox
+    # devbox
     graphviz
     nodejs
     openssl
-    pandoc
+    # pandoc
     pkg-config
     pnpm
     vscode
@@ -69,6 +69,7 @@ in {
     # cherry-studio
     discord
     element-desktop
+    # geary
     # fluffychat
     # fluent-reader
     # keyguard
@@ -79,7 +80,7 @@ in {
     anki
     # calibre
     folio
-    mangayomi
+    # mangayomi
     obsidian
     papers
     planify
@@ -99,13 +100,14 @@ in {
     # dnscontrol
     file-roller
     gnome-calculator
-    hmcl
+    # hmcl
     resources
     vial
     winboat
     winbox
 
     # themes and Qt configuration
+    kdePackages.oxygen-sounds
     libsForQt5.qt5ct
     papirus-icon-theme
     qt6Packages.qt6ct
