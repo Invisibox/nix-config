@@ -3,7 +3,7 @@
   pkgs,
 }: let
   pname = "lobehub-desktop";
-  version = "2.2.16";
+  version = "2.2.17";
 
   cliVersion = "0.0.39";
 
@@ -21,6 +21,7 @@
     gdk-pixbuf
     glib
     gtk3
+    leptonica
     libappindicator-gtk3
     libdrm
     libGL
@@ -43,6 +44,8 @@
     nspr
     nss
     pango
+    pipewire
+    tesseract
     udev
     vulkan-loader
     wayland
@@ -98,7 +101,7 @@
 
   src = pkgs.fetchurl {
     url = "https://github.com/lobehub/lobehub/releases/download/v${version}/lobehub-desktop_${version}_amd64.deb";
-    hash = "sha256-QZrFxfrL4CuT61jXd6v8iGQsSp4v7KwSUU+DlCEieG0=";
+    hash = "sha256-ZRfIc+Z0Pgi1NQPxtM11DowcpDqnJ+fDncNIaedQEP8=";
   };
 
   cliSrc = pkgs.fetchurl {
@@ -201,6 +204,10 @@
     '';
 
     preFixup = ''
+      # auv uses the old Leptonica SONAME; nixpkgs provides libleptonica.so.6.
+      patchelf --replace-needed liblept.so.5 libleptonica.so.6 \
+        "$out/opt/LobeHub/resources/bin/auv"
+
       gappsWrapperArgs+=(
         --prefix LD_LIBRARY_PATH : ${rpath}:$out/opt/LobeHub
         --prefix PATH : ${binpath}

@@ -5,10 +5,11 @@
 }: {
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # paseo-desktop currently depends on Electron 41, which nixpkgs marks EOL.
+  # Keep the exception explicit so other insecure packages remain blocked.
   nixpkgs.config.permittedInsecurePackages = [
-    # Required by winboat-0.9.0; remove when nixpkgs updates it past Electron 40.
-    "electron-40.10.5"
-    "jitsi-meet-1.0.8792"
+    "electron-41.10.6"
   ];
 
   nixpkgs.overlays = [

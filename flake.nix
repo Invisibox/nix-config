@@ -2,11 +2,9 @@
   description = "A simple NixOS flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
 
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
 
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware";
@@ -24,9 +22,6 @@
     };
 
     niri-flake.url = "github:sodiboo/niri-flake";
-
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    systems.url = "github:nix-systems/default";
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
@@ -48,8 +43,6 @@
     steam-config-nix = {
       url = "github:different-name/steam-config-nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.systems.follows = "systems";
     };
 
     # Noctalia v5. The cachix branch tracks main and keeps binary cache support.
@@ -63,7 +56,6 @@
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.systems.follows = "systems";
     };
 
     nix-flatpak = {
