@@ -8,14 +8,14 @@ in {
   home.packages = with pkgs; [
     # AI coding assistants
     # Replaced by llm-agents.nix packages below.
-    # llmAgents.aionui # currently pulls EOL electron-41.10.6
+    # llmAgents.aionui
     # llmAgents.oh-my-codex
     llmAgents.cc-switch-cli
     llmAgents.claude-code
     llmAgents.codex
     # llmAgents.oh-my-claudecode
-    # llmAgents.omp
-    # llmAgents.paseo-desktop
+    llmAgents.omp
+    llmAgents.paseo-desktop
     llmAgents.pi
 
     # development and build tools
@@ -59,8 +59,7 @@ in {
 
     # networking, downloads, and browsers
     aria2
-    motrix-next
-    obscura
+    motrix
     qbittorrent-enhanced
     # servo
     tor-browser
@@ -68,10 +67,8 @@ in {
 
     # communication and news readers
     _64gram
-    # cherry-studio
     discord
     element-desktop
-    # geary
     # fluffychat
     # fluent-reader
     # keyguard
@@ -92,7 +89,7 @@ in {
 
     # media and images
     amberol
-    curtail
+    # curtail
     piliplus
     qimgv
     tsukimi
