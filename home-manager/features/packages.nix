@@ -13,6 +13,7 @@ in {
     llmAgents.cc-switch-cli
     llmAgents.claude-code
     llmAgents.codex
+    llmAgents.chatgpt
     # llmAgents.oh-my-claudecode
     llmAgents.omp
     llmAgents.paseo-desktop
@@ -37,6 +38,7 @@ in {
     eza # A modern replacement for 'ls'
     fastfetch
     fd
+    ffmpeg
     fzf # A command-line fuzzy finder
     ghostty
     hyperfine
