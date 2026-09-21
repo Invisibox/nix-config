@@ -14,6 +14,7 @@
     ./zen-browser.nix
     ./mpv.nix
     ./rime.nix
+    ./fcitx5
     ./kitty.nix
     ./starship.nix
     ./zsh/zsh.nix

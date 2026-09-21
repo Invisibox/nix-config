@@ -112,7 +112,6 @@
         rimeDataPkgs = [rime-data];
       })
       fcitx5-gtk
-      fcitx5-mellow-themes
       qt6Packages.fcitx5-configtool
     ];
   };
