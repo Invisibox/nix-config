@@ -8,14 +8,12 @@ in {
   home.packages = with pkgs; [
     # AI coding assistants
     # Replaced by llm-agents.nix packages below.
-    # llmAgents.oh-my-codex
     llmAgents.cc-switch-cli
     llmAgents.claude-code
     llmAgents.codex
     # llmAgents.chatgpt
-    # llmAgents.oh-my-claudecode
     llmAgents.omp
-    llmAgents.paseo-desktop
+    # llmAgents.paseo-desktop
     llmAgents.pi
 
     # development and build tools
