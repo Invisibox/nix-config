@@ -18,7 +18,7 @@ in {
   config = lib.mkIf cfg.enable {
     services.displayManager.sddm.enable = lib.mkForce false;
 
-    programs.noctalia-greeter = {
+    services.displayManager.noctalia-greeter = {
       enable = true;
       passwordless-sync-users = [config.local.user.name];
       settings = {
