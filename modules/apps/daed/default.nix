@@ -2,9 +2,17 @@
   lib,
   config,
   pkgs,
+  inputs,
   ...
 }: let
   cfg = config.local.services.daed;
+  system = pkgs.stdenv.hostPlatform.system;
+  daePackages = inputs.daeuniverse.packages.${system};
+  # daed v1.24.0 uses fetcherVersion 3, which requires pnpm 10 or older.
+  daedPackage = pkgs.callPackage "${inputs.daeuniverse}/daed/package.nix" {
+    pnpm = pkgs.pnpm_10;
+  };
+  daePackage = daePackages."dae-unstable";
   genAssetsDrv = paths:
     pkgs.symlinkJoin {
       name = "daed-assets";
@@ -29,8 +37,8 @@ in {
 
       package = lib.mkOption {
         type = lib.types.package;
-        default = pkgs.daed;
-        defaultText = lib.literalExpression "pkgs.daed";
+        default = daedPackage;
+        defaultText = lib.literalExpression "inputs.daeuniverse.packages.${system}.daed";
         description = "The daed package to use.";
       };
 
@@ -132,7 +140,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [
-      pkgs.dae
+      daePackage
       cfg.package
     ];
 
