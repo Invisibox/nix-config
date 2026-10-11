@@ -12,8 +12,8 @@ in {
     llmAgents.claude-code
     llmAgents.codex
     # llmAgents.chatgpt
-    llmAgents.omp
-    # llmAgents.paseo-desktop
+    # llmAgents.omp
+    llmAgents.paseo-desktop
     llmAgents.pi
 
     # development and build tools
@@ -60,6 +60,7 @@ in {
     aria2
     motrix
     qbittorrent-enhanced
+    resilio-sync
     # servo
     tor-browser
     v2rayn
@@ -84,7 +85,7 @@ in {
     planify
     # readest
     typst
-    zotero
+    # zotero
 
     # media and images
     amberol
@@ -101,7 +102,7 @@ in {
     gnome-calculator
     # hmcl
     resources
-    vial
+    # vial
     # winboat
     winbox
 
