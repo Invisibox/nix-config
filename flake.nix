@@ -21,7 +21,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    niri-flake.url = "github:sodiboo/niri-flake";
+    niri-flake.url = "github:epireyn/niri-flake";
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
@@ -62,9 +62,12 @@
       url = "github:gmodena/nix-flatpak/?ref=v0.7.0";
     };
 
+    daeuniverse = {
+      url = "github:daeuniverse/flake.nix";
+    };
+
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
