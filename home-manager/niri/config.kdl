@@ -103,6 +103,14 @@ screenshot-path null
 
 animations { }
 
+/* Apps: blur them all without xray so it looks more realistic. */
+window-rule {
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
 window-rule {
     match is-focused=false
     opacity 0.85
@@ -214,9 +222,23 @@ layer-rule {
     place-within-backdrop true
 }
 
+/*
+  Noctalia
+  Disable xray on all our surfaces so it looks more realistic.
+  Noctalia publishes blur regions automatically when ext-background-effects is available.
+*/
+layer-rule {
+    match namespace="^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd)$"
+    background-effect {
+        xray false
+        // blur false
+    }
+}
+
 // Keep the wallpaper in each workspace so it remains visible in the overview
 // thumbnails. The separate Noctalia backdrop layer stays stationary behind them.
 
+/* Enable blur on noctalia's window switcher and disable xray. */
 layer-rule {
     match namespace="noctalia-window-switcher"
     background-effect {
