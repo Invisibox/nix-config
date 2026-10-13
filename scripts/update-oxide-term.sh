@@ -17,7 +17,12 @@ for cmd in curl jq nix sed; do
   fi
 done
 
-release_json="$(curl -fsSL "${api_url}")"
+github_headers=()
+if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+  github_headers=(-H "Authorization: Bearer ${GITHUB_TOKEN}")
+fi
+
+release_json="$(curl -fsSL "${github_headers[@]}" "${api_url}")"
 
 tag_name="$(jq -r '.tag_name // empty' <<<"${release_json}")"
 if [[ -z "${tag_name}" ]]; then
