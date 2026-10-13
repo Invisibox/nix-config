@@ -6,19 +6,8 @@
 }: let
   cfg = config.local.apps.bottles;
   localUserName = config.local.user.name;
-  protonGePackage = pkgs.proton-ge-bin.overrideAttrs (_: {
-    steamDisplayName = "Proton GE";
-  });
-  protonCachyos =
-    pkgs.runCommand "proton-cachyos-10.0-20260410-slr" {
-      src = pkgs.fetchzip {
-        url = "https://github.com/CachyOS/proton-cachyos/releases/download/cachyos-10.0-20260410-slr/proton-cachyos-10.0-20260410-slr-x86_64_v3.tar.xz";
-        hash = "sha256-t38hmJPUuifBCFbi6F5ACiqVS/HygQQOQpn0fvQMd8g=";
-      };
-    } ''
-      mkdir -p "$out/share/steam/compatibilitytools.d/proton-cachyos"
-      cp -r "$src"/* "$out/share/steam/compatibilitytools.d/proton-cachyos"
-    '';
+  protonPackages = import ../proton.nix {inherit pkgs;};
+  inherit (protonPackages) protonGePackage protonCachyos;
   bottlesPkgs = pkgs.extend (_final: prev: {
     openldap = prev.openldap.overrideAttrs (_: {
       doCheck = false;
