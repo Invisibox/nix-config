@@ -12,9 +12,9 @@ in {
     llmAgents.claude-code
     llmAgents.codex
     # llmAgents.chatgpt
-    # llmAgents.omp
-    llmAgents.paseo-desktop
-    llmAgents.pi
+    llmAgents.omp
+    # llmAgents.paseo-desktop
+    # llmAgents.pi
 
     # development and build tools
     android-tools
