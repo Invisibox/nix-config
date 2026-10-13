@@ -1,12 +1,12 @@
 {pkgs, ...}: {
   # local.apps.bitwarden.enable = true;
   local.apps.brave-origin.enable = true;
-  local.apps.lobehub.enable = true;
   local.apps.localsend.enable = true;
   local.apps.onlyoffice.enable = true;
   # local.apps.moonlight.enable = true;
   local.apps.oxide-term.enable = true;
   local.apps.bottles.enable = true;
+  local.apps.paseo.enable = true;
 
   local.apps.waydroid = {
     enable = false;
@@ -31,6 +31,7 @@
       {appId = "com.tencent.WeChat";}
       {appId = "com.qq.QQ";}
       {appId = "com.tencent.wemeet";}
+      {appId = "com.openwebui.open-webui";}
     ];
   };
 }

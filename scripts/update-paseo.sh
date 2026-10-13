@@ -2,8 +2,10 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-target_file="${repo_root}/modules/apps/lobehub/package.nix"
-api_url="https://api.github.com/repos/lobehub/lobehub/releases/latest"
+target_file="${repo_root}/modules/apps/paseo/package.nix"
+api_url="https://api.github.com/repos/getpaseo/paseo/releases/latest"
+asset_pattern="Paseo-x86_64.AppImage"
+package_name="paseo-desktop"
 
 if [[ ! -f "${target_file}" ]]; then
   echo "error: target file not found: ${target_file}" >&2
@@ -27,10 +29,10 @@ fi
 
 version="${tag_name#v}"
 
-asset_info="$(jq -r --arg v "${version}" '
+asset_info="$(jq -r --arg pattern "${asset_pattern}" '
   (
     .assets[]
-    | select(.name == ("lobehub-desktop_" + $v + "_amd64.deb"))
+    | select(.name == $pattern)
     | [.browser_download_url, (.digest // "")]
     | @tsv
   ) // empty
@@ -40,7 +42,7 @@ if [[ -z "${asset_info}" ]]; then
   asset_info="$(jq -r '
     (
       .assets[]
-      | select(.name | test("(?i)_amd64\\.deb$"))
+      | select(.name | test("(?i)\\.AppImage$"))
       | [.browser_download_url, (.digest // "")]
       | @tsv
     ) // empty
@@ -48,18 +50,7 @@ if [[ -z "${asset_info}" ]]; then
 fi
 
 if [[ -z "${asset_info}" ]]; then
-  asset_info="$(jq -r '
-    (
-      .assets[]
-      | select(.name | test("(?i)\\.deb$"))
-      | [.browser_download_url, (.digest // "")]
-      | @tsv
-    ) // empty
-  ' <<<"${release_json}" | head -n1)"
-fi
-
-if [[ -z "${asset_info}" ]]; then
-  echo "error: unable to find deb asset in latest release ${tag_name}" >&2
+  echo "error: unable to find AppImage asset in latest release ${tag_name}" >&2
   exit 1
 fi
 
@@ -92,7 +83,7 @@ if [[ -z "${current_version}" || -z "${current_hash}" ]]; then
 fi
 
 if [[ "${current_version}" == "${version}" && "${current_hash}" == "${hash}" ]]; then
-  echo "lobehub is already up to date (${version})"
+  echo "${package_name} is already up to date (${version})"
   exit 0
 fi
 

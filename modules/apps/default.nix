@@ -6,7 +6,6 @@
     ./daed
     ./gamescope
     ./heroic
-    ./lobehub
     ./localsend
     ./moonlight
     ./niri
@@ -15,6 +14,7 @@
     ./obs
     ./onlyoffice
     ./oxide-term
+    ./paseo
     ./steam
     ./texlive
     ./virtualization
