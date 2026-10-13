@@ -8,27 +8,30 @@
     fontDir.enable = true;
     fontconfig = {
       enable = true;
-      defaultFonts = {
-        sansSerif = [
-          "Sarasa Gothic SC"
-          "Noto Sans CJK SC"
-          "Noto Sans"
-          "DejaVu Sans"
-        ];
-        serif = [
-          "Noto Serif CJK SC"
-          "Noto Serif"
-          "DejaVu Serif"
-        ];
-        monospace = [
-          "Maple Mono NF CN"
-          "FiraCode Nerd Font"
-          "Sarasa Mono SC"
-          "Noto Sans Mono CJK SC"
-          "Noto Sans Mono"
-        ];
-        emoji = ["Noto Color Emoji"];
-      };
+      # The three generic-family lists below duplicate localConf's
+      # <alias binding="strong"> rules, which take precedence anyway.
+      # Commented out for observation; remove entirely once confirmed.
+      # defaultFonts = {
+      #   sansSerif = [
+      #     "Sarasa Gothic SC"
+      #     "Noto Sans CJK SC"
+      #     "Noto Sans"
+      #     "DejaVu Sans"
+      #   ];
+      #   serif = [
+      #     "Noto Serif CJK SC"
+      #     "Noto Serif"
+      #     "DejaVu Serif"
+      #   ];
+      #   monospace = [
+      #     "Maple Mono NF CN"
+      #     "FiraCode Nerd Font"
+      #     "Sarasa Mono SC"
+      #     "Noto Sans Mono CJK SC"
+      #     "Noto Sans Mono"
+      #   ];
+      #   emoji = ["Noto Color Emoji"];
+      # };
 
       localConf = ''
         <?xml version="1.0"?>
