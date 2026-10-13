@@ -8,8 +8,9 @@
 
   # paseo-desktop currently depends on Electron 41, which nixpkgs marks EOL.
   # Keep the exception explicit so other insecure packages remain blocked.
+  # Derive the version from nixpkgs so it stays in sync after flake updates.
   nixpkgs.config.permittedInsecurePackages = [
-    "electron-41.10.6"
+    "electron-${pkgs.electron_41.version}"
   ];
 
   nixpkgs.overlays = [
@@ -55,19 +56,8 @@
     })
   ];
 
-  # do garbage collection weekly to keep disk usage low
+  # GC is handled by programs.nh.clean (weekly, --keep 3 --keep-since 7d).
   nix = {
-    gc = {
-      automatic = false;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
-    };
-
-    # optimise = {
-    #   automatic = true;
-    #   dates = ["1w"];
-    # };
-
     settings = {
       warn-dirty = false;
       experimental-features = [
