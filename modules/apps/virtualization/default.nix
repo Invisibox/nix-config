@@ -15,7 +15,7 @@ in {
   config = lib.mkIf cfg.enable {
     boot = {
       extraModprobeConfig = ''
-        options kvm_amd nested=1
+        options kvm_intel nested=1
         options kvm ignore_msrs=1 report_ignored_msrs=0
       '';
       kernel.sysctl = {
