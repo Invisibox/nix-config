@@ -7,7 +7,23 @@
 }: let
   cfg = config.local.desktop.niri;
   system = pkgs.stdenv.hostPlatform.system;
-  niriPackage = inputs.niri-flake.packages.${system}.niri-unstable;
+  upstreamNiriPackage = inputs.niri-flake.packages.${system}.niri-unstable;
+  # Keep upstream's login environment import, but pass variable names explicitly
+  # for systemd 261+. Patch only the launcher to avoid rebuilding the compositor.
+  niriPackage = pkgs.symlinkJoin {
+    name = "${upstreamNiriPackage.name}-session-env";
+    paths = [upstreamNiriPackage];
+    inherit (upstreamNiriPackage) meta;
+    passthru = upstreamNiriPackage.passthru;
+    postBuild = ''
+      rm "$out/bin/niri-session"
+      cp ${upstreamNiriPackage}/bin/niri-session "$out/bin/niri-session"
+      chmod u+w "$out/bin/niri-session"
+      substituteInPlace "$out/bin/niri-session" \
+        --replace-fail 'systemctl --user import-environment' \
+        'systemctl --user import-environment $(${pkgs.bash}/bin/bash -c "compgen -e")'
+    '';
+  };
   xwaylandSatellitePackage = inputs.niri-flake.packages.${system}.xwayland-satellite-unstable;
 in {
   options.local.desktop.niri = {
