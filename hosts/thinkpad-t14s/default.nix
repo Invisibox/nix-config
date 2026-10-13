@@ -160,7 +160,7 @@
     ZDOTDIR = "$XDG_CONFIG_HOME/zsh";
     SYSTEMD_PAGERSECURE = "false";
   };
-  environment.variables.EDITOR = "neovim";
+  environment.variables.EDITOR = "nvim";
 
   users.users.zh = {
     isNormalUser = true;

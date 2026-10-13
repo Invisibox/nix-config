@@ -4,7 +4,7 @@
   ...
 }: {
   home.sessionVariables = {
-    EDITOR = "neovim";
+    EDITOR = "nvim";
     XCURSOR_THEME = "Bibata-Modern-Ice";
     XCURSOR_SIZE = "22";
     QT_QPA_PLATFORMTHEME_QT6 = "qt6ct";
