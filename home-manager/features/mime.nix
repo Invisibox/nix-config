@@ -17,9 +17,9 @@
 
       # Documents and text
       "application/pdf" = ["onlyoffice-desktopeditors.desktop"];
-      "text/plain" = ["org.kde.kate.desktop"];
-      "text/markdown" = ["org.kde.kate.desktop"];
-      "application/json" = ["org.kde.kate.desktop"];
+      "text/plain" = ["dev.zed.Zed.desktop"];
+      "text/markdown" = ["dev.zed.Zed.desktop"];
+      "application/json" = ["dev.zed.Zed.desktop"];
 
       # Images
       "image/png" = ["qimgv.desktop"];
