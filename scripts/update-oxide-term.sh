@@ -42,29 +42,7 @@ asset_info="$(jq -r --arg v "${version}" '
 ' <<<"${release_json}")"
 
 if [[ -z "${asset_info}" ]]; then
-  asset_info="$(jq -r '
-    (
-      .assets[]
-      | select(.name | test("(?i)linux_x64\\.deb$"))
-      | [.browser_download_url, (.digest // "")]
-      | @tsv
-    ) // empty
-  ' <<<"${release_json}" | head -n1)"
-fi
-
-if [[ -z "${asset_info}" ]]; then
-  asset_info="$(jq -r '
-    (
-      .assets[]
-      | select(.name | test("(?i)\\.deb$"))
-      | [.browser_download_url, (.digest // "")]
-      | @tsv
-    ) // empty
-  ' <<<"${release_json}" | head -n1)"
-fi
-
-if [[ -z "${asset_info}" ]]; then
-  echo "error: unable to find deb asset in latest release ${tag_name}" >&2
+  echo "error: release ${tag_name} has no asset named OxideTerm_${version}_linux_x64.deb" >&2
   exit 1
 fi
 

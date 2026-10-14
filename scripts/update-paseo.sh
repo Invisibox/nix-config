@@ -44,18 +44,7 @@ asset_info="$(jq -r --arg pattern "${asset_pattern}" '
 ' <<<"${release_json}")"
 
 if [[ -z "${asset_info}" ]]; then
-  asset_info="$(jq -r '
-    (
-      .assets[]
-      | select(.name | test("(?i)\\.AppImage$"))
-      | [.browser_download_url, (.digest // "")]
-      | @tsv
-    ) // empty
-  ' <<<"${release_json}" | head -n1)"
-fi
-
-if [[ -z "${asset_info}" ]]; then
-  echo "error: unable to find AppImage asset in latest release ${tag_name}" >&2
+  echo "error: release ${tag_name} has no asset named ${asset_pattern}" >&2
   exit 1
 fi
 
