@@ -112,10 +112,10 @@ in {
           steamcmd
         ];
       };
-      xdg.desktopEntries.steam-gamescope = lib.mkIf gamescopeEnabled {
+      xdg.desktopEntries.steam-gamescope = lib.mkIf (gamescopeEnabled && cfg.enableNative) {
         name = "Steam (Gamescope)";
         genericName = "Steam running inside Gamescope";
-        exec = "steam-gamescope";
+        exec = "${lib.getExe gamescopePackage} --steam -- steam -tenfoot";
         icon = "steam";
         terminal = false;
         categories = ["Game"];
