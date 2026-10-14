@@ -390,4 +390,4 @@ binds {
     Super+E { spawn "nautilus"; }
 }
 
-include "noctalia.kdl"
+include optional=true "noctalia.kdl"
