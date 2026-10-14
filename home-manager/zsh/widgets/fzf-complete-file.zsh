@@ -14,6 +14,15 @@ expand-path () {
   print -- $p
 }
 
+# read NUL-separated fzf output into $reply (command substitution drops NULs)
+read-fzf-selections () {
+  reply=()
+  local item
+  while IFS= read -r -d '' item; do
+    reply+=("$item")
+  done
+}
+
 # insert files picked in FZF into command line
 fzf-complete-file () {
   local -ar fzfArgs=(
@@ -35,27 +44,27 @@ fzf-complete-file () {
     local -r dir=${lastLBuffWord:h}
     local -r pat=${lastLBuffWord:t}
 
-    # split on \0
-    local -a fs=(${(0)$(
+    read-fzf-selections < <(
       # could be replaced with `print -N -- $dir/$pat* $dir/$pat*/**`
       # for much better performance, but no colors
       { fd $fdArgs -gp "$dir/$pat*"    $dir &
         fd $fdArgs -gp "$dir/$pat*/**" $dir
       } | { fzf $fzfArgs --query="$pat "; exit }
-    )})
+    )
+    local -a fs=("${(@)reply}")
 
     # if none were picked we'll get 0-length array and abort
     (( ${#fs} )) || { zle reset-prompt; return }
     # replace the last word with picked words
-    LBuffWords[-1]=($^fs)
+    LBuffWords[-1]=( "${(@q)fs}" )
     # reassemble (join on whitespace) the words and update LBUFFER
     LBUFFER=${(j/ /)LBuffWords}
 
   # no word under cursor, just print out CWD contents
   else
-    local fs=$(fd . $fdArgs -- $cdpath | fzf $fzfArgs)
-    fs=(${(0)fs})
-    LBUFFER=${LBUFFER}${fs}
+    read-fzf-selections < <(fd . $fdArgs -- $cdpath | fzf $fzfArgs)
+    local -a fs=("${(@)reply}")
+    LBUFFER+=${(j/ /)${(@q)fs}}
   fi
 
   zle reset-prompt
