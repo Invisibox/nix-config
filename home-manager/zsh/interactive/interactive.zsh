@@ -198,7 +198,6 @@ _completion_init_hook1 () {
   source $ZSH_CONFIG_DIR/plugins/fzf-tab/fzf-tab.plugin.zsh
   zstyle ':completion:*' menu no
   compdef _files rm
-  compdef _lf _lfcd
   compdef _directories mcd
 
   if (( ${+widgets[fzf-tab-complete]} )); then

@@ -50,10 +50,6 @@ bind () {
 exit_zsh () exit
 zle -N exit_zsh
 
-# Use LF to navigate directories
-_lfcd-widget () { lfcd; zle reset-prompt }
-zle -N _lfcd-widget
-
 # Edit the command line in $EDITOR
 autoload -U edit-command-line
 zle -N edit-command-line
@@ -121,7 +117,6 @@ bind a-dot          insert-last-word
 
 # etc
 bind a-e            edit-command-line
-bind a-space        _lfcd-widget
 bind a-up           ascend
 bind a-down         descend
 bind a-t            transpose-words
