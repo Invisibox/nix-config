@@ -7,7 +7,7 @@
   rimeWanxiangVersion = "18.1.2";
   rimeWanxiangAssetName = "rime-wanxiang-flypy-fuzhu.zip";
   rimeWanxiangZipHash = "sha256-hVgnRQZ5CJASA4qXYx9PVr6wa6C5OSd9ufB5BCnbFLI=";
-  rimeWanxiangGramHash = "sha256-0m2j1v5We89KrYeQR1NWmX2LwIhrCHspLFBjwK3BK9A=";
+  rimeWanxiangGramHash = "sha256-IKynZ/BqsqvczOXqnEWvU2QRSjfiW7fG3kDk8yi+Ap4=";
 
   rimeWanxiang = pkgs.stdenvNoCC.mkDerivation {
     pname = "rime-wanxiang";
@@ -132,19 +132,29 @@ in {
     )"
 
     if [ ! -f "$state_file" ] || [ "$state" != "$(cat "$state_file")" ]; then
-      rm -rf "$rime_dir/build"
-      mkdir -p "$rime_dir/build"
-      ${pkgs.librime}/bin/rime_deployer --build "$rime_dir" '${rimeSharedData}' "$rime_dir/build"
-      printf '%s' "$state" > "$state_file"
+      if [[ -v DRY_RUN ]]; then
+        echo "Would rebuild Rime data in $rime_dir"
+      else
+        (
+          build_dir="$(mktemp -d "$rime_dir/.build.XXXXXX")"
+          trap 'rm -rf -- "$build_dir"' EXIT
+          ${pkgs.librime}/bin/rime_deployer --build "$rime_dir" '${rimeSharedData}' "$build_dir"
 
-      if [ "$(
-        ${pkgs.systemd}/bin/busctl --user call \
-          org.fcitx.Fcitx5 /controller org.fcitx.Fcitx.Controller1 CanRestart \
-          2>/dev/null || true
-      )" = "b true" ]; then
-        ${pkgs.systemd}/bin/busctl --user call \
-          org.fcitx.Fcitx5 /controller org.fcitx.Fcitx.Controller1 Restart \
-          >/dev/null 2>&1 || true
+          # Exchange directories atomically so a failed replacement keeps the old cache.
+          mkdir -p "$rime_dir/build"
+          mv -T --exchange "$build_dir" "$rime_dir/build"
+          printf '%s' "$state" > "$state_file"
+
+          if [ "$(
+            ${pkgs.systemd}/bin/busctl --user call \
+              org.fcitx.Fcitx5 /controller org.fcitx.Fcitx.Controller1 CanRestart \
+              2>/dev/null || true
+          )" = "b true" ]; then
+            ${pkgs.systemd}/bin/busctl --user call \
+              org.fcitx.Fcitx5 /controller org.fcitx.Fcitx.Controller1 Restart \
+              >/dev/null 2>&1 || true
+          fi
+        )
       fi
     fi
   '';
