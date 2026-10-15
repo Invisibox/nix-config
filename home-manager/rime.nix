@@ -47,6 +47,7 @@
 
       mkdir -p "$out/share/rime-data"
       cp -r . "$out/share/rime-data/"
+      rm -f "$out/share/rime-data/env-vars"
 
       runHook postInstall
     '';

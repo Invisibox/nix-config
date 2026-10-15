@@ -39,6 +39,7 @@
 
       mkdir -p "$out/share/bottles/winebridge"
       cp -a ./. "$out/share/bottles/winebridge/"
+      rm -f "$out/share/bottles/winebridge/env-vars"
 
       if [ ! -s "$out/share/bottles/winebridge/VERSION" ]; then
         printf '%s\n' "${winebridgeVersion}" > "$out/share/bottles/winebridge/VERSION"
@@ -74,6 +75,7 @@
           cp -a "${sourceDir}/." "$dest/"
         else
           cp -a ./. "$dest/"
+          rm -f "$dest/env-vars"
         fi
 
         runHook postInstall
@@ -105,6 +107,7 @@
           cp -a "${sourceDir}/." "$out/share/steam/compatibilitytools.d/${runnerName}/"
         else
           cp -a ./. "$out/share/steam/compatibilitytools.d/${runnerName}/"
+          rm -f "$out/share/steam/compatibilitytools.d/${runnerName}/env-vars"
         fi
 
         chmod -R u+w "$out/share/steam/compatibilitytools.d/${runnerName}"
