@@ -10,11 +10,11 @@ fzf-shell-history () {
   fi
 
   # the extra `print --` here is so that the output gets formatted, e.g. `\n`'s etc
-  local cmd=${
-    print -- ${
+  local cmd=$(
+    print -- $(
       fc -rln 1 \
         | fzf --scheme=history --preview "printf '%b\n' {} | $catOrZat"
-    }}
+    ))
 
   if [[ -n "$cmd" ]]; then
     LBUFFER=$cmd

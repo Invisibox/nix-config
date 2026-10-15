@@ -10,12 +10,13 @@
 . $ZSH_CONFIG_DIR/widgets/_word-under-cursor.zsh
 
 list-token () {
-  tok=$(word-under-cursor)
-  cmd=${listTokenCommand:-fd . -HLl -d 1 -c always --}
+  local tok=$(word-under-cursor)
+  local -a cmd=( "${(@Q)${(z)${listTokenCommand:-fd . -HLl -d 1 -c always --}}}" )
   print
-  eval $cmd $tok
+  [[ -n $tok ]] && cmd+=( "${(Q)tok}" )
+  "${cmd[@]}"
 
-  promptHeight=${#${(f)PROMPT}}
+  local promptHeight=${#${(f)PROMPT}}
   for _ in {1..$promptHeight}; do print; done
   zle reset-prompt
 }

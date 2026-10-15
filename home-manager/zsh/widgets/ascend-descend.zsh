@@ -19,7 +19,7 @@ descend () {
   )
   # for some reason the builtin walker doesn't work within ZLE;
   # falling back to `fd` instead
-  d=${ fd . -td -HL0 | fzf $^fzfOpts }
+  local d=$(fd . -td -HL0 | fzf $^fzfOpts)
   [[ -z $d ]] || cd -- $d
   zle reset-prompt
 }
