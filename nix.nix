@@ -96,7 +96,7 @@
 
         "https://cache.numtide.com"
 
-        "https://attic.xuyh0120.win/lantian"
+        "https://cache.lantian.pub/lantian"
       ];
 
       trusted-public-keys = [
@@ -115,7 +115,7 @@
 
         "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
 
-        "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+        "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ="
       ];
     };
   };
