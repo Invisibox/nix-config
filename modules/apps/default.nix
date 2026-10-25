@@ -8,6 +8,7 @@
     ./heroic
     ./localsend
     ./moonlight
+    ./neiro
     ./niri
     ./nix-ld
     ./noctalia-greeter
