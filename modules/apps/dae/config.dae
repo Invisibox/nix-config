@@ -1,0 +1,187 @@
+# 从 daed 当前启用的全局、DNS、分组和路由设置迁移。
+# 订阅链接单独保存在 Git 忽略的私有文件中。
+include {
+  subscriptions.dae
+}
+
+global {
+  tproxy_port:"12345"
+  tproxy_port_protect:"true"
+  so_mark_from_dae:"0"
+  log_level:"info"
+  tcp_check_url:"http://cp.cloudflare.com,1.1.1.1,2606:4700:4700::1111"
+  tcp_check_http_method:"HEAD"
+  udp_check_dns:"dns.google:53,8.8.8.8,2001:4860:4860::8888"
+  check_interval:"30s"
+  check_tolerance:"0s"
+  wan_interface:"auto"
+  allow_insecure:"false"
+  dial_mode:"domain"
+  disable_waiting_network:"false"
+  enable_local_tcp_fast_redirect:"true"
+  auto_config_kernel_parameter:"true"
+  auto_config_firewall_rule:"false"
+  sniffing_timeout:"100ms"
+  tls_implementation:"tls"
+  utls_imitate:"chrome_auto"
+  tls_fragment:"false"
+  tls_fragment_length:"50-100"
+  tls_fragment_interval:"10-20"
+  pprof_port:"0"
+  mptcp:"false"
+  fallback_resolver:"8.8.8.8:53"
+  bandwidth_max_tx:"200 mbps"
+  bandwidth_max_rx:"1 gbps"
+  udphop_interval:"30s"
+}
+
+group {
+  DAILY {
+    filter: subtag(JP, SG, HK, EU)
+    policy: min_moving_avg
+  }
+  US_HOME {
+    filter: subtag(US_HOME)
+    policy: min_avg10
+  }
+  DEV {
+    filter: subtag(pin)
+    policy: min_avg10
+  }
+  MEDIA {
+    filter: subtag(pin)
+    policy: min_moving_avg
+  }
+  US_YOUTUBE {
+    filter: subtag(US)
+    policy: min_moving_avg
+  }
+}
+
+dns {
+ipversion_prefer: 4
+
+  upstream {
+    alidns: 'https://dns.alidns.com/dns-query'
+    dnspod: 'https://doh.pub/dns-query'
+    google: 'https://dns.google/dns-query'
+    cloudflare: 'https://dns.cloudflare.com/dns-query'
+  }
+
+  routing {
+    request {
+      qname(geosite:category-ads-all) -> reject
+
+      qname(geosite:private) -> alidns
+      qname(geosite:cn) -> alidns
+      qname(suffix: djdog.cc) -> alidns
+      qname(suffix: paoo.cc) -> alidns
+
+      # 未匹配的域名使用 Cloudflare DoH
+      fallback: cloudflare
+    }
+
+    response {
+      upstream(google) -> accept
+      ip(geoip:private) && !qname(geosite:cn) -> google
+      fallback: accept
+    }
+  }
+}
+
+routing {
+# 确保 DHCP 流量不会被捕获
+l4proto(udp) && sport(68) -> must_direct
+l4proto(udp) && dport(67) -> must_direct
+dip(255.255.255.255) -> must_direct
+
+# NetworkManager 等本机网络服务必须绕过 dae，
+# 防止 DNS 或网络检测流量递归进入代理。
+pname(NetworkManager, systemd-resolved, dnsmasq) -> must_direct
+
+# 本地回环和 DNS 转发器
+dip(127.0.0.0/8) -> direct
+dip(192.168.2.0/24) -> direct
+
+# 国内 DNS 服务直连
+domain(full: dns.alidns.com) -> direct
+domain(full: doh.pub) -> direct
+dip(223.5.5.5, 119.29.29.29) -> direct
+
+# Google DNS 服务走高质量代理组
+domain(full: dns.google) -> US_HOME
+domain(full: dns.google.com) -> US_HOME
+dip(8.8.8.8, 8.8.4.4) -> US_HOME
+
+# 私有域名直连
+domain(geosite:private) -> direct
+
+dip(70.39.201.124) -> direct
+dip(82.40.35.170) -> direct
+dip(23.249.25.140) -> direct
+
+domain(suffix: djdog.cc) -> direct
+domain(suffix: paoo.cc) -> direct
+
+domain(suffix: uuanqin.top) -> direct
+
+# 傻逼腾讯
+domain(geosite:tencent) -> direct
+# 傻逼阿里
+domain(geosite:alibaba) -> direct
+
+domain(geosite:deepseek) -> DAILY
+
+domain(geosite:google@cn) -> DAILY
+domain(geosite:google-play@cn) -> DAILY
+
+# broad geosite 中标记为 CN 的条目优先直连。
+# @cn 是 geosite 条目属性，避免 category-companies 等大集合
+# 把部分中国域名错误分到代理组。
+domain(geosite:steam@cn) -> direct
+domain(geosite:category-companies@cn) -> direct
+domain(geosite:alphabet@cn) -> direct
+domain(geosite:category-communication@cn) -> direct
+domain(geosite:category-dev-cn) -> direct
+
+# 详见 https://www.aloxaf.com/2025/04/how_to_use_geosite
+domain(suffix: steamserver.net) -> direct
+
+# YouTube 必须位于 google 和 category-companies 之前
+domain(geosite:youtube) -> US_YOUTUBE
+domain(geosite:steam) -> DAILY
+
+# 高质量美国住宅节点
+domain(geosite:category-companies) -> US_HOME
+domain(geosite:alphabet) -> US_HOME
+domain(geosite:google) -> US_HOME
+domain(geosite:google-play) -> US_HOME
+domain(geosite:anthropic) -> US_HOME
+domain(geosite:openai) -> US_HOME
+domain(geosite:xai) -> US_HOME
+domain(geosite:x) -> US_HOME
+domain(geosite:reddit) -> US_HOME
+domain(geosite:category-communication) -> US_HOME
+domain(geosite:telegram) -> US_HOME
+domain(geosite:discord) -> US_HOME
+
+
+# 开发服务
+domain(geosite:category-dev) -> DEV
+domain(full: cache.lantian.pub) -> DEV
+domain(full: cache.numtide.com) -> DEV
+domain(full: cache.nixos.org) -> DEV
+domain(suffix: cachix.org) -> DEV
+
+# 不要求 IP 质量的流媒体
+domain(geosite:category-emby) -> MEDIA
+domain(geosite:missav) -> MEDIA
+domain(geosite:pornhub) -> MEDIA
+domain(geosite:xvideos) -> MEDIA
+
+# 其他中国域名直连
+domain(geosite:cn) -> direct
+
+# 未命中的境外流量进入日常组
+fallback: DAILY
+}

@@ -3,7 +3,7 @@
     ./bitwarden
     ./brave-origin
     ./bottles
-    ./daed
+    ./dae
     ./gamescope
     ./heroic
     ./localsend
