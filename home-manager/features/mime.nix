@@ -1,7 +1,7 @@
 {
   # Declarative MIME default app bindings.
   # This makes file type associations reproducible and prevents accidental overrides
-  # (for example Amberol claiming inode/directory).
+  # (for example media players claiming inode/directory).
   xdg.mimeApps = {
     enable = true;
 
@@ -28,23 +28,19 @@
       "image/avif" = ["qimgv.desktop"];
       "image/svg+xml" = ["qimgv.desktop"];
 
-      # Media
-      "audio/mpeg" = ["io.bassi.Amberol.desktop"];
-      "audio/flac" = ["io.bassi.Amberol.desktop"];
-      "audio/ogg" = ["io.bassi.Amberol.desktop"];
-      "audio/wav" = ["io.bassi.Amberol.desktop"];
-      "audio/x-wav" = ["io.bassi.Amberol.desktop"];
-      "audio/x-m4a" = ["io.bassi.Amberol.desktop"];
-      "audio/mp4" = ["io.bassi.Amberol.desktop"];
+      # Euphonica uses the MPD library; mpv handles opening media files.
+      "audio/mpeg" = ["mpv.desktop"];
+      "audio/flac" = ["mpv.desktop"];
+      "audio/ogg" = ["mpv.desktop"];
+      "audio/wav" = ["mpv.desktop"];
+      "audio/x-wav" = ["mpv.desktop"];
+      "audio/x-m4a" = ["mpv.desktop"];
+      "audio/mp4" = ["mpv.desktop"];
       "video/mp4" = ["mpv.desktop"];
       "video/x-matroska" = ["mpv.desktop"];
 
       # Mail links
       "x-scheme-handler/mailto" = ["thunderbird.desktop"];
-    };
-
-    associations.removed = {
-      "inode/directory" = ["io.bassi.Amberol.desktop"];
     };
   };
 }
