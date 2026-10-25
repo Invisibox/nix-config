@@ -4,7 +4,7 @@
     enable = true;
     drivers = [
       # HP LaserJet Pro M401dn
-      pkgs.hplip
+      # pkgs.hplip
     ];
   };
 

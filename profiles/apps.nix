@@ -5,7 +5,7 @@
   local.apps.onlyoffice.enable = true;
   # local.apps.moonlight.enable = true;
   local.apps.oxide-term.enable = true;
-  local.apps.bottles.enable = true;
+  local.apps.bottles.enable = false;
   local.apps.paseo.enable = true;
 
   local.apps.waydroid = {

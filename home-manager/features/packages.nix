@@ -11,7 +11,6 @@ in {
     llmAgents.cc-switch-cli
     llmAgents.claude-code
     llmAgents.codex
-    # llmAgents.chatgpt
     llmAgents.omp
     # llmAgents.paseo-desktop
     # llmAgents.pi
@@ -51,7 +50,7 @@ in {
 
     # archives
     p7zip
-    rar
+    unrar
     unzip
     xz
     zip
