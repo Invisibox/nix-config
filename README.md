@@ -10,7 +10,7 @@
 | `flake-modules/core.nix` | 注册 `flake.modules`，声明平台和 formatter |
 | `configuration.nix` | 将主机模块实例化为 `nixosConfigurations.thinkpad-t14s` |
 | `hosts/thinkpad-t14s/default.nix` | 定义主机模块，组合基础配置、profiles 和硬件配置 |
-| `modules/`、`font.nix`、`nix.nix`、`printing.nix` | 向 `flake.modules.nixos.base` 合并基础配置和可选功能声明 |
+| `modules/` | 向 `flake.modules.nixos.base` 合并基础配置和可选功能声明；字体、打印及 Nix 设置分别位于 `desktop/fonts.nix`、`services/printing.nix`、`system/nix.nix` |
 | `profiles/` | 定义 `nixos.desktop`、`gaming`、`apps`、`dev`、`services` 模块，选择启用的功能 |
 | `home-manager/` | 向 `flake.modules.homeManager.desktop` 合并桌面用户配置 |
 | `flake-modules/home-manager.nix` | 将 Home Manager 模块接入 `local.user` 指定的 NixOS 用户 |
@@ -36,7 +36,7 @@ import-tree 递归导入仓库中的 `.nix` 文件，因此新增配置文件无
 纯函数和 `callPackage` helper 使用 `_` 前缀，例如 `_package.nix`；import-tree 默认忽略路径中以 `_` 开头的文件或目录。以下文件也被显式排除：
 
 - `flake.nix`：flake 入口。
-- `hardware-configuration.nix`：保留硬件生成文件，由主机显式导入。
+- `hosts/thinkpad-t14s/hardware-configuration.nix`：保留硬件生成文件，由主机显式导入。
 - `hosts/thinkpad-t14s/disko.nix`：保留普通 Disko 模块，兼容安装命令，由主机显式导入。
 
 新增文件需要先执行 `git add -N <路径>` 或 `git add <路径>`，Nix 才能在 Git flake 中看到它。
@@ -51,7 +51,7 @@ nix flake update nix-packages
 ```
 
 保留该 input 自己的 nixpkgs 锁定，直接使用其 `packages` 输出，以便命中个人 flake CI 生成的二进制缓存。
-`nix.nix` 已配置 [invisibox Cachix](https://invisibox.cachix.org) 的地址和签名公钥，重建并切换系统后生效。
+`modules/system/nix.nix` 已配置 [invisibox Cachix](https://invisibox.cachix.org) 的地址和签名公钥，重建并切换系统后生效。
 应用更新脚本也已迁至新仓库；本仓库的 `scripts/update-all.sh` 继续更新 Bottles、Rime 和 Zsh 插件。
 本地开发仓库位于 `/home/zh/Documents/nix-packages`。如需测试未发布的修改，可在构建命令中加入 `--override-input nix-packages path:/home/zh/Documents/nix-packages --no-write-lock-file`。
 

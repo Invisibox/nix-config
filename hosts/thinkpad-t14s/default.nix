@@ -18,7 +18,7 @@ in {
       nixosModules.dev
       nixosModules.services
       ./disko.nix
-      ../../hardware-configuration.nix
+      ./hardware-configuration.nix
       inputs.nix-flatpak.nixosModules.nix-flatpak
       # Import only the NixOS module; Disko's CLI still uses deprecated platform aliases.
       (inputs.disko + "/module.nix")
