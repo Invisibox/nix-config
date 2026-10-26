@@ -38,7 +38,6 @@
 
   boot = {
     consoleLogLevel = 3;
-    initrd.verbose = false;
     kernelParams = [
       "quiet"
       "splash"
@@ -51,17 +50,7 @@
   nixpkgs.overlays = [inputs.nix-cachyos-kernel.overlays.pinned];
 
   # Core Ultra 5 135U supports x86-64-v3.
-  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v3.extend (_: kernelPackages: {
-    # Sign after stripping until nixpkgs fixes xpad-noone's manual installer.
-    xpad-noone = kernelPackages.xpad-noone.overrideAttrs (old: {
-      postFixup =
-        (old.postFixup or "")
-        + ''
-          ${lib.getExe pkgs.buildPackages.kmodigest} \
-            "$out/lib/modules/${kernelPackages.kernel.modDirVersion}/kernel/drivers/xpad-noone/xpad-noone.ko"
-        '';
-    });
-  });
+  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v3;
 
   networking.hostName = "thinkpad-t14s";
   networking.networkmanager.enable = true;
