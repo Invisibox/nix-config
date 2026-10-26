@@ -66,6 +66,8 @@
           "https://cache.numtide.com"
 
           "https://cache.lantian.pub/lantian"
+
+          "https://nyx-cache.chaotic.cx/"
         ];
 
         trusted-public-keys = [
@@ -87,6 +89,8 @@
           "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
 
           "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ="
+
+          "nyx-cache.chaotic.cx:dJxTrgMC3V3cFfyIiBQDQorG6k1LsqurH/srpMSq7qk="
         ];
       };
     };

@@ -15,6 +15,9 @@
 
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
 
+    # Keep Nyx's nixpkgs lock so package hashes match its binary cache.
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware";
       inputs.nixpkgs.follows = "nixpkgs";

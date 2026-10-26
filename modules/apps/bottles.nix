@@ -1,12 +1,14 @@
-{
+{inputs, ...}: {
   flake.modules.nixos.bottles = {
     config,
     pkgs,
     ...
   }: let
     localUserName = config.local.user.name;
-    protonPackages = import ./_proton.nix {inherit pkgs;};
-    inherit (protonPackages) protonGePackage protonCachyos;
+    protonGePackage = pkgs.proton-ge-bin.overrideAttrs (_: {
+      steamDisplayName = "Proton GE";
+    });
+    protonCachyos = inputs.chaotic.packages.${pkgs.stdenv.hostPlatform.system}.proton-cachyos_x86_64_v3;
     bottlesPkgs = pkgs.extend (_final: prev: {
       openldap = prev.openldap.overrideAttrs (_: {
         doCheck = false;
@@ -251,7 +253,7 @@
               target = "${config.xdg.dataHome}/bottles/runners/proton-ge-nix";
             };
             proton-links-proton-cachyos-bottles = {
-              source = "${protonCachyos}/share/steam/compatibilitytools.d/proton-cachyos";
+              source = protonCachyos;
               target = "${config.xdg.dataHome}/bottles/runners/proton-cachyos-nix";
             };
           };

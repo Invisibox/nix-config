@@ -75,6 +75,8 @@ nix flake update nix-packages
 应用更新脚本也已迁至新仓库；本仓库的 `scripts/update-all.sh` 继续更新 Bottles、Rime 和 Zsh 插件。
 本地开发仓库位于 `/home/zh/Documents/nix-packages`。如需测试未发布的修改，可在构建命令中加入 `--override-input nix-packages path:/home/zh/Documents/nix-packages --no-write-lock-file`。
 
+Proton CachyOS 的 `x86_64_v3` 版本直接引用 [Chaotic Nyx](https://github.com/chaotic-cx/nyx) 的 `packages` 输出，供 Heroic 和 Bottles 使用。保留 Nyx 自己的 nixpkgs 锁定，通过 `nix flake update chaotic` 更新；对应二进制缓存及公钥已加入 `modules/system/nix.nix`，重建并切换系统后生效。
+
 ## 验证与构建
 
 ```sh
