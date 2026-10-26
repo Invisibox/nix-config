@@ -91,6 +91,8 @@
 
           "https://cache.nixos.org"
 
+          "https://invisibox.cachix.org"
+
           "https://nix-community.cachix.org"
 
           "https://nix-gaming.cachix.org"
@@ -109,6 +111,8 @@
         trusted-public-keys = [
           # the default public key of cache.nixos.org, it's built-in, no need to add it here
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+
+          "invisibox.cachix.org-1:Z0N2eK66tu3OyRiImOR1yHcQmy8DK/6CRCkVxQqvJYk="
 
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
 

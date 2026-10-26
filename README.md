@@ -51,6 +51,7 @@ nix flake update nix-packages
 ```
 
 保留该 input 自己的 nixpkgs 锁定，直接使用其 `packages` 输出，以便命中个人 flake CI 生成的二进制缓存。
+`nix.nix` 已配置 [invisibox Cachix](https://invisibox.cachix.org) 的地址和签名公钥，重建并切换系统后生效。
 应用更新脚本也已迁至新仓库；本仓库的 `scripts/update-all.sh` 继续更新 Bottles、Rime 和 Zsh 插件。
 本地开发仓库位于 `/home/zh/Documents/nix-packages`。如需测试未发布的修改，可在构建命令中加入 `--override-input nix-packages path:/home/zh/Documents/nix-packages --no-write-lock-file`。
 
