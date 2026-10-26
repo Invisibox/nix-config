@@ -351,6 +351,21 @@
         "type": "github"
       }
     },
+    "jail-nix": {
+      "locked": {
+        "lastModified": 1788928033,
+        "narHash": "sha256-UQRytK4SsshV1CeX6aKF+P855Sbcqg9aA731eYTakNg=",
+        "owner": "~alexdavid",
+        "repo": "jail.nix",
+        "rev": "7cd53acef3ad51b9c775be759f5643f8d3bcf6eb",
+        "type": "sourcehut"
+      },
+      "original": {
+        "owner": "~alexdavid",
+        "repo": "jail.nix",
+        "type": "sourcehut"
+      }
+    },
     "lanzaboote": {
       "inputs": {
         "crane": "crane",
@@ -474,38 +489,20 @@
         "type": "github"
       }
     },
-    "nix-flatpak": {
-      "locked": {
-        "lastModified": 1767983141,
-        "narHash": "sha256-7ZCulYUD9RmJIDULTRkGLSW1faMpDlPKcbWJLYHoXcs=",
-        "owner": "gmodena",
-        "repo": "nix-flatpak",
-        "rev": "440818969ac2cbd77bfe025e884d0aa528991374",
-        "type": "github"
-      },
-      "original": {
-        "owner": "gmodena",
-        "ref": "v0.7.0",
-        "repo": "nix-flatpak",
-        "type": "github"
-      }
-    },
     "nix-packages": {
       "inputs": {
+        "jail-nix": "jail-nix",
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1793024022,
-        "narHash": "sha256-s1bIZ8nfKSnGHhMBTMFYge9x+UXMdo1YHiWZ4/rm7b0=",
-        "owner": "Invisibox",
-        "repo": "nix-packages",
-        "rev": "b4724d10fc8145093add037d16ce4c5089e3c994",
-        "type": "github"
+        "lastModified": 1793041607,
+        "narHash": "sha256-RYkH6RRJnIBUFNcqp1GkbkZIxI6pj7Qu2NQa3XpnziU=",
+        "path": "/home/zh/Documents/nix-packages",
+        "type": "path"
       },
       "original": {
-        "owner": "Invisibox",
-        "repo": "nix-packages",
-        "type": "github"
+        "path": "/home/zh/Documents/nix-packages",
+        "type": "path"
       }
     },
     "nixos-hardware": {
@@ -765,7 +762,6 @@
         "llm-agents": "llm-agents",
         "niri-flake": "niri-flake",
         "nix-cachyos-kernel": "nix-cachyos-kernel",
-        "nix-flatpak": "nix-flatpak",
         "nix-packages": "nix-packages",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_7",

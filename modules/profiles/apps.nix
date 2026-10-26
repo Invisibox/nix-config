@@ -8,7 +8,6 @@
 in {
   flake.modules.nixos.apps = {config, ...}: {
     imports = [
-      inputs.nix-flatpak.nixosModules.nix-flatpak
       nixosModules.brave-origin
       nixosModules.localsend
       nixosModules.onlyoffice
@@ -24,16 +23,10 @@ in {
 
     home-manager.users.${config.local.user.name}.imports = [homeModule];
 
-    services.flatpak = {
-      enable = true;
-      update.onActivation = true;
-      packages = [
-        {appId = "com.baidu.NetDisk";}
-        {appId = "com.tencent.WeChat";}
-        {appId = "com.qq.QQ";}
-        {appId = "com.tencent.wemeet";}
-        {appId = "com.openwebui.open-webui";}
-      ];
-    };
+    environment.systemPackages = with inputs.nix-packages.packages.${config.nixpkgs.hostPlatform.system}; [
+      wechat-jailed
+      qq-jailed
+      baidunetdisk-jailed
+    ];
   };
 }
