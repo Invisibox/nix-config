@@ -1,4 +1,4 @@
-{
+{inputs, ...}: {
   flake.modules.nixos.base = {
     lib,
     config,
@@ -7,14 +7,14 @@
   }: let
     cfg = config.local.apps.paseo;
     localUserName = config.local.user.name;
-    paseoPackages = import ./_package.nix {inherit lib pkgs;};
+    packages = inputs.nix-packages.packages.${pkgs.stdenv.hostPlatform.system};
   in {
     options.local.apps.paseo = {
       enable = lib.mkEnableOption "Enable Paseo Desktop";
 
       package = lib.mkOption {
         type = lib.types.package;
-        default = paseoPackages.package;
+        default = packages.paseo-desktop;
         description = "The Paseo Desktop package to use.";
       };
     };

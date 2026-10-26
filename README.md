@@ -41,6 +41,19 @@ import-tree 递归导入仓库中的 `.nix` 文件，因此新增配置文件无
 
 新增文件需要先执行 `git add -N <路径>` 或 `git add <路径>`，Nix 才能在 Git flake 中看到它。
 
+## 独立软件包
+
+Brave Origin Beta、Paseo Desktop、OxideTerm、Neiro、Gamescope 补丁版和 Nautilus 插件环境由个人 flake [Invisibox/nix-packages](https://github.com/Invisibox/nix-packages) 提供，当前配置通过 GitHub input 引用。
+上游 Actions 完成版本更新并发布缓存后，在本仓库刷新锁定：
+
+```sh
+nix flake update nix-packages
+```
+
+保留该 input 自己的 nixpkgs 锁定，直接使用其 `packages` 输出，以便命中个人 flake CI 生成的二进制缓存。
+应用更新脚本也已迁至新仓库；本仓库的 `scripts/update-all.sh` 继续更新 Bottles、Rime 和 Zsh 插件。
+本地开发仓库位于 `/home/zh/Documents/nix-packages`。如需测试未发布的修改，可在构建命令中加入 `--override-input nix-packages path:/home/zh/Documents/nix-packages --no-write-lock-file`。
+
 ## 验证与构建
 
 ```sh

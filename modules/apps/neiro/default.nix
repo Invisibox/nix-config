@@ -1,4 +1,4 @@
-{
+{inputs, ...}: {
   flake.modules.nixos.base = {
     config,
     lib,
@@ -18,7 +18,7 @@
 
       package = lib.mkOption {
         type = lib.types.package;
-        default = pkgs.callPackage ./_package.nix {};
+        default = inputs.nix-packages.packages.${pkgs.stdenv.hostPlatform.system}.neiro;
         description = "Neiro package to use.";
       };
 

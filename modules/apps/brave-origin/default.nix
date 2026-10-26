@@ -1,4 +1,4 @@
-{
+{inputs, ...}: {
   flake.modules.nixos.base = {
     lib,
     config,
@@ -7,14 +7,14 @@
   }: let
     cfg = config.local.apps.brave-origin;
     localUserName = config.local.user.name;
-    braveOriginBeta = import ./_package.nix {inherit lib pkgs;};
+    packages = inputs.nix-packages.packages.${pkgs.stdenv.hostPlatform.system};
   in {
     options.local.apps.brave-origin = {
       enable = lib.mkEnableOption "Enable Brave Origin Beta via Home Manager";
 
       package = lib.mkOption {
         type = lib.types.package;
-        default = braveOriginBeta;
+        default = packages.brave-origin-beta;
         description = "The Brave Origin Beta package installed for the user.";
       };
     };
