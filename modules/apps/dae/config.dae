@@ -116,6 +116,7 @@ dip(8.8.8.8, 8.8.4.4) -> US_HOME
 # 私有域名直连
 domain(geosite:private) -> direct
 
+dip(158.179.193.98) -> direct
 dip(70.39.201.124) -> direct
 dip(82.40.35.170) -> direct
 dip(23.249.25.140) -> direct
