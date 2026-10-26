@@ -11,8 +11,8 @@ export NEIRO_TEST_CARGO_HASH="sha256-LZrC1BFcQgqtPEYtvN7RKSoTgzA7NvHC0C3yBn/Jj8M
 fixture="${test_root}/repo with spaces"
 mkdir -p "${fixture}/scripts" "${fixture}/modules/apps/neiro" "${test_root}/bin"
 cp "${repo_root}/scripts/update-neiro.sh" "${fixture}/scripts/"
-cp "${repo_root}/modules/apps/neiro/package.nix" "${test_root}/original.nix"
-export NEIRO_TEST_TARGET="${fixture}/modules/apps/neiro/package.nix"
+cp "${repo_root}/modules/apps/neiro/_package.nix" "${test_root}/original.nix"
+export NEIRO_TEST_TARGET="${fixture}/modules/apps/neiro/_package.nix"
 
 # Mock only the upstream and Nix boundaries; use the real updater and file operations.
 cat >"${test_root}/bin/git" <<'EOF'

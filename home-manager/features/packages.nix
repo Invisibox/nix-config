@@ -1,114 +1,112 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: let
-  llmAgents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
-in {
-  home.packages = with pkgs; [
-    # AI coding assistants
-    # Replaced by llm-agents.nix packages below.
-    llmAgents.cc-switch-cli
-    llmAgents.claude-code
-    llmAgents.codex
-    llmAgents.omp
-    # llmAgents.paseo-desktop
-    # llmAgents.pi
+{inputs, ...}: {
+  flake.modules.homeManager.desktop = {pkgs, ...}: let
+    llmAgents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+  in {
+    home.packages = with pkgs; [
+      # AI coding assistants
+      # Replaced by llm-agents.nix packages below.
+      llmAgents.cc-switch-cli
+      llmAgents.claude-code
+      llmAgents.codex
+      llmAgents.omp
+      # llmAgents.paseo-desktop
+      # llmAgents.pi
 
-    # development and build tools
-    android-tools
-    cmake
-    # devbox
-    graphviz
-    nodejs
-    openssl
-    # pandoc
-    pkg-config
-    pnpm
-    vscode
+      # development and build tools
+      android-tools
+      cmake
+      # devbox
+      graphviz
+      nodejs
+      openssl
+      # pandoc
+      pkg-config
+      pnpm
+      vscode
 
-    # terminal and command-line tools
-    btop
-    compsize
-    # dig
-    eza # A modern replacement for 'ls'
-    fastfetch
-    fd
-    ffmpeg
-    fzf # A command-line fuzzy finder
-    ghostty
-    hyperfine
-    inetutils
-    jq
-    pango
-    ripgrep
-    socat
-    termius
-    tokei
-    wl-clipboard
-    yazi
+      # terminal and command-line tools
+      btop
+      compsize
+      # dig
+      eza # A modern replacement for 'ls'
+      fastfetch
+      fd
+      ffmpeg
+      fzf # A command-line fuzzy finder
+      ghostty
+      hyperfine
+      inetutils
+      jq
+      pango
+      ripgrep
+      socat
+      termius
+      tokei
+      wl-clipboard
+      yazi
 
-    # archives
-    p7zip
-    unrar
-    unzip
-    xz
-    zip
+      # archives
+      p7zip
+      unrar
+      unzip
+      xz
+      zip
 
-    # networking, downloads, and browsers
-    aria2
-    motrix
-    qbittorrent-enhanced
-    resilio-sync
-    # servo
-    tor-browser
-    v2rayn
+      # networking, downloads, and browsers
+      aria2
+      motrix
+      qbittorrent-enhanced
+      resilio-sync
+      # servo
+      tor-browser
+      v2rayn
 
-    # communication and news readers
-    _64gram
-    discord
-    element-desktop
-    # fluffychat
-    # fluent-reader
-    # keyguard
-    newsflash
-    thunderbird
+      # communication and news readers
+      _64gram
+      discord
+      element-desktop
+      # fluffychat
+      # fluent-reader
+      # keyguard
+      newsflash
+      thunderbird
 
-    # knowledge management and productivity
-    anki
-    # calibre
-    folio
-    # mangayomi
-    obsidian
-    papers
-    planify
-    # readest
-    typst
-    # zotero
+      # knowledge management and productivity
+      anki
+      # calibre
+      folio
+      # mangayomi
+      obsidian
+      papers
+      planify
+      # readest
+      typst
+      # zotero
 
-    # media and images
-    amberol
-    # curtail
-    piliplus
-    qimgv
-    tsukimi
+      # media and images
+      amberol
+      # curtail
+      piliplus
+      qimgv
+      tsukimi
 
-    # desktop and system tools
-    ddcutil
-    # dnscontrol
-    file-roller
-    galaxy-buds-client
-    gnome-calculator
-    # hmcl
-    resources
-    # vial
-    # winboat
-    winbox
+      # desktop and system tools
+      ddcutil
+      # dnscontrol
+      file-roller
+      galaxy-buds-client
+      gnome-calculator
+      # hmcl
+      resources
+      # vial
+      # winboat
+      winbox
 
-    # themes and Qt configuration
-    kdePackages.oxygen-sounds
-    libsForQt5.qt5ct
-    papirus-icon-theme
-    qt6Packages.qt6ct
-  ];
+      # themes and Qt configuration
+      kdePackages.oxygen-sounds
+      libsForQt5.qt5ct
+      papirus-icon-theme
+      qt6Packages.qt6ct
+    ];
+  };
 }

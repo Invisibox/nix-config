@@ -1,127 +1,129 @@
 {
-  lib,
-  config,
-  pkgs,
-  ...
-}: let
-  cfg = config.local.gaming.steam;
-  localUserName = config.local.user.name;
-  gamescopeEnabled = config.local.gaming.gamescope.enable;
-  gamescopePackage = config.programs.gamescope.package;
-  protonPackages = import ../proton.nix {inherit pkgs;};
-  inherit (protonPackages) protonGePackage;
-  steamGameWrapper = pkgs.callPackage ./game-wrapper.nix {
-    gamescope = gamescopePackage;
-  };
-  steamRuntimeEnv = {
-    PIPEWIRE_NODE = "Game";
-    PULSE_SINK = "Game";
-    PROTON_ENABLE_HDR = "1";
-    PROTON_ENABLE_WAYLAND = "1";
-    PROTON_FSR4_RDNA3_UPGRADE = "1";
-    PROTON_USE_NTSYNC = "1";
-    PROTON_USE_WOW64 = "1";
-  };
-in {
-  options.local.gaming.steam = {
-    enable = lib.mkEnableOption "Enable Steam in NixOS";
-    enableNative = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
+  flake.modules.nixos.base = {
+    lib,
+    config,
+    pkgs,
+    ...
+  }: let
+    cfg = config.local.gaming.steam;
+    localUserName = config.local.user.name;
+    gamescopeEnabled = config.local.gaming.gamescope.enable;
+    gamescopePackage = config.programs.gamescope.package;
+    protonPackages = import ../_proton.nix {inherit pkgs;};
+    inherit (protonPackages) protonGePackage;
+    steamGameWrapper = pkgs.callPackage ./_game-wrapper.nix {
+      gamescope = gamescopePackage;
     };
-    enableSteamBeta = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
+    steamRuntimeEnv = {
+      PIPEWIRE_NODE = "Game";
+      PULSE_SINK = "Game";
+      PROTON_ENABLE_HDR = "1";
+      PROTON_ENABLE_WAYLAND = "1";
+      PROTON_FSR4_RDNA3_UPGRADE = "1";
+      PROTON_USE_NTSYNC = "1";
+      PROTON_USE_WOW64 = "1";
     };
-    # https://reddit.com/r/linux_gaming/comments/16e1l4h/slow_steam_downloads_try_this/
-    fixDownloadSpeed = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
+  in {
+    options.local.gaming.steam = {
+      enable = lib.mkEnableOption "Enable Steam in NixOS";
+      enableNative = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+      };
+      enableSteamBeta = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+      };
+      # https://reddit.com/r/linux_gaming/comments/16e1l4h/slow_steam_downloads_try_this/
+      fixDownloadSpeed = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
     };
-  };
-  config = lib.mkIf cfg.enable {
-    boot.kernelModules = ["ntsync"];
-    services.udev.packages = [
-      (pkgs.writeTextFile {
-        name = "ntsync-udev-rule";
-        destination = "/etc/udev/rules.d/70-ntsync.rules";
-        text = ''
-          KERNEL=="ntsync", MODE="0660", TAG+="uaccess"
-        '';
-      })
-    ];
+    config = lib.mkIf cfg.enable {
+      boot.kernelModules = ["ntsync"];
+      services.udev.packages = [
+        (pkgs.writeTextFile {
+          name = "ntsync-udev-rule";
+          destination = "/etc/udev/rules.d/70-ntsync.rules";
+          text = ''
+            KERNEL=="ntsync", MODE="0660", TAG+="uaccess"
+          '';
+        })
+      ];
 
-    programs.steam = {
-      enable = cfg.enableNative;
-      package = pkgs.steam.override {
-        extraEnv = steamRuntimeEnv;
-        # https://github.com/NixOS/nixpkgs/issues/279893#issuecomment-2425213386
-        extraProfile = ''
-          unset TZ
-        '';
-        privateTmp = false; # https://github.com/NixOS/nixpkgs/issues/381923
-      };
-      extraCompatPackages = [
-        # pkgs.luxtorpeda
-        protonGePackage
-      ];
-      extraPackages = [
-        pkgs.gamemode
-        gamescopePackage
-        pkgs.mangohud
-        pkgs.obs-studio-plugins.obs-vkcapture
-      ];
-      extest.enable = true;
-      localNetworkGameTransfers.openFirewall = true;
-      protontricks.enable = true;
-      remotePlay.openFirewall = true;
-    };
-    programs.gamemode = {
-      enable = true;
-      settings.general.renice = 10;
-    };
-    users.users.${localUserName}.extraGroups = ["gamemode"];
-    home-manager.users.${localUserName} = {
-      pkgs,
-      config,
-      ...
-    }: {
-      home = {
-        file = {
-          steam-beta = {
-            enable = cfg.enableSteamBeta;
-            text = "publicbeta";
-            target = "${config.xdg.dataHome}/Steam/package/beta";
-          };
-          steam-config-default = {
-            enable = true;
-            source = lib.getExe steamGameWrapper;
-            target = "${config.xdg.dataHome}/steam-config-nix/users/shared/app-wrappers/default";
-          };
-          steam-slow-fix = {
-            enable = cfg.fixDownloadSpeed;
-            text = ''
-              @nClientDownloadEnableHTTP2PlatformLinux 0
-              @fDownloadRateImprovementToAddAnotherConnection 1.0
-            '';
-            target = "${config.xdg.dataHome}/Steam/steam_dev.cfg";
-          };
+      programs.steam = {
+        enable = cfg.enableNative;
+        package = pkgs.steam.override {
+          extraEnv = steamRuntimeEnv;
+          # https://github.com/NixOS/nixpkgs/issues/279893#issuecomment-2425213386
+          extraProfile = ''
+            unset TZ
+          '';
+          privateTmp = false; # https://github.com/NixOS/nixpkgs/issues/381923
         };
-        packages = with pkgs; [
-          steamGameWrapper
-          steamcmd
+        extraCompatPackages = [
+          # pkgs.luxtorpeda
+          protonGePackage
         ];
+        extraPackages = [
+          pkgs.gamemode
+          gamescopePackage
+          pkgs.mangohud
+          pkgs.obs-studio-plugins.obs-vkcapture
+        ];
+        extest.enable = true;
+        localNetworkGameTransfers.openFirewall = true;
+        protontricks.enable = true;
+        remotePlay.openFirewall = true;
       };
-      xdg.desktopEntries.steam-gamescope = lib.mkIf (gamescopeEnabled && cfg.enableNative) {
-        name = "Steam (Gamescope)";
-        genericName = "Steam running inside Gamescope";
-        exec = "${lib.getExe gamescopePackage} --steam -- steam -tenfoot";
-        icon = "steam";
-        terminal = false;
-        categories = ["Game"];
+      programs.gamemode = {
+        enable = true;
+        settings.general.renice = 10;
       };
-      # https://github.com/different-name/steam-config-nix
-      programs.steam.config = import ./steam-config.nix {inherit lib pkgs config steamGameWrapper steamRuntimeEnv;};
+      users.users.${localUserName}.extraGroups = ["gamemode"];
+      home-manager.users.${localUserName} = {
+        pkgs,
+        config,
+        ...
+      }: {
+        home = {
+          file = {
+            steam-beta = {
+              enable = cfg.enableSteamBeta;
+              text = "publicbeta";
+              target = "${config.xdg.dataHome}/Steam/package/beta";
+            };
+            steam-config-default = {
+              enable = true;
+              source = lib.getExe steamGameWrapper;
+              target = "${config.xdg.dataHome}/steam-config-nix/users/shared/app-wrappers/default";
+            };
+            steam-slow-fix = {
+              enable = cfg.fixDownloadSpeed;
+              text = ''
+                @nClientDownloadEnableHTTP2PlatformLinux 0
+                @fDownloadRateImprovementToAddAnotherConnection 1.0
+              '';
+              target = "${config.xdg.dataHome}/Steam/steam_dev.cfg";
+            };
+          };
+          packages = with pkgs; [
+            steamGameWrapper
+            steamcmd
+          ];
+        };
+        xdg.desktopEntries.steam-gamescope = lib.mkIf (gamescopeEnabled && cfg.enableNative) {
+          name = "Steam (Gamescope)";
+          genericName = "Steam running inside Gamescope";
+          exec = "${lib.getExe gamescopePackage} --steam -- steam -tenfoot";
+          icon = "steam";
+          terminal = false;
+          categories = ["Game"];
+        };
+        # https://github.com/different-name/steam-config-nix
+        programs.steam.config = import ./_steam-config.nix {inherit lib pkgs config steamGameWrapper steamRuntimeEnv;};
+      };
     };
   };
 }

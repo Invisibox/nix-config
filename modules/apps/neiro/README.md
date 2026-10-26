@@ -6,7 +6,7 @@ systemd 用户服务。它不是 nixpkgs 内置选项。
 ## 当前设备
 
 `hosts/thinkpad-t14s/default.nix` 已启用 Neiro，并指定内置扬声器的 PipeWire 节点。
-`hosts/thinkpad-t14s/audio-tuning.nix` 从联想官方 `n45a127w.exe` 驱动包提取：
+`hosts/thinkpad-t14s/_audio-tuning.nix` 从联想官方 `n45a127w.exe` 驱动包提取：
 
 ```text
 DEV_0257_SUBSYS_17AA2329_PCI_SUBSYS_232917AA.xml
@@ -23,7 +23,7 @@ Nix 固定驱动 URL 和 SHA-256，只解包所需 XML，不运行 Windows 安�
 
 ## 配置归属
 
-- `package.nix` 固定 Neiro 源码提交和 Cargo 依赖哈希，并包装 PipeWire、WirePlumber、
+- `_package.nix` 固定 Neiro 源码提交和 Cargo 依赖哈希，并包装 PipeWire、WirePlumber、
   ffmpeg 等运行依赖。
 - 主机配置声明 `tuningFile` 和 `settings.speaker_sink`，避免把扬声器调音用于其他设备。
 - 用户服务在 PipeWire、WirePlumber 之后启动，运行 `neiro daemon --tuning …`。
@@ -50,7 +50,7 @@ local.services.neiro.settings = {
 首次应用前，将新增文件纳入 Git；Nix 的 Git flake 不包含未跟踪文件：
 
 ```sh
-git add modules/apps/neiro hosts/thinkpad-t14s/audio-tuning.nix
+git add modules/apps/neiro hosts/thinkpad-t14s/_audio-tuning.nix
 sudo nixos-rebuild switch --flake '.#thinkpad-t14s'
 systemctl --user start neiro.service
 neiro status
@@ -87,8 +87,8 @@ systemctl --user stop neiro.service
 脚本跟踪上游默认分支的最新提交，从 `Cargo.toml` 读取版本，自动更新源码提交、
 源码哈希和 `cargoHash`，并使用本仓库锁定的 nixpkgs 构建、运行上游测试。
 同版本号下的新提交也会更新；已是最新提交则直接退出。
-只有构建成功才会替换 `package.nix`，失败时保留原文件。
+只有构建成功才会替换 `_package.nix`，失败时保留原文件。
 `./scripts/update-all.sh` 也会自动调用此脚本。
 
-升级联想驱动时，更新主机的 `audio-tuning.nix` 中的 URL、SHA-256 及包内 XML 路径，
+升级联想驱动时，更新主机的 `_audio-tuning.nix` 中的 URL、SHA-256 及包内 XML 路径，
 并重新确认硬件 ID；不能只换成同声卡型号的任意调音。

@@ -188,7 +188,7 @@ read_info_value() {
   local attr="$1"
   local key="$2"
 
-  sed -n "/^  ${attr} = {$/,/^  };$/s/^    ${key} = \"\\(.*\\)\";$/\\1/p" "${target_file}" | head -n1
+  sed -n "/^    ${attr} = {$/,/^    };$/s/^      ${key} = \"\\(.*\\)\";$/\\1/p" "${target_file}" | head -n1
 }
 
 update_info_block() {
@@ -198,10 +198,10 @@ update_info_block() {
   local hash="$4"
   local source_dir="$5"
 
-  sed -Ei "/^  ${attr} = \\{$/,/^  \\};$/s|^    name = \".*\";$|    name = \"${name}\";|" "${target_file}"
-  sed -Ei "/^  ${attr} = \\{$/,/^  \\};$/s|^    url = \".*\";$|    url = \"${url}\";|" "${target_file}"
-  sed -Ei "/^  ${attr} = \\{$/,/^  \\};$/s|^    hash = \"sha256-[^\"]+\";$|    hash = \"${hash}\";|" "${target_file}"
-  sed -Ei "/^  ${attr} = \\{$/,/^  \\};$/s|^    sourceDir = \".*\";$|    sourceDir = \"${source_dir}\";|" "${target_file}"
+  sed -Ei "/^    ${attr} = \\{$/,/^    \\};$/s|^      name = \".*\";$|      name = \"${name}\";|" "${target_file}"
+  sed -Ei "/^    ${attr} = \\{$/,/^    \\};$/s|^      url = \".*\";$|      url = \"${url}\";|" "${target_file}"
+  sed -Ei "/^    ${attr} = \\{$/,/^    \\};$/s|^      hash = \"sha256-[^\"]+\";$|      hash = \"${hash}\";|" "${target_file}"
+  sed -Ei "/^    ${attr} = \\{$/,/^    \\};$/s|^      sourceDir = \".*\";$|      sourceDir = \"${source_dir}\";|" "${target_file}"
 }
 
 update_component() {
@@ -289,10 +289,10 @@ update_winebridge() {
   IFS=$'\t' read -r release_tag asset_name asset_url asset_digest <<<"${release_info}"
   version="${release_tag#v}"
 
-  current_version="$(sed -n 's/^  winebridgeVersion = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
-  current_release_tag="$(sed -n 's/^  winebridgeReleaseTag = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
-  current_asset="$(sed -n 's/^  winebridgeAsset = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
-  current_hash="$(sed -n 's/^  winebridgeHash = "\(sha256-[^"]*\)";$/\1/p' "${target_file}" | head -n1)"
+  current_version="$(sed -n 's/^    winebridgeVersion = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
+  current_release_tag="$(sed -n 's/^    winebridgeReleaseTag = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
+  current_asset="$(sed -n 's/^    winebridgeAsset = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
+  current_hash="$(sed -n 's/^    winebridgeHash = "\(sha256-[^"]*\)";$/\1/p' "${target_file}" | head -n1)"
 
   hash="$(hash_from_digest "${asset_digest}")"
 
@@ -309,10 +309,10 @@ update_winebridge() {
     hash="$(github_asset_hash "${asset_url}" "${asset_name}")"
   fi
 
-  sed -Ei 's|^  winebridgeVersion = "[^"]+";$|  winebridgeVersion = "'"${version}"'";|' "${target_file}"
-  sed -Ei 's|^  winebridgeReleaseTag = "[^"]+";$|  winebridgeReleaseTag = "'"${release_tag}"'";|' "${target_file}"
-  sed -Ei 's|^  winebridgeAsset = "[^"]+";$|  winebridgeAsset = "'"${asset_name}"'";|' "${target_file}"
-  sed -Ei 's|^  winebridgeHash = "sha256-[^"]+";$|  winebridgeHash = "'"${hash}"'";|' "${target_file}"
+  sed -Ei 's|^    winebridgeVersion = "[^"]+";$|    winebridgeVersion = "'"${version}"'";|' "${target_file}"
+  sed -Ei 's|^    winebridgeReleaseTag = "[^"]+";$|    winebridgeReleaseTag = "'"${release_tag}"'";|' "${target_file}"
+  sed -Ei 's|^    winebridgeAsset = "[^"]+";$|    winebridgeAsset = "'"${asset_name}"'";|' "${target_file}"
+  sed -Ei 's|^    winebridgeHash = "sha256-[^"]+";$|    winebridgeHash = "'"${hash}"'";|' "${target_file}"
 
   echo "updated winebridge"
   echo "  release: ${current_release_tag:-unknown} -> ${release_tag}"

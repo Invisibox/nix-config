@@ -66,16 +66,16 @@ if [[ -z "${hash}" || "${hash}" == "null" ]]; then
   exit 1
 fi
 
-current_version="$(sed -n 's/^  version = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
-current_hash="$(sed -n 's/^    hash = "\(sha256-[^"]*\)";$/\1/p' "${target_file}" | head -n1)"
+current_version="$(sed -n 's/^    version = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
+current_hash="$(sed -n 's/^      hash = "\(sha256-[^"]*\)";$/\1/p' "${target_file}" | head -n1)"
 
 if [[ "${current_version}" == "${version}" && "${current_hash}" == "${hash}" ]]; then
   echo "oxide-term is already up to date (${version})"
   exit 0
 fi
 
-sed -Ei 's|^  version = "[^"]+";$|  version = "'"${version}"'";|' "${target_file}"
-sed -Ei 's|^    hash = "sha256-[^"]+";$|    hash = "'"${hash}"'";|' "${target_file}"
+sed -Ei 's|^    version = "[^"]+";$|    version = "'"${version}"'";|' "${target_file}"
+sed -Ei 's|^      hash = "sha256-[^"]+";$|      hash = "'"${hash}"'";|' "${target_file}"
 
 echo "updated ${target_file}"
 echo "  version: ${current_version:-unknown} -> ${version}"

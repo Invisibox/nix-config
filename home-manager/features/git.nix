@@ -1,22 +1,23 @@
-{ pkgs, ... }:
 {
-  # git 相关配置
-  programs.gh = {
-    enable = true;
-    package = pkgs.gh;
-    settings.git_protocol = "https";
-
-    gitCredentialHelper = {
+  flake.modules.homeManager.desktop = {pkgs, ...}: {
+    # git 相关配置
+    programs.gh = {
       enable = true;
-      hosts = [ "https://github.com" ];
-    };
-  };
+      package = pkgs.gh;
+      settings.git_protocol = "https";
 
-  programs.git = {
-    enable = true;
-    settings = {
-      user.name = "Invisibox";
-      user.email = "admin@djdog.cc";
+      gitCredentialHelper = {
+        enable = true;
+        hosts = ["https://github.com"];
+      };
+    };
+
+    programs.git = {
+      enable = true;
+      settings = {
+        user.name = "Invisibox";
+        user.email = "admin@djdog.cc";
+      };
     };
   };
 }

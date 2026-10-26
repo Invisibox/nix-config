@@ -2,7 +2,7 @@
   lib,
   pkgs,
   config,
-  steamGameWrapper ? pkgs.callPackage ./game-wrapper.nix {},
+  steamGameWrapper ? pkgs.callPackage ./_game-wrapper.nix {},
   steamRuntimeEnv ? {},
 }: let
   steamConfigEnv =

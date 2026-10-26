@@ -2,7 +2,7 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-target_file="${repo_root}/modules/apps/brave-origin/package.nix"
+target_file="${repo_root}/modules/apps/brave-origin/_package.nix"
 api_url="https://api.github.com/repos/brave/brave-browser/releases?per_page=30"
 package_name="brave-origin-beta"
 

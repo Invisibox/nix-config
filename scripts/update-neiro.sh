@@ -2,7 +2,7 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-target_file="${repo_root}/modules/apps/neiro/package.nix"
+target_file="${repo_root}/modules/apps/neiro/_package.nix"
 upstream="https://gitlab.com/wolf-yuan/neiro"
 
 for cmd in git jq nix sed; do

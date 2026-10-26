@@ -2,7 +2,7 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-target_file="${repo_root}/modules/apps/paseo/package.nix"
+target_file="${repo_root}/modules/apps/paseo/_package.nix"
 api_url="https://api.github.com/repos/getpaseo/paseo/releases/latest"
 asset_pattern="Paseo-x86_64.AppImage"
 package_name="paseo-desktop"

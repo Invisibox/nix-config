@@ -1,37 +1,39 @@
-{pkgs, ...}: {
-  # local.apps.bitwarden.enable = true;
-  local.apps.brave-origin.enable = true;
-  local.apps.localsend.enable = true;
-  local.apps.onlyoffice.enable = true;
-  # local.apps.moonlight.enable = true;
-  local.apps.oxide-term.enable = true;
-  local.apps.bottles.enable = false;
-  local.apps.paseo.enable = true;
+{
+  flake.modules.nixos.apps = {pkgs, ...}: {
+    # local.apps.bitwarden.enable = true;
+    local.apps.brave-origin.enable = true;
+    local.apps.localsend.enable = true;
+    local.apps.onlyoffice.enable = true;
+    # local.apps.moonlight.enable = true;
+    local.apps.oxide-term.enable = true;
+    local.apps.bottles.enable = false;
+    local.apps.paseo.enable = true;
 
-  local.apps.waydroid = {
-    enable = false;
-    initSystemType = "GAPPS";
-    package = pkgs.waydroid-nftables;
-  };
+    local.apps.waydroid = {
+      enable = false;
+      initSystemType = "GAPPS";
+      package = pkgs.waydroid-nftables;
+    };
 
-  local.apps.obs = {
-    enable = true;
-    enableNative = true;
-    silenceOutput = true;
-  };
+    local.apps.obs = {
+      enable = true;
+      enableNative = true;
+      silenceOutput = true;
+    };
 
-  # Temporarily replaced by Typst and OnlyOffice.
-  # local.apps.texlive.enable = true;
-  # local.apps.wps.enable = true;
-  services.flatpak = {
-    enable = true;
-    update.onActivation = true;
-    packages = [
-      {appId = "com.baidu.NetDisk";}
-      {appId = "com.tencent.WeChat";}
-      {appId = "com.qq.QQ";}
-      {appId = "com.tencent.wemeet";}
-      {appId = "com.openwebui.open-webui";}
-    ];
+    # Temporarily replaced by Typst and OnlyOffice.
+    # local.apps.texlive.enable = true;
+    # local.apps.wps.enable = true;
+    services.flatpak = {
+      enable = true;
+      update.onActivation = true;
+      packages = [
+        {appId = "com.baidu.NetDisk";}
+        {appId = "com.tencent.WeChat";}
+        {appId = "com.qq.QQ";}
+        {appId = "com.tencent.wemeet";}
+        {appId = "com.openwebui.open-webui";}
+      ];
+    };
   };
 }
