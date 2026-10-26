@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.base = {pkgs, ...}: {
+  flake.modules.nixos.desktop = {pkgs, ...}: {
     fonts = {
       enableDefaultPackages = true;
       fontDir.enable = true;

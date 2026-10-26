@@ -17,9 +17,9 @@ in {
       nixosModules.apps
       nixosModules.dev
       nixosModules.services
+      nixosModules.neiro
       ./disko.nix
       ./hardware-configuration.nix
-      inputs.nix-flatpak.nixosModules.nix-flatpak
       # Import only the NixOS module; Disko's CLI still uses deprecated platform aliases.
       (inputs.disko + "/module.nix")
       inputs.lanzaboote.nixosModules.lanzaboote
@@ -81,10 +81,7 @@ in {
 
     # This reader uses Lenovo's Goodix 550a TOD driver. Keep the selection at
     # the host level so other machines can choose their own fingerprint driver.
-    local.security.fingerprint.tod = {
-      enable = true;
-      driver = pkgs.libfprint-2-tod1-goodix-550a;
-    };
+    local.security.fingerprint.todDriver = pkgs.libfprint-2-tod1-goodix-550a;
 
     zramSwap = {
       enable = true;
@@ -110,18 +107,6 @@ in {
       LC_TIME = "zh_CN.UTF-8";
     };
 
-    i18n.inputMethod = {
-      type = "fcitx5";
-      enable = true;
-      fcitx5.waylandFrontend = true;
-      fcitx5.addons = with pkgs; [
-        (fcitx5-rime.override {
-          rimeDataPkgs = [rime-data];
-        })
-        fcitx5-gtk
-        qt6Packages.fcitx5-configtool
-      ];
-    };
     programs.gdk-pixbuf.modulePackages = with pkgs; [librsvg];
 
     services.udev.extraRules = ''
@@ -136,7 +121,6 @@ in {
     services.pulseaudio.enable = false;
     security.rtkit.enable = true;
     local.services.neiro = {
-      enable = true;
       tuningFile = pkgs.callPackage ./_audio-tuning.nix {};
       settings.speaker_sink = "alsa_output.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__Speaker__sink";
     };

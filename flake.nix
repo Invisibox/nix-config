@@ -76,14 +76,25 @@
   };
 
   outputs = inputs:
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} (
-      inputs.import-tree.filter
-      (path:
-        !(builtins.elem (builtins.baseNameOf path) [
-          "flake.nix"
-          "hardware-configuration.nix"
-          "disko.nix"
-        ]))
-      ./.
-    );
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
+      imports = [
+        inputs.flake-parts.flakeModules.modules
+        (
+          inputs.import-tree.filter
+          (path:
+            !(builtins.elem (builtins.baseNameOf path) [
+              "flake.nix"
+              "hardware-configuration.nix"
+              "disko.nix"
+            ]))
+          ./.
+        )
+      ];
+
+      systems = ["x86_64-linux"];
+
+      perSystem = {pkgs, ...}: {
+        formatter = pkgs.alejandra;
+      };
+    };
 }

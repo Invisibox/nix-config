@@ -1,4 +1,4 @@
 /result
 /result-*
-/modules/apps/dae/subscriptions.dae
-/modules/apps/dae/persist.d
+/modules/services/dae/subscriptions.dae
+/modules/services/dae/persist.d

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-target_file="${repo_root}/modules/apps/bottles/default.nix"
+target_file="${repo_root}/modules/apps/bottles.nix"
 components_ref="${BOTTLES_COMPONENTS_REF:-main}"
 components_index="${BOTTLES_COMPONENTS_INDEX:-index.yml}"
 components_base="https://raw.githubusercontent.com/bottlesdevs/components/${components_ref}"

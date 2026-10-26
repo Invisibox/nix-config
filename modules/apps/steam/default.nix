@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.base = {
+  flake.modules.nixos.steam = {
     lib,
     config,
     pkgs,
@@ -7,7 +7,7 @@
   }: let
     cfg = config.local.gaming.steam;
     localUserName = config.local.user.name;
-    gamescopeEnabled = config.local.gaming.gamescope.enable;
+    gamescopeEnabled = config.programs.gamescope.enable;
     gamescopePackage = config.programs.gamescope.package;
     protonPackages = import ../_proton.nix {inherit pkgs;};
     inherit (protonPackages) protonGePackage;
@@ -25,12 +25,7 @@
     };
   in {
     options.local.gaming.steam = {
-      enable = lib.mkEnableOption "Enable Steam in NixOS";
-      enableNative = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-      };
-      enableSteamBeta = lib.mkOption {
+      beta = lib.mkOption {
         type = lib.types.bool;
         default = true;
       };
@@ -40,7 +35,7 @@
         default = false;
       };
     };
-    config = lib.mkIf cfg.enable {
+    config = {
       boot.kernelModules = ["ntsync"];
       services.udev.packages = [
         (pkgs.writeTextFile {
@@ -53,7 +48,7 @@
       ];
 
       programs.steam = {
-        enable = cfg.enableNative;
+        enable = true;
         package = pkgs.steam.override {
           extraEnv = steamRuntimeEnv;
           # https://github.com/NixOS/nixpkgs/issues/279893#issuecomment-2425213386
@@ -90,7 +85,7 @@
         home = {
           file = {
             steam-beta = {
-              enable = cfg.enableSteamBeta;
+              enable = cfg.beta;
               text = "publicbeta";
               target = "${config.xdg.dataHome}/Steam/package/beta";
             };
@@ -113,7 +108,7 @@
             steamcmd
           ];
         };
-        xdg.desktopEntries.steam-gamescope = lib.mkIf (gamescopeEnabled && cfg.enableNative) {
+        xdg.desktopEntries.steam-gamescope = lib.mkIf gamescopeEnabled {
           name = "Steam (Gamescope)";
           genericName = "Steam running inside Gamescope";
           exec = "${lib.getExe gamescopePackage} --steam -- steam -tenfoot";

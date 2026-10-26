@@ -2,7 +2,7 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-target_file="${repo_root}/home-manager/zsh/zsh.nix"
+target_file="${repo_root}/modules/shell/zsh/zsh.nix"
 
 if [[ ! -f "${target_file}" ]]; then
   echo "error: target file not found: ${target_file}" >&2

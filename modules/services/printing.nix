@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.base = {pkgs, ...}: {
+  flake.modules.nixos.printing = {pkgs, ...}: {
     # Enable CUPS to print documents.
     services.printing = {
       enable = true;

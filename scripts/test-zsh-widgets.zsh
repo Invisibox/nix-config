@@ -4,7 +4,7 @@ set -eu
 repo_root=${0:A:h:h}
 test_root=$(mktemp -d)
 trap 'cd /; rm -rf -- "$test_root"' EXIT
-ZSH_CONFIG_DIR=$repo_root/home-manager/zsh
+ZSH_CONFIG_DIR=$repo_root/modules/shell/zsh
 
 assert-equal () {
   [[ $1 == "$2" ]] || {
@@ -22,8 +22,8 @@ source "$ZSH_CONFIG_DIR/widgets/ascend-descend.zsh"
 source "$ZSH_CONFIG_DIR/widgets/fzf-shell-history.zsh"
 
 cd "$test_root"
-mkdir -p 'home-manager' 'dir name' 'child directory'
-touch flake.nix home-manager/kitty.nix 'dir name/file name' 'child directory/child'
+mkdir -p 'modules/apps' 'dir name' 'child directory'
+touch flake.nix modules/apps/kitty.nix 'dir name/file name' 'child directory/child'
 touch 'line\name'
 
 record-token () { received=("$@"); }
@@ -53,8 +53,8 @@ complete-case () {
 selected=$test_root/flake.nix
 complete-case 'cat flak*' flake.nix "cat ${(q)selected}"
 complete-case 'printf "a  b" flak' flake.nix "printf \"a  b\" ${(q)selected}"
-selected=$test_root/home-manager/kitty.nix
-complete-case 'cat home-manager/ki*' kitty.nix "cat ${(q)selected}"
+selected=$test_root/modules/apps/kitty.nix
+complete-case 'cat modules/apps/ki*' kitty.nix "cat ${(q)selected}"
 selected="$test_root/dir name/file name"
 complete-case 'cat "dir name/fi"' 'file name' "cat ${(q)selected}"
 complete-case 'cat dir\ name/fi' 'file name' "cat ${(q)selected}"
