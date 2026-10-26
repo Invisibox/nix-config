@@ -86,7 +86,7 @@ read_current_values() {
       exit
     }
 
-    in_block && in_plugin_body && $0 ~ "^[[:space:]]{0,4}\\};[[:space:]]*$" {
+    in_block && in_plugin_body && $0 ~ "^[[:space:]]{0,6}\\};[[:space:]]*$" {
       in_block = 0
       in_plugin_body = 0
     }
@@ -128,7 +128,7 @@ replace_plugin_values() {
 
     { print }
 
-    in_block && in_plugin_body && $0 ~ "^[[:space:]]{0,4}\\};[[:space:]]*$" {
+    in_block && in_plugin_body && $0 ~ "^[[:space:]]{0,6}\\};[[:space:]]*$" {
       in_block = 0
       in_plugin_body = 0
     }

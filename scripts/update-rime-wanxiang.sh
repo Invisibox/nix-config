@@ -19,10 +19,10 @@ for cmd in curl jq nix sed; do
   fi
 done
 
-current_version="$(sed -n 's/^  rimeWanxiangVersion = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
-current_asset_name="$(sed -n 's/^  rimeWanxiangAssetName = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
-current_wanxiang_hash="$(sed -n 's/^  rimeWanxiangZipHash = "\(sha256-[^"]*\)";$/\1/p' "${target_file}" | head -n1)"
-current_gram_hash="$(sed -n 's/^  rimeWanxiangGramHash = "\(sha256-[^"]*\)";$/\1/p' "${target_file}" | head -n1)"
+current_version="$(sed -n 's/^    rimeWanxiangVersion = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
+current_asset_name="$(sed -n 's/^    rimeWanxiangAssetName = "\(.*\)";$/\1/p' "${target_file}" | head -n1)"
+current_wanxiang_hash="$(sed -n 's/^    rimeWanxiangZipHash = "\(sha256-[^"]*\)";$/\1/p' "${target_file}" | head -n1)"
+current_gram_hash="$(sed -n 's/^    rimeWanxiangGramHash = "\(sha256-[^"]*\)";$/\1/p' "${target_file}" | head -n1)"
 wanxiang_asset_name="${WANXIANG_ASSET:-${current_asset_name:-rime-wanxiang-flypy-fuzhu.zip}}"
 
 github_headers=(-H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28")
@@ -103,10 +103,10 @@ if [[ "${current_version}" == "${version}" && "${current_asset_name}" == "${wanx
   exit 0
 fi
 
-sed -Ei 's|^  rimeWanxiangVersion = "[^"]+";$|  rimeWanxiangVersion = "'"${version}"'";|' "${target_file}"
-sed -Ei 's|^  rimeWanxiangAssetName = "[^"]+";$|  rimeWanxiangAssetName = "'"${wanxiang_asset_name}"'";|' "${target_file}"
-sed -Ei 's|^  rimeWanxiangZipHash = "sha256-[^"]+";$|  rimeWanxiangZipHash = "'"${wanxiang_hash}"'";|' "${target_file}"
-sed -Ei 's|^  rimeWanxiangGramHash = "sha256-[^"]+";$|  rimeWanxiangGramHash = "'"${gram_hash}"'";|' "${target_file}"
+sed -Ei 's|^    rimeWanxiangVersion = "[^"]+";$|    rimeWanxiangVersion = "'"${version}"'";|' "${target_file}"
+sed -Ei 's|^    rimeWanxiangAssetName = "[^"]+";$|    rimeWanxiangAssetName = "'"${wanxiang_asset_name}"'";|' "${target_file}"
+sed -Ei 's|^    rimeWanxiangZipHash = "sha256-[^"]+";$|    rimeWanxiangZipHash = "'"${wanxiang_hash}"'";|' "${target_file}"
+sed -Ei 's|^    rimeWanxiangGramHash = "sha256-[^"]+";$|    rimeWanxiangGramHash = "'"${gram_hash}"'";|' "${target_file}"
 
 echo "updated ${target_file}"
 echo "  version:       ${current_version:-unknown} -> ${version}"

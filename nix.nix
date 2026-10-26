@@ -1,154 +1,160 @@
 {
-  config,
-  pkgs,
-  ...
-}: {
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  flake.modules.nixos.base = {
+    config,
+    pkgs,
+    ...
+  }: {
+    # Allow unfree packages
+    nixpkgs.config.allowUnfree = true;
 
-  # paseo-desktop currently depends on Electron 41, which nixpkgs marks EOL.
-  # Keep the exception explicit so other insecure packages remain blocked.
-  # Derive the version from nixpkgs so it stays in sync after flake updates.
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-${pkgs.electron_41.version}"
-  ];
+    # paseo-desktop currently depends on Electron 41, which nixpkgs marks EOL.
+    # Keep the exception explicit so other insecure packages remain blocked.
+    # Derive the version from nixpkgs so it stays in sync after flake updates.
+    nixpkgs.config.permittedInsecurePackages = [
+      "electron-${pkgs.electron_41.version}"
+    ];
 
-  nixpkgs.overlays = [
-    (final: prev: {
-      # Readest's TypeScript check exceeds Node's default 2 GiB heap limit.
-      readest = prev.readest.overrideAttrs (old: {
-        NODE_OPTIONS = prev.lib.concatStringsSep " " (
-          prev.lib.optional (old ? NODE_OPTIONS) old.NODE_OPTIONS
-          ++ ["--max-old-space-size=4096"]
-        );
-      });
+    nixpkgs.overlays = [
+      (final: prev: {
+        # Readest's TypeScript check exceeds Node's default 2 GiB heap limit.
+        readest = prev.readest.overrideAttrs (old: {
+          NODE_OPTIONS = prev.lib.concatStringsSep " " (
+            prev.lib.optional (old ? NODE_OPTIONS) old.NODE_OPTIONS
+            ++ ["--max-old-space-size=4096"]
+          );
+        });
 
-      # click-threading's legacy docs/conf.py imports the removed pkg_resources.
-      # Restrict pytest to the package's actual test suite instead of collecting docs.
-      pythonPackagesExtensions =
-        prev.pythonPackagesExtensions
-        ++ [
-          (pythonFinal: pythonPrev: {
-            click-threading = pythonPrev.click-threading.overridePythonAttrs (old: {
-              pytestFlags = (old.pytestFlags or []) ++ ["tests"];
-            });
+        # click-threading's legacy docs/conf.py imports the removed pkg_resources.
+        # Restrict pytest to the package's actual test suite instead of collecting docs.
+        pythonPackagesExtensions =
+          prev.pythonPackagesExtensions
+          ++ [
+            (pythonFinal: pythonPrev: {
+              click-threading = pythonPrev.click-threading.overridePythonAttrs (old: {
+                pytestFlags = (old.pytestFlags or []) ++ ["tests"];
+              });
 
-            # file 5.47 identifies compressed tar fixtures by their outer
-            # compression MIME type, while patool's tests still expect x-tar.
-            patool = pythonPrev.patool.overridePythonAttrs (old: {
-              disabledTests =
-                (old.disabledTests or [])
-                ++ [
-                  "test_py_tarfile_bz2"
-                  "test_py_tarfile_bz2_file"
-                  "test_tar_lzma"
-                  "test_tar_xz"
-                  "test_tar_bz2"
-                  "test_tar_bz2_file"
-                  "test_tar_lzip"
-                  "test_tar_xz_file"
-                  "test_mime_file"
-                  "test_mime_file_bzip"
-                ];
-            });
+              # file 5.47 identifies compressed tar fixtures by their outer
+              # compression MIME type, while patool's tests still expect x-tar.
+              patool = pythonPrev.patool.overridePythonAttrs (old: {
+                disabledTests =
+                  (old.disabledTests or [])
+                  ++ [
+                    "test_py_tarfile_bz2"
+                    "test_py_tarfile_bz2_file"
+                    "test_tar_lzma"
+                    "test_tar_xz"
+                    "test_tar_bz2"
+                    "test_tar_bz2_file"
+                    "test_tar_lzip"
+                    "test_tar_xz_file"
+                    "test_mime_file"
+                    "test_mime_file_bzip"
+                  ];
+              });
 
-            # The Sphinx hook expands this value as a shell word list.
-            # With structuredAttrs, a Nix list exposes only its first item.
-            reuse = pythonPrev.reuse.overridePythonAttrs (_: {
-              sphinxBuilders = "html man";
-            });
-          })
+              # The Sphinx hook expands this value as a shell word list.
+              # With structuredAttrs, a Nix list exposes only its first item.
+              reuse = pythonPrev.reuse.overridePythonAttrs (_: {
+                sphinxBuilders = "html man";
+              });
+            })
+          ];
+      })
+    ];
+
+    # GC is handled by programs.nh.clean (weekly, --keep 3 --keep-since 7d).
+    nix = {
+      settings = {
+        warn-dirty = false;
+        experimental-features = [
+          "nix-command"
+          "flakes"
+          "pipe-operators"
         ];
-    })
-  ];
+        builders-use-substitutes = true;
+        auto-optimise-store = true;
+        trusted-users = [
+          "root"
+          "zh"
+          "@wheel"
+        ];
 
-  # GC is handled by programs.nh.clean (weekly, --keep 3 --keep-since 7d).
-  nix = {
-    settings = {
-      warn-dirty = false;
-      experimental-features = [
-        "nix-command"
-        "flakes"
-        "pipe-operators"
-      ];
-      builders-use-substitutes = true;
-      auto-optimise-store = true;
-      trusted-users = [
-        "root"
-        "zh"
-        "@wheel"
-      ];
+        substituters = [
+          # # cache mirror located in China
+          # # status: https://mirrors.ustc.edu.cn/status/
+          "https://mirrors.ustc.edu.cn/nix-channels/store"
+          # # status: https://mirrors.sjtug.sjtu.edu.cn/
+          # # "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store"
+          # # status: https://mirrors.tuna.tsinghua.edu.cn/status/
+          "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
 
-      substituters = [
-        # # cache mirror located in China
-        # # status: https://mirrors.ustc.edu.cn/status/
-        "https://mirrors.ustc.edu.cn/nix-channels/store"
-        # # status: https://mirrors.sjtug.sjtu.edu.cn/
-        # # "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store"
-        # # status: https://mirrors.tuna.tsinghua.edu.cn/status/
-        "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+          "https://cache.nixos.org"
 
-        "https://cache.nixos.org"
+          "https://invisibox.cachix.org"
 
-        "https://nix-community.cachix.org"
+          "https://nix-community.cachix.org"
 
-        "https://nix-gaming.cachix.org"
+          "https://nix-gaming.cachix.org"
 
-        "https://cache.garnix.io"
+          "https://cache.garnix.io"
 
-        "https://niri-epireyn.cachix.org"
+          "https://niri-epireyn.cachix.org"
 
-        "https://noctalia.cachix.org"
+          "https://noctalia.cachix.org"
 
-        "https://cache.numtide.com"
+          "https://cache.numtide.com"
 
-        "https://cache.lantian.pub/lantian"
-      ];
+          "https://cache.lantian.pub/lantian"
+        ];
 
-      trusted-public-keys = [
-        # the default public key of cache.nixos.org, it's built-in, no need to add it here
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        trusted-public-keys = [
+          # the default public key of cache.nixos.org, it's built-in, no need to add it here
+          "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
 
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+          "invisibox.cachix.org-1:Z0N2eK66tu3OyRiImOR1yHcQmy8DK/6CRCkVxQqvJYk="
 
-        "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
+          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
 
-        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+          "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
 
-        "niri-epireyn.cachix.org-1:tlVyFN7CtsDT+ZcLPS+ekFWeT1X6X4OqvWqbBMyIzFA="
+          "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
 
-        "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+          "niri-epireyn.cachix.org-1:tlVyFN7CtsDT+ZcLPS+ekFWeT1X6X4OqvWqbBMyIzFA="
 
-        "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+          "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
 
-        "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ="
-      ];
+          "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+
+          "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ="
+        ];
+      };
     };
-  };
 
-  environment.systemPackages = with pkgs; [
-    nvd
-    nil
-    nix-output-monitor
-    alejandra
-  ];
+    environment.systemPackages = with pkgs; [
+      nvd
+      nil
+      nix-output-monitor
+      alejandra
+    ];
 
-  programs.nh = {
-    enable = true;
-    clean = {
+    programs.nh = {
       enable = true;
-      dates = "weekly";
-      extraArgs = "--keep 3 --keep-since 7d";
+      clean = {
+        enable = true;
+        dates = "weekly";
+        extraArgs = "--keep 3 --keep-since 7d";
+      };
+      flake = config.users.users.zh.home + "/Documents/nix-config";
     };
-    flake = config.users.users.zh.home + "/Documents/nix-config";
+
+    systemd.tmpfiles.rules = [
+      # nh writes build result symlinks under /tmp/nh-os*/result. On disk-backed
+      # /tmp these can outlive reboots and keep old NixOS closures alive as GC roots.
+      # Use mtime-based aging so root scans that refresh atime do not keep them forever.
+      "e /tmp/nh-os* - - - mM:7d -"
+    ];
+
+    nix.channel.enable = false; # remove nix-channel related tools & configs, we use flakes instead.
   };
-
-  systemd.tmpfiles.rules = [
-    # nh writes build result symlinks under /tmp/nh-os*/result. On disk-backed
-    # /tmp these can outlive reboots and keep old NixOS closures alive as GC roots.
-    # Use mtime-based aging so root scans that refresh atime do not keep them forever.
-    "e /tmp/nh-os* - - - mM:7d -"
-  ];
-
-  nix.channel.enable = false; # remove nix-channel related tools & configs, we use flakes instead.
 }

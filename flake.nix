@@ -1,8 +1,17 @@
 {
-  description = "A simple NixOS flake";
+  description = "Dendritic NixOS configuration";
 
   inputs = {
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
+
+    # Keep its own nixpkgs lock so package hashes match the CI binary cache.
+    nix-packages.url = "github:Invisibox/nix-packages";
+
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+    import-tree.url = "github:denful/import-tree";
 
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
 
@@ -71,63 +80,15 @@
     };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    # stylix,
-    home-manager,
-    ...
-  } @ inputs: let
-    system = "x86_64-linux";
-  in {
-    formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
-
-    nixosConfigurations.thinkpad-t14s = nixpkgs.lib.nixosSystem {
-      inherit system;
-      specialArgs = {
-        inherit inputs;
-      };
-      modules = [
-        inputs.nix-flatpak.nixosModules.nix-flatpak
-        # Import only the NixOS module. Referencing the flake output also
-        # evaluates Disko's CLI package, which still uses deprecated stdenv
-        # platform aliases.
-        (inputs.disko + "/module.nix")
-        inputs.lanzaboote.nixosModules.lanzaboote
-        inputs.nixos-hardware.nixosModules.common-cpu-intel
-        inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t14s
-        ./hosts/thinkpad-t14s
-
-        # stylix.nixosModules.stylix
-
-        # 将 home-manager 配置为 nixos 的一个 module
-        # 这样在 nixos-rebuild switch 时，home-manager 配置也会被自动部署
-        home-manager.nixosModules.home-manager
-        ({config, ...}: let
-          localUserName = config.local.user.name;
-          localUserHome = config.local.user.home;
-        in {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.${localUserName} = {
-            imports = [./home-manager/home.nix];
-            home = {
-              username = localUserName;
-              homeDirectory = localUserHome;
-            };
-          };
-
-          home-manager.backupFileExtension = "hm-back";
-
-          home-manager.sharedModules = [
-            inputs.spicetify-nix.homeManagerModules.default
-            inputs.steam-config-nix.homeModules.default
-          ];
-
-          # Home Manager modules still consume flake inputs directly.
-          home-manager.extraSpecialArgs = {inherit inputs;};
-        })
-      ];
-    };
-  };
+  outputs = inputs:
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} (
+      inputs.import-tree.filter
+      (path:
+        !(builtins.elem (builtins.baseNameOf path) [
+          "flake.nix"
+          "hardware-configuration.nix"
+          "disko.nix"
+        ]))
+      ./.
+    );
 }

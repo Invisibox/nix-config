@@ -1,78 +1,80 @@
-{...}: {
-  programs.zed-editor = {
-    enable = true;
-    extensions = [
-      "nix"
-      "toml"
-      "rust"
-      "catppuccin-icons"
-      "macos-classic"
-    ];
-    userSettings = {
-      theme = {
-        mode = "system";
-        dark = "macOS Classic Dark";
-        light = "macOS Classic Light";
-      };
-      icon_theme = {
-        mode = "system";
-        dark = "Catppuccin Mocha";
-        light = "Catppuccin Latte";
-      };
-      ui_font_family = "Sarasa Gothic SC";
-      ui_font_fallbacks = ["Sarasa Gothic SC"];
-      buffer_font_family = "Maple Mono NF CN";
-      buffer_font_fallbacks = ["Maple Mono NF CN"];
-      buffer_font_size = 16;
-      terminal = {
-        font_family = "Maple Mono NF CN";
-        font_size = 16;
-      };
-      minimap = {
-        show = "auto";
-        thumb = "hover";
-      };
-      project_panel = {
-        dock = "left";
-      };
-      git_panel = {
-        dock = "left";
-      };
-      agent_servers = {
-        claude-acp = {
-          type = "registry";
+{
+  flake.modules.homeManager.desktop = {...}: {
+    programs.zed-editor = {
+      enable = true;
+      extensions = [
+        "nix"
+        "toml"
+        "rust"
+        "catppuccin-icons"
+        "macos-classic"
+      ];
+      userSettings = {
+        theme = {
+          mode = "system";
+          dark = "macOS Classic Dark";
+          light = "macOS Classic Light";
         };
-        codex-acp = {
-          type = "registry";
+        icon_theme = {
+          mode = "system";
+          dark = "Catppuccin Mocha";
+          light = "Catppuccin Latte";
         };
-        omp = {
-          type = "custom";
-          command = "omp";
-          args = ["acp"];
+        ui_font_family = "Sarasa Gothic SC";
+        ui_font_fallbacks = ["Sarasa Gothic SC"];
+        buffer_font_family = "Maple Mono NF CN";
+        buffer_font_fallbacks = ["Maple Mono NF CN"];
+        buffer_font_size = 16;
+        terminal = {
+          font_family = "Maple Mono NF CN";
+          font_size = 16;
         };
-      };
-      lsp = {
-        nil = {
-          initialization_options = {
-            formatting.command = ["alejandra"];
+        minimap = {
+          show = "auto";
+          thumb = "hover";
+        };
+        project_panel = {
+          dock = "left";
+        };
+        git_panel = {
+          dock = "left";
+        };
+        agent_servers = {
+          claude-acp = {
+            type = "registry";
+          };
+          codex-acp = {
+            type = "registry";
+          };
+          omp = {
+            type = "custom";
+            command = "omp";
+            args = ["acp"];
           };
         };
-        nix = {
-          binary = {
-            path_lookup = true;
+        lsp = {
+          nil = {
+            initialization_options = {
+              formatting.command = ["alejandra"];
+            };
+          };
+          nix = {
+            binary = {
+              path_lookup = true;
+            };
           };
         };
-      };
-      languages = {
-        Nix = {
-          tab_size = 2;
-          language_servers = [
-            "nil"
-          ];
+        languages = {
+          Nix = {
+            tab_size = 2;
+            language_servers = [
+              "nil"
+            ];
+          };
         };
+        vim_mode = true;
+        relative_line_numbers = "wrapped";
       };
-      vim_mode = true;
-      relative_line_numbers = "wrapped";
     };
   };
 }
