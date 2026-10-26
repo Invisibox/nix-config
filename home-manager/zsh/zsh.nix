@@ -132,7 +132,7 @@
     sd=${pkgs.sd}/bin/sd
 
     mkdir -p "$out"
-    XDG_CONFIG_HOME=/tmp/ XDG_DATA_HOME=/tmp/ \
+    HOME="$TMPDIR" XDG_CONFIG_HOME="$TMPDIR/config" XDG_DATA_HOME="$TMPDIR/data" \
       ${config.programs.atuin.package}/bin/atuin init zsh \
         | $sd '^bindkey.+?\n' "" \
         | $sd -f s '_zsh_autosuggest_strategy_atuin\(\) \{.+?\}' \
