@@ -22,7 +22,6 @@ in {
       };
 
       sharedModules = [
-        inputs.spicetify-nix.homeManagerModules.default
         inputs.steam-config-nix.homeModules.default
       ];
     };

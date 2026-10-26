@@ -1,6 +1,5 @@
 {
   flake.modules.nixos.apps = {pkgs, ...}: {
-    # local.apps.bitwarden.enable = true;
     local.apps.brave-origin.enable = true;
     local.apps.localsend.enable = true;
     local.apps.onlyoffice.enable = true;

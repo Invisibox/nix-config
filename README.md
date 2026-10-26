@@ -17,7 +17,7 @@
 
 同一个模块可以在多个文件里定义，内容由模块系统合并。一个功能也可以在同一个文件里同时定义 NixOS 和 Home Manager 配置，例如 `modules/apps/niri/default.nix`。
 
-本次迁移保留 `local.*.enable` 接口和现有 profiles，以便单独验证结构变化。Spotify 作为 `flake.modules.homeManager.spotify` 导出，当前主机仍未导入它。
+本次迁移保留 `local.*.enable` 接口和现有 profiles，以便单独验证结构变化。
 
 ## 自动导入约定
 
