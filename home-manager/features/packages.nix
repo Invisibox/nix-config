@@ -87,7 +87,7 @@ in {
     # zotero
 
     # media and images
-    euphonica
+    amberol
     # curtail
     piliplus
     qimgv
