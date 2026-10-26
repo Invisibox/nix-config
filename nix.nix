@@ -51,6 +51,12 @@
                   "test_mime_file_bzip"
                 ];
             });
+
+            # The Sphinx hook expands this value as a shell word list.
+            # With structuredAttrs, a Nix list exposes only its first item.
+            reuse = pythonPrev.reuse.overridePythonAttrs (_: {
+              sphinxBuilders = "html man";
+            });
           })
         ];
     })
