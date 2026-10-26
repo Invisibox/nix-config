@@ -7,52 +7,12 @@
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
 
-    # paseo-desktop currently depends on Electron 41, which nixpkgs marks EOL.
-    # Keep the exception explicit so other insecure packages remain blocked.
-    # Derive the version from nixpkgs so it stays in sync after flake updates.
-    nixpkgs.config.permittedInsecurePackages = [
-      "electron-${pkgs.electron_41.version}"
-    ];
-
     nixpkgs.overlays = [
       (final: prev: {
-        # Readest's TypeScript check exceeds Node's default 2 GiB heap limit.
-        readest = prev.readest.overrideAttrs (old: {
-          NODE_OPTIONS = prev.lib.concatStringsSep " " (
-            prev.lib.optional (old ? NODE_OPTIONS) old.NODE_OPTIONS
-            ++ ["--max-old-space-size=4096"]
-          );
-        });
-
-        # click-threading's legacy docs/conf.py imports the removed pkg_resources.
-        # Restrict pytest to the package's actual test suite instead of collecting docs.
         pythonPackagesExtensions =
           prev.pythonPackagesExtensions
           ++ [
             (pythonFinal: pythonPrev: {
-              click-threading = pythonPrev.click-threading.overridePythonAttrs (old: {
-                pytestFlags = (old.pytestFlags or []) ++ ["tests"];
-              });
-
-              # file 5.47 identifies compressed tar fixtures by their outer
-              # compression MIME type, while patool's tests still expect x-tar.
-              patool = pythonPrev.patool.overridePythonAttrs (old: {
-                disabledTests =
-                  (old.disabledTests or [])
-                  ++ [
-                    "test_py_tarfile_bz2"
-                    "test_py_tarfile_bz2_file"
-                    "test_tar_lzma"
-                    "test_tar_xz"
-                    "test_tar_bz2"
-                    "test_tar_bz2_file"
-                    "test_tar_lzip"
-                    "test_tar_xz_file"
-                    "test_mime_file"
-                    "test_mime_file_bzip"
-                  ];
-              });
-
               # The Sphinx hook expands this value as a shell word list.
               # With structuredAttrs, a Nix list exposes only its first item.
               reuse = pythonPrev.reuse.overridePythonAttrs (_: {
