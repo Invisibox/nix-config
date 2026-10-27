@@ -48,17 +48,10 @@
         </fontconfig>
       '';
 
-      # OnlyOffice scans /usr/share/fonts directly in addition to using Fontconfig.
-      # Mount the complete Windows font package into its FHS environment as well.
-      packageWithFonts = cfg.package.overrideAttrs (old: {
-        extraBwrapArgs =
-          (old.extraBwrapArgs or [])
-          ++ [
-            "--ro-bind"
-            "${windowsFontsPackage}/share/fonts"
-            "/usr/share/fonts"
-          ];
-      });
+      # Let the package populate its FHS font directory instead of mounting onto its symlink.
+      packageWithFonts = cfg.package.override {
+        extraFontPackages = [windowsFontsPackage];
+      };
 
       wrappedOnlyOfficePackage = pkgs.symlinkJoin {
         name = "${packageWithFonts.name or "onlyoffice-desktopeditors"}-with-fonts";
@@ -76,13 +69,13 @@
                 --run '
                   onlyoffice_fonts_cache="$HOME/.local/share/onlyoffice/desktopeditors/data/fonts"
                   onlyoffice_fonts_marker="$onlyoffice_fonts_cache/.nix-windows-fonts"
-                  if [ ! -f "$onlyoffice_fonts_marker" ] || [ "$(cat "$onlyoffice_fonts_marker" 2>/dev/null)" != "${windowsFontsPackage}" ]; then
+                  if [ ! -f "$onlyoffice_fonts_marker" ] || [ "$(cat "$onlyoffice_fonts_marker" 2>/dev/null)" != "${packageWithFonts.fhsenv}" ]; then
                     rm -f "$onlyoffice_fonts_cache"/AllFonts.js* \
                       "$onlyoffice_fonts_cache"/font_selection.bin \
                       "$onlyoffice_fonts_cache"/fonts.log \
                       "$onlyoffice_fonts_cache"/fonts_thumbnail*
                     mkdir -p "$onlyoffice_fonts_cache"
-                    printf "%s" "${windowsFontsPackage}" > "$onlyoffice_fonts_marker"
+                    printf "%s" "${packageWithFonts.fhsenv}" > "$onlyoffice_fonts_marker"
                   fi'
             else
               ln -s "$bin" "$out/bin/$bin_name"
