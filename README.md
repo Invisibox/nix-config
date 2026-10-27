@@ -75,7 +75,7 @@ nix flake update nix-packages
 应用更新脚本也已迁至新仓库；本仓库的 `scripts/update-all.sh` 继续更新 Bottles、Rime 和 Zsh 插件。
 发布到 GitHub 且 Actions 构建通过后，可将 `inputs.nix-packages.url` 改回 `github:Invisibox/nix-packages`，再执行上面的更新命令。
 
-微信、QQ 和百度网盘替代原有 Flatpak 声明；腾讯会议和 Open WebUI 的声明已移除。沙箱仅以只读方式挂载 `~/Documents`，应用自己的数据和下载写入 `~/.local/share/jail.nix/home/<包名>/`。允许联网、音频、GPU、剪贴板、读取和跟随系统深浅色模式，并通过受限桌面门户在系统默认浏览器中打开 HTTP(S) 网页；微信开放 Qt 旧式托盘注册权限。旧 Flatpak 安装和数据不会自动卸载或迁移；沙箱说明及权限测试见 `nix-packages/README.md`。
+微信、QQ 和百度网盘替代原有 Flatpak 声明；腾讯会议和 Open WebUI 的声明已移除。沙箱仅以只读方式挂载 `~/Documents`，应用自己的数据和下载写入 `~/.local/share/jail.nix/home/<包名>/`。允许联网、桌面通知、摄像头、通过 PulseAudio / PipeWire 播放音频和使用麦克风、GPU、剪贴板、读取和跟随系统深浅色模式，并通过受限桌面门户在系统默认浏览器中打开 HTTP(S) 网页；微信开放 Qt 旧式托盘注册权限。旧 Flatpak 安装和数据不会自动卸载或迁移；沙箱说明及权限测试见 `nix-packages/README.md`。
 
 Proton CachyOS 的 `x86_64_v3` 版本直接引用 [Chaotic Nyx](https://github.com/chaotic-cx/nyx) 的 `packages` 输出，供 Heroic 和 Bottles 使用。保留 Nyx 自己的 nixpkgs 锁定，通过 `nix flake update chaotic` 更新；对应二进制缓存及公钥已加入 `modules/system/nix.nix`，重建并切换系统后生效。
 

@@ -495,8 +495,8 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1793074751,
-        "narHash": "sha256-3Lz4kr+ZoqoxfX3evNepvYtejohGq7GgMmlcNcha7yY=",
+        "lastModified": 1793078287,
+        "narHash": "sha256-Die7HxUFoUjXEjHTULN8X9L2Zmc0eoSFTK4aGtuU+ck=",
         "path": "/home/zh/Documents/nix-packages",
         "type": "path"
       },
