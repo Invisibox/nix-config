@@ -496,11 +496,11 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1793079731,
-        "narHash": "sha256-J2F5I1Ej8UwOEs5A/o1pSayGTnGqg57PagFLkXZOF7Y=",
+        "lastModified": 1793086912,
+        "narHash": "sha256-kOyr4NpEj6rGbGrE7hR8QibX0+/TCyLMXrETjxGc35E=",
         "owner": "Invisibox",
         "repo": "nix-packages",
-        "rev": "3ac20f448a24dc9bbfd931dbba923c2d48c11f1a",
+        "rev": "ac8b45c2aca70617f16e33b79665650f7eeb5d3f",
         "type": "github"
       },
       "original": {
