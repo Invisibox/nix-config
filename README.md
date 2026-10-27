@@ -9,12 +9,12 @@
 | `flake.nix` | 声明 inputs、平台和 formatter，注册 `flake.modules`，使用 flake-parts 和 import-tree 加载配置 |
 | `configuration.nix` | 将主机模块实例化为 `nixosConfigurations.thinkpad-t14s` |
 | `hosts/thinkpad-t14s/default.nix` | 定义主机模块，组合基础配置、profiles 和硬件配置 |
-| `modules/apps/` | 应用功能的 NixOS 和 Home Manager 配置，以及对应资源；普通用户应用合并到 `homeManager.apps` |
+| `modules/apps/` | 应用功能的 NixOS 和 Home Manager 配置，以及对应资源；`packages.nix` 统一选择应用、声明软件包，并接入 `homeManager.apps` |
 | `modules/desktop/` | Niri、登录界面、字体、输入法、主题、Noctalia、桌面工具和 MIME 配置；通用配置合并到 `nixos.desktop` / `homeManager.desktop`，Niri 的用户配置随会话模块一起导入 |
 | `modules/shell/` | Zsh、Starship、CLI 和归档工具；系统工具合并到 `nixos.base`，用户配置合并到 `homeManager.shell` |
 | `modules/dev/` | Git、Zed、编辑器、编译工具和 AI 编程助手，合并到 `nixos.dev` / `homeManager.dev` |
 | `modules/local/` | 本地用户选项、Home Manager 接入，以及 `homeManager.base` 的用户目录和兼容版本设置 |
-| `modules/profiles/` | 定义 `nixos.desktop`、`gaming`、`apps`、`dev`、`services` 组合；desktop、apps、dev 同时接入各自的 Home Manager 配置组 |
+| `modules/profiles/` | 定义 `nixos.desktop`、`gaming`、`dev`、`services` 组合；desktop、dev 同时接入各自的 Home Manager 配置组 |
 | `modules/system/` | Nix 设置、nix-ld 运行环境、虚拟化和容器配置 |
 | `modules/services/` | dae、Neiro、打印等后台服务；打印由 desktop profile 选择 |
 | `modules/security/` | 指纹认证等安全功能 |
@@ -26,7 +26,7 @@
 
 单文件功能直接使用 `kitty.nix`、`fingerprint.nix` 等文件；有多个实现文件或配套资源的功能使用目录，例如 Steam、Niri、Fcitx5、Zsh、dae 和 Neiro。目录位置用于组织功能，模块的选择关系仍由导出名称和 `imports` 决定。profiles 主要负责选择功能与设置参数，软件包清单按用途放在 apps、dev、shell、desktop 中。
 
-例如，在 profile 中导入应用：
+应用选择与软件包清单集中在 `modules/apps/packages.nix`，由主机导入 `nixos.apps` 启用。例如，在该文件中组合应用：
 
 ```nix
 {config, ...}: {
