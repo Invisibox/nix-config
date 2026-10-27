@@ -3,6 +3,7 @@
 `config.dae` 保存从 daed 迁移的当前全局配置、DNS、路由和 5 个分组。
 Nix 模块启用 `dae-unstable`，服务直接读取仓库中的文件，方式与 niri 配置相同。
 配置目录为 `modules/services/dae/`；`modules/apps/dae` 保留为指向此目录的兼容链接，供仍引用旧路径的服务使用。
+微信主进程 `wechat` 和内嵌进程 `WeChatAppEx` 使用 `must_direct` 绕过透明代理，避免私有协议或 IP 直连落入代理分组；仅配置腾讯域名直连无法覆盖这些连接。
 
 首次切换，在仓库根目录执行：
 

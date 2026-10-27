@@ -99,6 +99,9 @@ dip(255.255.255.255) -> must_direct
 # 防止 DNS 或网络检测流量递归进入代理。
 pname(NetworkManager, systemd-resolved, dnsmasq) -> must_direct
 
+# 微信的私有协议和 IP 直连可能无法匹配域名规则，按进程绕过透明代理。
+pname(wechat, WeChatAppEx) -> must_direct
+
 # 本地回环和 DNS 转发器
 dip(127.0.0.0/8) -> direct
 dip(192.168.2.0/24) -> direct
