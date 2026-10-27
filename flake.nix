@@ -4,9 +4,8 @@
   inputs = {
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
 
-    # Use the sibling checkout until the new packages are published on GitHub.
     # Keep its own nixpkgs lock so package hashes match the CI binary cache.
-    nix-packages.url = "path:/home/zh/Documents/nix-packages";
+    nix-packages.url = "github:Invisibox/nix-packages";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";

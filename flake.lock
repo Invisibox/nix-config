@@ -495,14 +495,17 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1793078287,
-        "narHash": "sha256-Die7HxUFoUjXEjHTULN8X9L2Zmc0eoSFTK4aGtuU+ck=",
-        "path": "/home/zh/Documents/nix-packages",
-        "type": "path"
+        "lastModified": 1793079731,
+        "narHash": "sha256-J2F5I1Ej8UwOEs5A/o1pSayGTnGqg57PagFLkXZOF7Y=",
+        "owner": "Invisibox",
+        "repo": "nix-packages",
+        "rev": "3ac20f448a24dc9bbfd931dbba923c2d48c11f1a",
+        "type": "github"
       },
       "original": {
-        "path": "/home/zh/Documents/nix-packages",
-        "type": "path"
+        "owner": "Invisibox",
+        "repo": "nix-packages",
+        "type": "github"
       }
     },
     "nixos-hardware": {
