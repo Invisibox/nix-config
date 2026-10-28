@@ -11,7 +11,7 @@
 | `hosts/thinkpad-t14s/default.nix` | 定义主机模块，组合基础配置、profiles 和硬件配置 |
 | `modules/apps/` | 应用功能的 NixOS 和 Home Manager 配置，以及对应资源；`packages.nix` 统一选择应用、声明软件包，并接入 `homeManager.apps` |
 | `modules/desktop/` | Niri、登录界面、字体、输入法、主题、Noctalia、桌面工具和 MIME 配置；通用配置合并到 `nixos.desktop` / `homeManager.desktop`，Niri 的用户配置随会话模块一起导入 |
-| `modules/shell/` | Zsh、Starship、CLI 和归档工具；系统工具合并到 `nixos.base`，用户配置合并到 `homeManager.shell` |
+| `modules/shell/` | Zsh、Powerlevel10k、CLI 和归档工具；系统工具合并到 `nixos.base`，用户配置合并到 `homeManager.shell` |
 | `modules/dev/` | Git、Zed、编辑器、编译工具和 AI 编程助手，合并到 `nixos.dev` / `homeManager.dev` |
 | `modules/local/` | 本地用户选项、Home Manager 接入，以及 `homeManager.base` 的用户目录和兼容版本设置 |
 | `modules/profiles/` | 定义 `nixos.desktop`、`gaming`、`dev`、`services` 组合；desktop、dev 同时接入各自的 Home Manager 配置组 |

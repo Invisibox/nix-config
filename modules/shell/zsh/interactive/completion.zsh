@@ -7,6 +7,9 @@ init_completions () {
 
   autoload -Uz compinit
   compinit -C -d $ZSH_CACHE_DIR/zcompdump
+  if [[ -f $ZSH_CACHE_DIR/zcompdump && ! $ZSH_CACHE_DIR/zcompdump.zwc -nt $ZSH_CACHE_DIR/zcompdump ]]; then
+    zcompile -U -- $ZSH_CACHE_DIR/zcompdump
+  fi
 
   unfunction init_completions
 

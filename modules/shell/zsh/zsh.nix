@@ -16,13 +16,13 @@
     in
       # sh
       ''
-        ${config.programs.zsh.package}/bin/zsh -dfc '
+        ${config.programs.zsh.package}/bin/zsh -dfec '
           setopt extendedglob globstarshort dotglob nullglob
           for f in ${globExpr}; do
             [[ -f $f ]] || continue
-            zcompile -U -- "$f" 2>/dev/null
+            zcompile -U -- "$f"
           done
-        ' || :
+        '
       '';
 
     # make a derivation out of a plugin's name and source.
@@ -41,27 +41,16 @@
                   attrs.unpackPhase or # sh
               ''
                     mkdir -p -- $out/
-                    cp -r $src/.* $src/* $out/
+                    cp -r "$src"/. "$out"/
                   ''
                 )
                 + ''
+                  chmod -R u+w "$out"
                   ${zcompileGlob "$out/**/*.zsh"}
                 '';
             }
           )
       ) {};
-
-    fast-syntax-highlighting = let
-      name = "fast-syntax-highlighting";
-    in
-      mkZshPlugin name {
-        src = pkgs.fetchFromGitHub {
-          owner = "zdharma-continuum";
-          repo = name;
-          rev = "4672ad5dd9ad68a7effc1476d65afb7c584ce2b3";
-          hash = "sha256-gXTJv+k4OSgwiM7vy91v7tLLHre0f5XeSor3n/b2euI=";
-        };
-      };
 
     # disabled: overlaps with atuin search/history widgets.
     # zsh-history-substring-search = let
@@ -75,23 +64,6 @@
     #       hash = "sha256-KHujL1/TM5R3m4uQh2nGVC98D6MOyCgQpyFf+8gjKR0=";
     #     };
     #   };
-
-    zsh-autosuggestions = let
-      name = "zsh-autosuggestions";
-    in
-      mkZshPlugin name {
-        src = pkgs.fetchFromGitHub {
-          owner = "zsh-users";
-          repo = name;
-          rev = "85919cd1ffa7d2d5412f6d3fe437ebdbeeec4fc5";
-          hash = "sha256-KmkXgK1J6iAyb1FtF/gOa0adUnh1pgFsgQOUnNngBaE=";
-        };
-        unpackPhase = ''
-          mkdir -p $out/
-          sed 's/(( $#POSTDISPLAY ))/(( ''${#''${POSTDISPLAY-}} ))/' \
-            < $src/${name}.zsh > $out/${name}.zsh
-        '';
-      };
 
     fzf-tab = let
       name = "fzf-tab";
@@ -135,31 +107,53 @@
       mkdir -p "$out"
       HOME="$TMPDIR" XDG_CONFIG_HOME="$TMPDIR/config" XDG_DATA_HOME="$TMPDIR/data" \
         ${config.programs.atuin.package}/bin/atuin init zsh \
-          | $sd '^bindkey.+?\n' "" \
-          | $sd -f s '_zsh_autosuggest_strategy_atuin\(\) \{.+?\}' \
-              '_zsh_autosuggest_strategy_atuin () {
-                suggestion=$(atuin search --cmd-only --limit 1 --search-mode prefix --cwd $$PWD -- "$$1")
-              }
-              ' > "$out/atuin.zsh"
+          | $sd '^bindkey.+?\n' "" > "$out/atuin.zsh"
 
       ${config.programs.zsh.package}/bin/zsh -dfc 'zcompile -U -- "$1"' _ "$out/atuin.zsh"
     '';
+
+    # Cache initialization in the store so shell startup only loads bytecode.
+    zoxide-integration = pkgs.runCommandLocal "zsh zoxide init" {} ''
+      mkdir -p "$out"
+      ${lib.getExe pkgs.zoxide} init zsh --cmd cd > "$out/zoxide.zsh"
+      ${config.programs.zsh.package}/bin/zsh -dfec 'zcompile -U -- "$1"' _ "$out/zoxide.zsh"
+    '';
   in {
+    home.packages = [pkgs.deja pkgs.zoxide pkgs.zsh-patina];
+
+    home.activation.prepareDeja = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      run ${lib.getExe pkgs.deja} init zsh > /dev/null
+      run ${config.programs.zsh.package}/bin/zsh -dfc \
+        'zcompile -U -- "$HOME/.local/share/deja/init.zsh"'
+      if [[ ! -e "$HOME/.local/share/deja/.atuin-imported" ]]; then
+        run ${config.programs.zsh.package}/bin/zsh -df \
+          ${./import-atuin-history.zsh} \
+          ${lib.getExe config.programs.atuin.package} ${lib.getExe pkgs.deja}
+      fi
+    '';
+
     xdg.configFile = {
       # entrypoint
       # zdotdir is set by the nixos module and points to $XDG_CONFIG_HOME/zsh
 
       "zsh/.zshenv".source = ./zshenv;
 
+      # Bound highlighting work for large pasted commands.
+      "zsh-patina/config.toml".text = ''
+        [highlighting]
+        max_line_length = 10000
+        timeout_ms = 20
+      '';
+
       # plugins
 
-      "zsh/plugins/fast-syntax-highlighting".source = fast-syntax-highlighting;
       # disabled: overlaps with atuin search/history widgets.
       # "zsh/plugins/zsh-history-substring-search".source = zsh-history-substring-search;
-      "zsh/plugins/zsh-autosuggestions".source = zsh-autosuggestions;
       "zsh/plugins/fzf-tab".source = fzf-tab;
       "zsh/plugins/atuin.zsh".source = "${atuin-integration}/atuin.zsh";
       "zsh/plugins/atuin.zsh.zwc".source = "${atuin-integration}/atuin.zsh.zwc";
+      "zsh/plugins/zoxide.zsh".source = "${zoxide-integration}/zoxide.zsh";
+      "zsh/plugins/zoxide.zsh.zwc".source = "${zoxide-integration}/zoxide.zsh.zwc";
       "zsh/plugins/zsh-smartcache".source = zsh-smartcache;
       "zsh/plugins/zsh-no-ps2".source = zsh-no-ps2;
 

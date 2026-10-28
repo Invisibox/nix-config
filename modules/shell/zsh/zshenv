@@ -3,6 +3,11 @@
 
 setopt no_global_rcs no_rcs
 
+# Show the cached prompt before loading the interactive configuration.
+if [[ -o interactive && -r ${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 typeset -U path cdpath fpath manpath
 
 for profile in ${(z)NIX_PROFILES}; do

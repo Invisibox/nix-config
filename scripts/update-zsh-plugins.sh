@@ -16,9 +16,8 @@ for cmd in curl jq nix awk sed mktemp cp mv; do
   fi
 done
 
+# zsh-patina is updated through nixpkgs in flake.lock.
 plugins=(
-  "fast-syntax-highlighting|zdharma-continuum|fast-syntax-highlighting"
-  "zsh-autosuggestions|zsh-users|zsh-autosuggestions"
   "fzf-tab|Aloxaf|fzf-tab"
   "zsh-smartcache|QuarticCat|zsh-smartcache"
   "zsh-no-ps2|romkatv|zsh-no-ps2"

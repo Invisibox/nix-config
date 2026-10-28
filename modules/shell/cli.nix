@@ -2,6 +2,7 @@
   flake.modules.homeManager.shell = {
     programs.atuin = {
       enable = true;
+      daemon.enable = true;
       settings = {
         update_check = false;
         style = "compact";
@@ -13,7 +14,12 @@
           exit_past_line_start = false;
           accept_past_line_end = false;
         };
-        history_filter = ["^\\s+"];
+        history_filter = [
+          "^\\s+"
+          ''^ls($|(\s+((-([a-zA-Z0-9]|-)+)|"(\.|[^/])[^"]*"|'(\.|[^/])[^']*'|(\.|[^/\s-])[^\s]*))*\s*$)''
+          ''^cd($|\s+('[^/][^']*'|"[^/][^"]*"|[^/\s'"][^\s]*))$''
+          ''/nix/store/.*''
+        ];
       };
     };
 

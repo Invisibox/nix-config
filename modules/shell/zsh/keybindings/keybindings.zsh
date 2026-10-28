@@ -23,7 +23,11 @@ WORDCHARS='*?[]~&;!#$%^(){}<>'
 # Trim trailing spaces from pasted text
 # Ref: https://github.com/QuarticCat/dotfiles/blob/aacdabf9dcbb0246b81fd0daf35b5c37d072b37c/zsh/.zshrc#L167-L172
 qc-trim-paste() {
+  (( _atuin_lazy_loaded )) || _init_atuin_widgets || :
   zle .$WIDGET && LBUFFER=${LBUFFER%%[[:space:]]#}
+  if (( ! ${+functions[_deja_fetch]} )); then
+    _init_deja && zle deja-fetch
+  fi
 }
 zle -N bracketed-paste qc-trim-paste
 
@@ -73,7 +77,7 @@ bindkey "^[[200~" bracketed-paste
 # zle -la | fzf
 
 bind enter          accept-line
-bind a-s-enter      autosuggest-execute
+bind a-s-enter      lazy-deja-execute
 
 # delete
 # wish we just had s-backspace
@@ -91,7 +95,6 @@ bind a-d            kill-buffer
 bind c-l            clear-screen
 
 # move
-# TODO add {,s-,c-,a-}right to autosuggest widgets
 bind up             lazy-atuin-up-search
 bind down           down-line-or-history
 bind left           backward-char

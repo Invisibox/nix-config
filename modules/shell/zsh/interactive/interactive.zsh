@@ -5,12 +5,15 @@ autoload -Uz add-zsh-hook
 
 # ‣ [ prompt ]
 
-source $ZSH_CONFIG_DIR/interactive/starship.zsh
+source $ZSH_CONFIG_DIR/interactive/powerlevel10k.zsh
 
 # ‣ [ hooks and shell integration ]
 
 # direnv hooks
 source $ZSH_CONFIG_DIR/interactive/direnv.zsh
+
+# zoxide replaces cd and records directory changes
+source $ZSH_CONFIG_DIR/plugins/zoxide.zsh
 
 # OSC7: report PWD changes to the terminal emulator
 source $ZSH_CONFIG_DIR/interactive/osc7.zsh
@@ -112,6 +115,8 @@ _init_atuin_widgets () {
   local plugin_file=$ZSH_CONFIG_DIR/plugins/atuin.zsh
   [[ -r $plugin_file ]] || return 1
 
+  # Keep the background index warm-up from taking the foreground terminal.
+  setopt localoptions nomonitor
   source $plugin_file
   _atuin_defer_failed_history_init
   if (( ${+widgets[atuin-search]} && ${+widgets[atuin-up-search]} )); then
@@ -143,8 +148,32 @@ zle -N lazy-atuin-up-search
 lazy-atuin-self-insert () {
   (( _atuin_lazy_loaded )) || _init_atuin_widgets || :
   zle .self-insert
+  if (( ! ${+functions[_deja_fetch]} )); then
+    _init_deja && zle deja-fetch
+  fi
 }
 zle -N lazy-atuin-self-insert
+
+_init_deja () {
+  (( ${+functions[_deja_fetch]} )) && return 0
+
+  typeset -g DEJA_HIGHLIGHT_STYLE=fg=8
+  # Keep Tab for fzf-tab and Shift+arrows for the existing word movements.
+  typeset -g DEJA_CYCLE_KEY= DEJA_CYCLE_FUZZY_KEY= DEJA_CYCLE_FUZZY_BACK_KEY=
+  if [[ -r $HOME/.local/share/deja/init.zsh ]]; then
+    source "$HOME/.local/share/deja/init.zsh"
+  else
+    eval "$(deja init zsh)"
+  fi
+  DEJA_PARTIAL_ACCEPT_WIDGETS+=(qc-sub-r qc-shell-r)
+  _deja_bind_widgets
+  _DEJA_BOUND_WIDGET_COUNT=${#widgets}
+}
+
+lazy-deja-execute () {
+  _init_deja && zle deja-execute
+}
+zle -N lazy-deja-execute
 
 # define initial bindings and export `bind` function
 # we rely on zsh-edit for sane zle widgets so there's a plugin involved too
@@ -199,6 +228,7 @@ _completion_init_hook1 () {
   zstyle ':completion:*' menu no
   compdef _files rm
   compdef _directories mcd
+  compdef __zoxide_z_complete cd
 
   if (( ${+widgets[fzf-tab-complete]} )); then
     bindkey -M emacs -- "$_completion_tab_key" fzf-tab-complete
@@ -206,23 +236,11 @@ _completion_init_hook1 () {
     bindkey -M main -- "$_completion_tab_key" fzf-tab-complete
   fi
 
-  # fzf-tab widgets are created lazily; rebind fast-syntax-highlighting so
-  # its wrapper also covers `fzf-tab-complete` and refreshes colors after tab.
-  if (( ${+functions[_zsh_highlight_bind_widgets]} )); then
-    _zsh_highlight_bind_widgets
-  fi
-
-  # fzf-tab is loaded lazily during the first tab press, after autosuggestions
-  # has already wrapped widgets. Rebind autosuggestions wrappers now so the
-  # newly registered fzf-tab widget joins the same wrapper chain.
-  if (( ${+functions[_zsh_autosuggest_bind_widgets]} )); then
-    _zsh_autosuggest_bind_widgets
-  fi
-
-  # Clear stale autosuggestion display from the pre-fzf-tab widget state.
-  if (( ${+functions[_zsh_autosuggest_highlight_reset]} )); then
-    _zsh_autosuggest_highlight_reset
-    POSTDISPLAY=
+  # Include the new completion widgets without waiting for another prompt.
+  if (( ${+functions[_deja_bind_widgets]} )); then
+    _deja_clear
+    _deja_bind_widgets
+    _DEJA_BOUND_WIDGET_COUNT=${#widgets}
   fi
 
 }
@@ -236,27 +254,20 @@ init_completions_hooks+=(_completion_init_hook1)
 
   local plugin_dir=$ZSH_CONFIG_DIR/plugins
 
-  # autosuggestions
-  source $plugin_dir/zsh-autosuggestions/zsh-autosuggestions.zsh
-  ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS+=(qc-sub-r qc-shell-r)
-  ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd completion history)
-
   # disabled: overlaps with atuin search/history widgets.
   # source $plugin_dir/zsh-history-substring-search/zsh-history-substring-search.zsh
 
-  # syntax highlighting (fast-syntax-highlighting)
-  source $plugin_dir/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-
-  # keep behavior closer to zsh-syntax-highlighting defaults:
-  # - keep bracket highlighting
-  # - disable command-specific chroma rules
-  FAST_HIGHLIGHT[use_brackets]=1
-  for _fsh_key in ${(k)FAST_HIGHLIGHT}; do
-    [[ $_fsh_key == chroma-* ]] && unset "FAST_HIGHLIGHT[$_fsh_key]"
-  done
-  unset _fsh_key
-
   # no-ps2
   source $plugin_dir/zsh-no-ps2/zsh-no-ps2.plugin.zsh
+
+  _patina_activate () {
+    # ZLE hook setup expects ERR_RETURN to be off; smartcache enables it.
+    print -r -- 'unsetopt errreturn'
+    XDG_RUNTIME_DIR="$2" TMPDIR="$3" "$1" activate
+  }
+  # Key the compiled cache by executable version and daemon runtime directory.
+  smartcache eval _patina_activate \
+    "${commands[zsh-patina]:A}" "${XDG_RUNTIME_DIR-}" "${TMPDIR:-/tmp}"
+  unfunction _patina_activate
 
 }
