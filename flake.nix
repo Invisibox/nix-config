@@ -34,7 +34,7 @@
     };
 
     # Temporarily pin: 0ba376b emptied refs.nix and breaks evaluation.
-    niri-flake.url = "github:epireyn/niri-flake/3c4c27230766804bdcc7003de81f441033e1daa9";
+    niri-flake.url = "github:epireyn/niri-flake";
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
