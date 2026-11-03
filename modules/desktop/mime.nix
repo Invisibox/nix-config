@@ -17,7 +17,7 @@
         "x-scheme-handler/https" = ["zen-beta.desktop"];
 
         # Documents and text
-        "application/pdf" = ["onlyoffice-desktopeditors.desktop"];
+        "application/pdf" = ["wps-office-pdf.desktop"];
         "text/plain" = ["dev.zed.Zed.desktop"];
         "text/markdown" = ["dev.zed.Zed.desktop"];
         "application/json" = ["dev.zed.Zed.desktop"];

@@ -10,14 +10,14 @@ in {
     imports = [
       nixosModules.brave-origin
       nixosModules.localsend
-      nixosModules.onlyoffice
+      nixosModules.wps
       nixosModules.oxide-term
       nixosModules.paseo
       nixosModules.obs
       # nixosModules.bottles
       # nixosModules.waydroid
       # nixosModules.texlive
-      # nixosModules.wps
+      # nixosModules.onlyoffice
     ];
 
     home-manager.users.${config.local.user.name}.imports = [homeModule];

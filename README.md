@@ -32,7 +32,7 @@
 {config, ...}: {
   flake.modules.nixos.apps.imports = [
     config.flake.modules.nixos.localsend
-    config.flake.modules.nixos.onlyoffice
+    config.flake.modules.nixos.wps
   ];
 }
 ```
