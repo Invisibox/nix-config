@@ -37,6 +37,7 @@ in {
 
       # networking, downloads, and browsers
       motrix
+      nextcloud-client
       qbittorrent-enhanced
       resilio-sync
       # servo
@@ -45,6 +46,7 @@ in {
 
       # communication and news readers
       _64gram
+      cinny-desktop
       discord
       element-desktop
       # fluffychat
