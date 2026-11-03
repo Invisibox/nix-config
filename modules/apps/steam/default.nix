@@ -99,7 +99,8 @@
               enable = cfg.fixDownloadSpeed;
               text = ''
                 @nClientDownloadEnableHTTP2PlatformLinux 0
-                @fDownloadRateImprovementToAddAnotherConnection 1.0
+                @fDownloadRateImprovementToAddAnotherConnection 1.1
+                @cMaxInitialDownloadSources 15
               '';
               target = "${config.xdg.dataHome}/Steam/steam_dev.cfg";
             };
