@@ -6,7 +6,6 @@
         libraries = with pkgs;
           (steam-run.args.multiPkgs pkgs)
           ++ (heroic.args.multiPkgs pkgs)
-          ++ (lutris.args.multiPkgs pkgs)
           ++ [
             alsa-lib
             dbus
