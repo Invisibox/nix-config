@@ -86,8 +86,13 @@
               }
 
               using Notify = bool (*)(QApplication *, QObject *, QEvent *);
-              static const auto original = reinterpret_cast<Notify>(dlsym(
-                  RTLD_NEXT, "_ZN6kso_qt12QApplication6notifyEPNS_7QObjectEPNS_6QEventE"));
+              // WPS loads Qt with RTLD_LOCAL, outside RTLD_NEXT's lookup scope.
+              static const auto original = [] {
+                  void *widgets = dlopen("libQt5WidgetsKso.so.5", RTLD_LAZY | RTLD_NOLOAD);
+                  return widgets ? reinterpret_cast<Notify>(dlsym(
+                      widgets, "_ZN6kso_qt12QApplication6notifyEPNS_7QObjectEPNS_6QEventE"))
+                      : nullptr;
+              }();
               if (!original) {
                   std::fputs("WPS Alt filter: bundled Qt notify function not found\n", stderr);
                   std::abort();
