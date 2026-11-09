@@ -42,17 +42,11 @@ bind () {
 # load some widgets
 () {
   local -a widgets=(
-    ascend-descend fzf-complete-file fzf-shell-history
-    prepend-sudo   append-pipe-to    preview-file
-    run-help       list-token
+    ascend-descend fzf-complete-file prepend-sudo
     )
   for widget in $widgets
     source ${ZSH_CONFIG_DIR}/widgets/${widget}.zsh
 }
-
-# Exit shell on C-d even when command line isn't empty
-exit_zsh () exit
-zle -N exit_zsh
 
 # Edit the command line in $EDITOR
 autoload -U edit-command-line
