@@ -129,6 +129,14 @@ domain(suffix: paoo.cc) -> direct
 domain(suffix: ob.djdog.cc.cd) -> direct
 domain(suffix: uuanqin.top) -> direct
 
+# 境外 Nix 缓存优先走开发组，避免被通用 geosite 规则覆盖。
+domain(full: cache.lantian.pub) -> DEV
+domain(full: cache.numtide.com) -> DEV
+domain(full: cache.nixos.org) -> DEV
+domain(full: cache.garnix.io) -> DEV
+domain(full: nyx-cache.chaotic.cx) -> DEV
+domain(suffix: cachix.org) -> DEV
+
 # 傻逼腾讯
 domain(geosite:tencent) -> direct
 # 傻逼阿里
@@ -172,10 +180,6 @@ domain(geosite:discord) -> US_HOME
 
 # 开发服务
 domain(geosite:category-dev) -> DEV
-domain(full: cache.lantian.pub) -> DEV
-domain(full: cache.numtide.com) -> DEV
-domain(full: cache.nixos.org) -> DEV
-domain(suffix: cachix.org) -> DEV
 
 # 不要求 IP 质量的流媒体
 domain(geosite:category-emby) -> MEDIA
