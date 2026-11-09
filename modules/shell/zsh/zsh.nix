@@ -152,6 +152,36 @@
       "zsh/plugins/fzf-tab".source = fzf-tab;
       "zsh/plugins/atuin.zsh".source = "${atuin-integration}/atuin.zsh";
       "zsh/plugins/atuin.zsh.zwc".source = "${atuin-integration}/atuin.zsh.zwc";
+      "zsh/plugins/deja-history-filter.zsh".text = ''
+        typeset -ga _deja_history_filters=(
+          ${lib.escapeShellArgs config.programs.atuin.settings.history_filter}
+        )
+
+        functions[_deja_zsh_history_ignored]=$functions[_deja_history_ignored]
+        _deja_history_ignored() {
+          _deja_zsh_history_ignored "$1" && return 0
+          setopt localoptions rematchpcre
+          local pattern
+          for pattern in "''${_deja_history_filters[@]}"; do
+            # Match Atuin's Unicode character classes, including \s.
+            pattern="(*UTF)(*UCP)$pattern"
+            [[ $1 =~ $pattern ]] && return 0
+          done
+          return 1
+        }
+
+        ${lib.optionalString (!config.programs.atuin.settings.store_failed) ''
+          functions[_deja_precmd_record]=$functions[_deja_precmd]
+          _deja_precmd() {
+            if (( $? != 0 )); then
+              __deja_last_cmd=
+              __deja_prev=
+            fi
+            # Keep upstream's prompt and widget maintenance on failed commands too.
+            _deja_precmd_record
+          }
+        ''}
+      '';
       "zsh/plugins/zoxide.zsh".source = "${zoxide-integration}/zoxide.zsh";
       "zsh/plugins/zoxide.zsh.zwc".source = "${zoxide-integration}/zoxide.zsh.zwc";
       "zsh/plugins/zsh-smartcache".source = zsh-smartcache;

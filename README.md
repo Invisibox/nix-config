@@ -80,6 +80,9 @@ nix flake update nix-packages
 
 Proton CachyOS 的 `x86_64_v3` 版本直接引用 [Chaotic Nyx](https://github.com/chaotic-cx/nyx) 的 `packages` 输出，供 Heroic 和 Bottles 使用。保留 Nyx 自己的 nixpkgs 锁定，通过 `nix flake update chaotic` 更新；对应二进制缓存及公钥已加入 `modules/system/nix.nix`，重建并切换系统后生效。
 
+Zsh 中 Deja 复用 `modules/shell/cli.nix` 的 Atuin `history_filter` 和 `store_failed` 设置，保留原有的 Zsh `HISTORY_IGNORE` 过滤。修改规则并重建后，新终端中的两者会使用同一组规则；既有历史记录不自动清理，两个数据库仍分别保存。
+其中 `cd` 仅过滤 `cd`、`cd ..`、`cd ~`、`cd -`（允许空格、Tab 和行尾空白）；`cd foo`、`cd foo/bar` 保留。以独立命令名 `ls` 开头的记录全部过滤，包括任意参数及紧随的连接符、管道和重定向；`lsblk`、`lsof` 等其他命令保留。
+
 ## 验证与构建
 
 ```sh

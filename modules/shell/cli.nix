@@ -14,10 +14,11 @@
           exit_past_line_start = false;
           accept_past_line_end = false;
         };
+        # Use the same end-of-input anchor in Atuin and Deja's PCRE engine.
         history_filter = [
           "^\\s+"
-          ''^ls($|(\s+((-([a-zA-Z0-9]|-)+)|"(\.|[^/])[^"]*"|'(\.|[^/])[^']*'|(\.|[^/\s-])[^\s]*))*\s*$)''
-          ''^cd($|\s+('[^/][^']*'|"[^/][^"]*"|[^/\s'"][^\s]*))$''
+          ''^ls(\s|[;&|<>]|\z)''
+          ''^cd([ \t]+(\.\.|~|-))?[ \t]*\z''
           ''/nix/store/.*''
         ];
       };

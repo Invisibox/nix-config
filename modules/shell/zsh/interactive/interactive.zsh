@@ -76,6 +76,9 @@ _atuin_defer_failed_history_init () {
     local duration=""
     if [[ -n $__atuin_preexec_time && -n $__atuin_precmd_time ]]; then
       printf -v duration %.0f $(((__atuin_precmd_time - __atuin_preexec_time) * 1000000000))
+      if (( duration < 0 )); then
+        duration=0
+      fi
     fi
 
     if (( EXIT != 0 )); then
@@ -165,6 +168,7 @@ _init_deja () {
   else
     eval "$(deja init zsh)"
   fi
+  source "$ZSH_CONFIG_DIR/plugins/deja-history-filter.zsh"
   DEJA_PARTIAL_ACCEPT_WIDGETS+=(qc-sub-r qc-shell-r)
   _deja_bind_widgets
   _DEJA_BOUND_WIDGET_COUNT=${#widgets}
