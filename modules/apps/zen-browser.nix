@@ -21,6 +21,8 @@
           "browser.translations.quickAction.enabled" = false;
           "browser.translations.select.enable" = false;
 
+          "privacy.resistFingerprinting" = false;
+
           "zen.widget.linux.transparency" = true;
         };
 
