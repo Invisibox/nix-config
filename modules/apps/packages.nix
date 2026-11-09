@@ -36,6 +36,7 @@ in {
       termius
 
       # networking, downloads, and browsers
+      baidupcs-go
       motrix
       nextcloud-client
       qbittorrent-enhanced
@@ -52,11 +53,11 @@ in {
       # fluffychat
       # fluent-reader
       # keyguard
-      newsflash
+      # newsflash
       thunderbird
 
       # knowledge management and productivity
-      anki
+      # anki
       # calibre
       folio
       # mangayomi
@@ -72,7 +73,7 @@ in {
       # curtail
       piliplus
       qimgv
-      tsukimi
+      # tsukimi
 
       # desktop and system tools
       file-roller
