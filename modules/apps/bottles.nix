@@ -143,10 +143,10 @@
       sourceDir = "vkd3d-proton-3.1";
     };
     nvapiComponentInfo = {
-      name = "dxvk-nvapi-v0.9.2";
-      url = "https://github.com/bottlesdevs/components/releases/download/dxvk-nvapi-v0.9.2/dxvk-nvapi-v0.9.2.tar.gz";
-      hash = "sha256-fXV1wa+j+UtRfZjGrSyaznf3Orzlvr3LuZikSKPB7E0=";
-      sourceDir = "dxvk-nvapi-v0.9.2";
+      name = "dxvk-nvapi-v0.9.3";
+      url = "https://github.com/bottlesdevs/components/releases/download/dxvk-nvapi-v0.9.3/dxvk-nvapi-v0.9.3.tar.gz";
+      hash = "sha256-I0laIyhQmpJfSEPkZyFR8yfDrcE4Sc5SSN9E3Ktpp7Y=";
+      sourceDir = "dxvk-nvapi-v0.9.3";
     };
     latencyflexComponentInfo = {
       name = "latencyflex-v0.1.1";
