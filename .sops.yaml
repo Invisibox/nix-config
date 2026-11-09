@@ -1,0 +1,3 @@
+creation_rules:
+  - path_regex: ^modules/services/dae/subscriptions\.dae\.enc$
+    age: age193zg7ecyauhv2wqwmzasqxrz35dmk5ge7eulevjj6dlnnmg5us0sym9jnr

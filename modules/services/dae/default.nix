@@ -1,30 +1,35 @@
 {inputs, ...}: {
   flake.modules.nixos.dae = {
     lib,
-    config,
     pkgs,
     ...
-  }: let
-    configDir = "${config.local.user.home}/Documents/nix-config/modules/services/dae";
-    privateDir = "${config.local.user.home}/.config/dae";
-  in {
-    imports = [inputs.daeuniverse.nixosModules.dae];
+  }: {
+    imports = [
+      inputs.daeuniverse.nixosModules.dae
+      inputs.sops-nix.nixosModules.sops
+    ];
 
     config = {
       services.dae = {
         enable = true;
         package = inputs.daeuniverse.packages.${pkgs.stdenv.hostPlatform.system}."dae-unstable";
-        configFile = "${configDir}/config.dae";
+        config = builtins.readFile ./config.dae;
       };
 
-      # dae rejects configuration files that are accessible by other users.
-      systemd.tmpfiles.rules = [
-        "z ${configDir}/config.dae 0600 - - - -"
-        "d ${privateDir} 0700 ${config.local.user.name} - - -"
-        "d ${privateDir}/persist.d 0700 ${config.local.user.name} - - -"
-        "L ${configDir}/subscriptions.dae - - - - ${privateDir}/subscriptions.dae"
-        "L ${configDir}/persist.d - - - - ${privateDir}/persist.d"
-      ];
+      sops.secrets.dae-subscriptions = {
+        sopsFile = ./subscriptions.dae.enc;
+        format = "binary";
+        path = "/etc/dae/subscriptions.dae";
+        mode = "0400";
+        reloadUnits = ["dae.service"];
+      };
+
+      environment.etc."dae/persist.d".source = "/var/lib/dae";
+      systemd.services.dae.serviceConfig = {
+        StateDirectory = "dae";
+        StateDirectoryMode = "0700";
+        UMask = "0077";
+      };
 
       systemd.services.dae-subscription-update = {
         description = "Refresh dae subscriptions";

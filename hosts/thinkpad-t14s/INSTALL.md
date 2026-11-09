@@ -11,6 +11,13 @@ lsblk -o NAME,PATH,SIZE,MODEL,SERIAL,TYPE,MOUNTPOINTS
 If the 512 GB internal SSD is not `/dev/nvme0n1`, change `device` in
 `disko.nix` before running disko.
 
+Before formatting, safely back up the age private key from
+`/var/lib/sops-nix/key.txt` or `~/.config/sops/age/keys.txt`. The repository
+contains encrypted dae subscriptions; the original
+key is required to decrypt them. Keep the backup outside this repository and
+the disk being erased. Also back up `/var/lib/dae/` if you want to retain the
+subscription cache.
+
 ## Partition and install
 
 From the repository root in the live installer:
@@ -19,9 +26,35 @@ From the repository root in the live installer:
 sudo nix --extra-experimental-features "nix-command flakes" \
   run github:nix-community/disko/latest -- \
   --mode destroy,format,mount ./hosts/thinkpad-t14s/disko.nix
+```
 
+Restore the original age private key before installation. Replace the source
+path with its location on your backup medium:
+
+```console
+sudo install -d -m 0700 /mnt/var/lib/sops-nix
+sudo install -m 0600 /path/to/keys.txt /mnt/var/lib/sops-nix/key.txt
+```
+
+To retain cached nodes for the first boot, optionally restore the cache too:
+
+```console
+sudo install -d -m 0700 /mnt/var/lib/dae
+sudo cp -a /path/to/dae-cache/. /mnt/var/lib/dae/
+sudo chown -R root:root /mnt/var/lib/dae
+sudo chmod -R go-rwx /mnt/var/lib/dae
+```
+
+Then install the system:
+
+```console
 sudo nixos-install --flake .#thinkpad-t14s
 ```
+
+Niri and dae's public configurations are included in the system generation;
+they do not require a checkout at a fixed path in the installed user's home.
+To edit subscriptions after installation, restore a user-accessible copy of
+the same age key to `~/.config/sops/age/keys.txt` with `0600` permissions.
 
 The first installation is allowed to write unsigned boot artifacts because the
 Secure Boot keys do not exist yet. On the first boot,

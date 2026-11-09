@@ -6,6 +6,7 @@
       htop
       btrfs-progs
       compsize
+      sops
     ];
   };
 

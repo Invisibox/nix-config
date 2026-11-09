@@ -91,4 +91,4 @@ nix build '.#nixosConfigurations.thinkpad-t14s.config.system.build.toplevel'
 
 `nix flake check` 可能提示 `unknown flake output 'modules'`：这是 flake-parts 提供的扩展输出；NixOS 实例仍会被正常检查。
 
-硬件安装步骤见 [INSTALL.md](hosts/thinkpad-t14s/INSTALL.md)。Niri 配置链接到工作目录中的 `modules/desktop/niri/config.kdl`；旧位置 `home-manager/niri/config.kdl` 保留指向新文件的兼容软链接，供仍引用旧路径的系统代际使用。dae 配置位于工作目录中的 `modules/services/dae/`，`modules/apps/dae` 保留为指向新目录的兼容链接，供尚未切换的服务使用；import-tree 不递归导入目录软链接。
+硬件安装步骤见 [INSTALL.md](hosts/thinkpad-t14s/INSTALL.md)。Niri 的 `modules/desktop/niri/config.kdl` 由 Home Manager 部署，dae 的 `modules/services/dae/config.dae` 由 NixOS 部署；修改后需重新构建并切换系统，运行时不依赖工作目录。Niri 仍会加载 `~/.config/niri/noctalia.kdl`，供 Noctalia 更新颜色。dae 的私密订阅由 sops-nix 解密，缓存保存在 `/var/lib/dae`；密钥备份与订阅编辑见 [dae 说明](modules/services/dae/README.md)。

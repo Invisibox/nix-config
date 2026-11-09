@@ -110,10 +110,8 @@ in {
     };
   };
 
-  flake.modules.homeManager.niri = {config, ...}: {
-    xdg.configFile."niri/config.kdl".source =
-      config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/Documents/nix-config/modules/desktop/niri/config.kdl";
+  flake.modules.homeManager.niri = {...}: {
+    xdg.configFile."niri/config.kdl".source = ./config.kdl;
 
     xdg.configFile."shikane/config.toml".source = ./shikane/config.toml;
 

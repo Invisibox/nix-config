@@ -63,6 +63,8 @@ in {
     networking.hostName = "thinkpad-t14s";
     networking.networkmanager.enable = true;
 
+    sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+
     hardware.enableRedistributableFirmware = true;
     hardware.graphics = {
       enable = true;

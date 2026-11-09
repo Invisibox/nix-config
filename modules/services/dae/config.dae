@@ -1,5 +1,5 @@
 # 从 daed 当前启用的全局、DNS、分组和路由设置迁移。
-# 订阅链接单独保存在 Git 忽略的私有文件中。
+# 订阅由 sops-nix 解密到同目录下的 subscriptions.dae。
 include {
   subscriptions.dae
 }

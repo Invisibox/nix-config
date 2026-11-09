@@ -4,7 +4,6 @@
   inputs = {
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
 
-    # Keep its own nixpkgs lock so package hashes match the CI binary cache.
     nix-packages.url = "github:Invisibox/nix-packages";
 
     flake-parts = {
@@ -15,7 +14,6 @@
 
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
 
-    # Keep Nyx's nixpkgs lock so package hashes match its binary cache.
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
     nixos-hardware = {
@@ -33,7 +31,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Temporarily pin: 0ba376b emptied refs.nix and breaks evaluation.
     niri-flake.url = "github:epireyn/niri-flake";
 
     zen-browser = {
@@ -53,12 +50,17 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     steam-config-nix = {
       url = "github:different-name/steam-config-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Noctalia v5. The cachix branch tracks main and keeps binary cache support.
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
     noctalia-greeter = {
