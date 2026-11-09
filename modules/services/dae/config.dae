@@ -126,6 +126,7 @@ dip(23.249.25.140) -> direct
 domain(suffix: djdog.cc) -> direct
 domain(suffix: paoo.cc) -> direct
 
+domain(suffix: ob.djdog.cc.cd) -> direct
 domain(suffix: uuanqin.top) -> direct
 
 # 傻逼腾讯
