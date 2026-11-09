@@ -89,8 +89,8 @@ cd /home/zh/Documents/nix-packages
 源码哈希和 `cargoHash`，并使用个人 flake 锁定的 nixpkgs 构建、运行上游测试。
 同版本号下的新提交也会更新；已是最新提交则直接退出。
 只有构建成功才会替换包定义，失败时保留原文件。
-个人 flake 的 `./scripts/update-all.sh` 也会调用此脚本。更新后在 `nix-config` 中运行
-`nix flake update nix-packages`，再重建系统。
+个人 flake 的 `./scripts/update-all.sh` 也会调用此脚本。将更新提交并推送到 GitHub，
+等待 Actions 构建并发布缓存后，在 `nix-config` 中运行 `nix flake update nix-packages`，再重建系统。
 
 升级联想驱动时，更新主机的 `_audio-tuning.nix` 中的 URL、SHA-256 及包内 XML 路径，
 并重新确认硬件 ID；不能只换成同声卡型号的任意调音。

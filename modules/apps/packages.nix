@@ -23,20 +23,19 @@ in {
     home-manager.users.${config.local.user.name}.imports = [homeModule];
 
     environment.systemPackages = with inputs.nix-packages.packages.${config.nixpkgs.hostPlatform.system}; [
-      wechat-jailed
-      qq-jailed
-      baidunetdisk-jailed
+      baidupcs-rust
     ];
   };
 
-  flake.modules.homeManager.apps = {pkgs, ...}: {
+  flake.modules.homeManager.apps = {pkgs, ...}: let
+    packages = inputs.nix-packages.packages.${pkgs.stdenv.hostPlatform.system};
+  in {
     home.packages = with pkgs; [
       # terminal emulators and remote connections
       ghostty
       termius
 
       # networking, downloads, and browsers
-      baidupcs-go
       motrix
       nextcloud-client
       qbittorrent-enhanced
@@ -46,6 +45,8 @@ in {
       v2rayn
 
       # communication and news readers
+      packages.wechat-jailed
+      packages.qq-jailed
       _64gram
       cinny-desktop
       discord

@@ -63,7 +63,7 @@ import-tree 递归导入仓库中的 `.nix` 文件，因此新增配置文件无
 
 ## 独立软件包
 
-Brave Origin Beta、Paseo Desktop、OxideTerm、Neiro、Gamescope 补丁版、Nautilus 插件环境，以及 `wechat-jailed`、`qq-jailed`、`baidunetdisk-jailed` 由个人 flake [Invisibox/nix-packages](https://github.com/Invisibox/nix-packages) 提供。当前配置通过 GitHub input 引用。
+Brave Origin Beta、Paseo Desktop、OxideTerm、Neiro、Gamescope 补丁版、Nautilus 插件环境，以及 `wechat-jailed`、`qq-jailed`、`baidupcs-rust` 由个人 flake [Invisibox/nix-packages](https://github.com/Invisibox/nix-packages) 提供。当前配置通过 GitHub input 引用，沙箱 HOME 路径和权限在该仓库的共享包装器中定义。
 上游 Actions 完成构建并发布缓存后，在本仓库刷新锁定：
 
 ```sh
@@ -74,7 +74,9 @@ nix flake update nix-packages
 `modules/system/nix.nix` 已配置 [invisibox Cachix](https://invisibox.cachix.org) 的地址和签名公钥，重建并切换系统后生效。
 应用更新脚本也已迁至新仓库；本仓库的 `scripts/update-all.sh` 继续更新 Bottles、Rime 和 Zsh 插件。
 
-微信、QQ 和百度网盘替代原有 Flatpak 声明；腾讯会议和 Open WebUI 的声明已移除。沙箱仅以只读方式挂载 `~/Documents`，应用自己的数据和下载写入 `~/.local/share/jail.nix/home/<包名>/`。允许联网、桌面通知、摄像头、通过 PulseAudio / PipeWire 播放音频和使用麦克风、GPU、剪贴板、读取和跟随系统深浅色模式，并通过受限桌面门户在系统默认浏览器中打开 HTTP(S) 网页；微信开放 Qt 旧式托盘注册权限。旧 Flatpak 安装和数据不会自动卸载或迁移；沙箱说明及权限测试见 `nix-packages/README.md`。
+微信和 QQ 通过 Home Manager 安装为用户程序，替代原有 Flatpak 声明；腾讯会议和 Open WebUI 的声明已移除。沙箱以只读方式挂载 `~/Documents`，应用自己的可写 HOME 分别位于 `~/Documents/jail/wechat-jailed/` 和 `~/Documents/jail/qq-jailed/`，首次启动时自动创建。沙箱内隐藏 `Documents/jail`，避免两个应用通过共享 Documents 读取彼此的数据；每个应用仍可通过自己的 HOME 读写其数据和下载。允许联网、桌面通知、摄像头、通过 PulseAudio / PipeWire 播放音频和使用麦克风、GPU、剪贴板、读取和跟随系统深浅色模式，并通过受限桌面门户在系统默认浏览器中打开 HTTP(S) 网页；微信开放 Qt 旧式托盘注册权限。旧沙箱目录和 Flatpak 数据均不自动迁移或删除；通用沙箱说明及权限测试见 `nix-packages/README.md`。
+
+百度网盘使用 BaiduPCS-Rust 替代 `baidunetdisk-jailed`。运行 `baidupcs-rust` 后，在 `http://127.0.0.1:18888` 打开 Web 界面；配置、登录数据和默认下载目录保存在 `$XDG_DATA_HOME/baidupcs-rust`（默认 `~/.local/share/baidupcs-rust`）。该客户端直接运行，不使用 jail.nix 沙箱；旧客户端数据不会自动迁移。
 
 Proton CachyOS 的 `x86_64_v3` 版本直接引用 [Chaotic Nyx](https://github.com/chaotic-cx/nyx) 的 `packages` 输出，供 Heroic 和 Bottles 使用。保留 Nyx 自己的 nixpkgs 锁定，通过 `nix flake update chaotic` 更新；对应二进制缓存及公钥已加入 `modules/system/nix.nix`，重建并切换系统后生效。
 
