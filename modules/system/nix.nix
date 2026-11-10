@@ -51,6 +51,8 @@
 
           "https://cache.nixos.org"
 
+          "https://cache.455500.xyz/nix-packages"
+
           "https://invisibox.cachix.org"
 
           "https://nix-community.cachix.org"
@@ -73,6 +75,8 @@
         trusted-public-keys = [
           # the default public key of cache.nixos.org, it's built-in, no need to add it here
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+
+          "nix-packages:EtiMvLWsIZ8LNy+AAgT7z9i2Q+YObWYKCmvnYNrjXek="
 
           "invisibox.cachix.org-1:Z0N2eK66tu3OyRiImOR1yHcQmy8DK/6CRCkVxQqvJYk="
 

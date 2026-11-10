@@ -133,6 +133,7 @@ domain(suffix: uuanqin.top) -> direct
 domain(full: cache.lantian.pub) -> DEV
 domain(full: cache.numtide.com) -> DEV
 domain(full: cache.nixos.org) -> DEV
+domain(full: cache.455500.xyz) -> DEV
 domain(full: cache.garnix.io) -> DEV
 domain(full: nyx-cache.chaotic.cx) -> DEV
 domain(suffix: cachix.org) -> DEV
