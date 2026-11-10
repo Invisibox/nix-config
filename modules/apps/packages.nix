@@ -14,7 +14,7 @@ in {
       nixosModules.oxide-term
       nixosModules.paseo
       nixosModules.obs
-      # nixosModules.bottles
+      nixosModules.bottles
       # nixosModules.waydroid
       # nixosModules.texlive
       # nixosModules.onlyoffice
@@ -72,7 +72,7 @@ in {
       # media and images
       amberol
       # curtail
-      piliplus
+      packages.pilinara
       qimgv
       # tsukimi
 
