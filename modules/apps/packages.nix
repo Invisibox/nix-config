@@ -50,15 +50,15 @@ in {
       _64gram
       cinny-desktop
       discord
-      element-desktop
       # fluffychat
       # fluent-reader
+      packages.godwit
       # keyguard
       # newsflash
       thunderbird
 
       # knowledge management and productivity
-      # anki
+      anki
       # calibre
       folio
       # mangayomi
@@ -71,7 +71,6 @@ in {
 
       # media and images
       amberol
-      # curtail
       packages.pilinara
       qimgv
       # tsukimi
