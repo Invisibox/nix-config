@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
 
-    nix-packages.url = "path:/home/zh/Documents/nix-packages";
+    nix-packages.url = "github:Invisibox/nix-packages";
 
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
