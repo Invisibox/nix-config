@@ -95,3 +95,5 @@ nix build '.#nixosConfigurations.thinkpad-t14s.config.system.build.toplevel'
 `nix flake check` 可能提示 `unknown flake output 'modules'`：这是 flake-parts 提供的扩展输出；NixOS 实例仍会被正常检查。
 
 硬件安装步骤见 [INSTALL.md](hosts/thinkpad-t14s/INSTALL.md)。Niri 的 `modules/desktop/niri/config.kdl` 由 Home Manager 部署，dae 的 `modules/services/dae/config.dae` 由 NixOS 部署；修改后需重新构建并切换系统，运行时不依赖工作目录。Niri 仍会加载 `~/.config/niri/noctalia.kdl`，供 Noctalia 更新颜色。dae 的私密订阅由 sops-nix 解密，缓存保存在 `/var/lib/dae`；密钥备份与订阅编辑见 [dae 说明](modules/services/dae/README.md)。
+
+Niri 下按 `Print`（`PrtSc`）或 `Mod+Ctrl+Shift+5` 打开 Shotori 选区截图。`Mod+Ctrl+Shift+3` 截取整个屏幕，`Mod+Ctrl+Shift+4` 截取当前窗口。

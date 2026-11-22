@@ -30,6 +30,7 @@ in {
       '';
     };
     xwaylandSatellitePackage = inputs.niri-flake.packages.${system}.xwayland-satellite-unstable;
+    shotoriPackage = inputs.nix-packages.packages.${system}.shotori;
   in {
     config = {
       home-manager.users.${config.local.user.name}.imports = [homeModule];
@@ -78,11 +79,9 @@ in {
         };
       };
 
-      environment.systemPackages = with pkgs; [
+      environment.systemPackages = [
         xwaylandSatellitePackage
-        slurp
-        grim
-        satty
+        shotoriPackage
       ];
 
       # 认证代理自动启动
