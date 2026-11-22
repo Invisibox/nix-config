@@ -1,69 +1,11 @@
-{
+{inputs, ...}: {
   flake.modules.homeManager.desktop = {
     config,
     lib,
     pkgs,
     ...
   }: let
-    rimeWanxiangVersion = "18.1.13";
-    rimeWanxiangAssetName = "rime-wanxiang-flypy-fuzhu.zip";
-    rimeWanxiangZipHash = "sha256-+l/nbLsO91lHFYRlTCerP5E0hFSOvgiiXU6jNokd3Tc=";
-    rimeWanxiangGramHash = "sha256-ZRKIPE7AwgFb7sqQcV1NzXQ2ctg1iAxp6YGKaIYJuhk=";
-
-    rimeWanxiang = pkgs.stdenvNoCC.mkDerivation {
-      pname = "rime-wanxiang";
-      version = rimeWanxiangVersion;
-
-      src = pkgs.fetchurl {
-        url = "https://github.com/amzxyz/rime_wanxiang/releases/download/v${rimeWanxiangVersion}/${rimeWanxiangAssetName}";
-        hash = rimeWanxiangZipHash;
-      };
-
-      nativeBuildInputs = [pkgs.unzip];
-
-      unpackPhase = ''
-        runHook preUnpack
-
-        unzip -q "$src"
-
-        shopt -s dotglob nullglob
-        entries=(*)
-        if [ "''${#entries[@]}" -eq 1 ] && [ -d "''${entries[0]}" ]; then
-          cd "''${entries[0]}"
-        fi
-
-        runHook postUnpack
-      '';
-
-      installPhase = ''
-        runHook preInstall
-
-        rm -rf README.md .git* LICENSE
-        if [ -d custom ]; then
-          find custom -type f ! -name '*.yaml' -delete
-        fi
-        if [ -f default.yaml ]; then
-          mv default.yaml wanxiang_suggested_default.yaml
-        fi
-
-        mkdir -p "$out/share/rime-data"
-        cp -r . "$out/share/rime-data/"
-        rm -f "$out/share/rime-data/env-vars"
-
-        runHook postInstall
-      '';
-
-      meta = {
-        changelog = "https://github.com/amzxyz/rime_wanxiang/releases/tag/v${rimeWanxiangVersion}";
-        downloadPage = "https://github.com/amzxyz/rime_wanxiang/releases";
-      };
-    };
-
-    rimeWanxiangLtsGram = pkgs.fetchurl {
-      name = "wanxiang-lts-zh-hans.gram";
-      url = "https://github.com/amzxyz/RIME-LMDG/releases/download/LTS/wanxiang-lts-zh-hans.gram";
-      hash = rimeWanxiangGramHash;
-    };
+    rimeWanxiang = inputs.nix-packages.packages.${pkgs.stdenv.hostPlatform.system}.rime-wanxiang;
 
     rimeSharedData = "${pkgs.fcitx5-rime.override {
       rimeDataPkgs = [pkgs.rime-data];
@@ -111,8 +53,6 @@
             __include: wanxiang_algebra:/english/通用规则
             __patch: wanxiang_algebra:/english/小鹤双拼
       '';
-
-      "fcitx5/rime/wanxiang-lts-zh-hans.gram".source = rimeWanxiangLtsGram;
     };
 
     home.activation.redeployRimeWanxiang = lib.hm.dag.entryAfter ["linkGeneration"] ''
@@ -126,8 +66,7 @@
           wanxiang_pro.custom.yaml \
           wanxiang_mixedcode.custom.yaml \
           wanxiang_reverse.custom.yaml \
-          wanxiang_english.custom.yaml \
-          wanxiang-lts-zh-hans.gram
+          wanxiang_english.custom.yaml
         do
           readlink -f "$rime_dir/$file" 2>/dev/null || true
         done

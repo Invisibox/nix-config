@@ -71,8 +71,9 @@ nix flake update nix-packages
 
 保留该 input 自己的 nixpkgs 锁定，直接使用其 `packages` 输出，以便命中个人 flake CI 生成的二进制缓存。
 `modules/system/nix.nix` 已配置长期使用的 [Attic 缓存](https://cache.455500.xyz/nix-packages) 的地址和签名公钥，重建并切换系统后生效；公开下载无需 token，原 [invisibox Cachix](https://invisibox.cachix.org) 保留用于读取历史包。
-WPS 的字体、输入法与启动修正，以及 Bottles 主程序、WineBridge、运行库和 Caffe/Soda 等组件均在包仓库中构建，本仓库只负责安装及用户目录链接。Bottles 组件更新器也已迁至包仓库；本仓库的 `scripts/update-all.sh` 继续更新 Rime 和 Zsh 插件。
+WPS 的字体、输入法与启动修正，以及 Bottles 主程序、WineBridge、运行库和 Caffe/Soda 等组件均在包仓库中构建，本仓库负责安装及用户目录链接。
 `pilinara` 通过 Home Manager 安装，参考 AUR 二进制包并跟踪官方稳定发布。Bottles 与 Pilinara 的更新器会由包仓库每日 GitHub Action 自动发现，构建成功后提交更新并发布缓存。刷新 `nix-packages` input 的锁定后即可获取 Action 提交的新版本。
+Rime 万象的小鹤双拼辅助码方案和简体中文 LTS 语法模型也由包仓库每日更新。Home Manager 负责部署个人补丁和重建输入法数据，本仓库的 `scripts/update-all.sh` 更新 Zsh 插件。
 
 微信和 QQ 通过 Home Manager 安装为用户程序，替代原有 Flatpak 声明；腾讯会议和 Open WebUI 的声明已移除。沙箱以只读方式挂载 `~/Documents`，应用自己的可写 HOME 分别位于 `~/Documents/jail/wechat-jailed/` 和 `~/Documents/jail/qq-jailed/`，首次启动时自动创建。沙箱内隐藏 `Documents/jail`，避免两个应用通过共享 Documents 读取彼此的数据；每个应用仍可通过自己的 HOME 读写其数据和下载。允许联网、桌面通知、摄像头、通过 PulseAudio / PipeWire 播放音频和使用麦克风、GPU、剪贴板、读取和跟随系统深浅色模式，并通过受限桌面门户在系统默认浏览器中打开 HTTP(S) 网页；微信开放 Qt 旧式托盘注册权限。旧沙箱目录和 Flatpak 数据均不自动迁移或删除；通用沙箱说明及权限测试见 `nix-packages/README.md`。
 
