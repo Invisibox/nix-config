@@ -59,8 +59,6 @@
 
           "https://nix-gaming.cachix.org"
 
-          "https://cache.garnix.io"
-
           "https://niri-epireyn.cachix.org"
 
           "https://noctalia.cachix.org"
@@ -83,8 +81,6 @@
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
 
           "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
-
-          "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
 
           "niri-epireyn.cachix.org-1:tlVyFN7CtsDT+ZcLPS+ekFWeT1X6X4OqvWqbBMyIzFA="
 

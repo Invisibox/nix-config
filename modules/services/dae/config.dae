@@ -127,14 +127,15 @@ domain(suffix: djdog.cc) -> direct
 domain(suffix: paoo.cc) -> direct
 
 domain(suffix: ob.djdog.cc.cd) -> direct
+domain(suffix: x.djdog.cc.cd) -> direct
 domain(suffix: uuanqin.top) -> direct
 
+domain(suffix: channels.nixos.org) -> DEV
 # 境外 Nix 缓存优先走开发组，避免被通用 geosite 规则覆盖。
 domain(full: cache.lantian.pub) -> DEV
 domain(full: cache.numtide.com) -> DEV
 domain(full: cache.nixos.org) -> DEV
 domain(full: cache.455500.xyz) -> DEV
-domain(full: cache.garnix.io) -> DEV
 domain(full: nyx-cache.chaotic.cx) -> DEV
 domain(suffix: cachix.org) -> DEV
 
@@ -163,6 +164,9 @@ domain(suffix: steamserver.net) -> direct
 # YouTube 必须位于 google 和 category-companies 之前
 domain(geosite:youtube) -> US_YOUTUBE
 domain(geosite:steam) -> DAILY
+
+# GitHub 同时匹配 category-companies，优先走开发组。
+domain(geosite:github) -> DEV
 
 # 高质量美国住宅节点
 domain(geosite:category-companies) -> US_HOME
