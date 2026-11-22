@@ -9,6 +9,7 @@
           uosc
           thumbfast
           sponsorblock
+          mpris
         ];
       };
 
