@@ -23,6 +23,7 @@ in {
       # Import only the NixOS module; Disko's CLI still uses deprecated platform aliases.
       (inputs.disko + "/module.nix")
       inputs.lanzaboote.nixosModules.lanzaboote
+      inputs.sops-nix.nixosModules.sops
       inputs.nixos-hardware.nixosModules.common-cpu-intel
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t14s
     ];

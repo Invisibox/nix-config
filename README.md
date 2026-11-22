@@ -95,6 +95,14 @@ nix build '.#nixosConfigurations.thinkpad-t14s.config.system.build.toplevel'
 
 `nix flake check` 可能提示 `unknown flake output 'modules'`：这是 flake-parts 提供的扩展输出；NixOS 实例仍会被正常检查。
 
-硬件安装步骤见 [INSTALL.md](hosts/thinkpad-t14s/INSTALL.md)。Niri 的 `modules/desktop/niri/config.kdl` 由 Home Manager 部署，dae 的 `modules/services/dae/config.dae` 由 NixOS 部署；修改后需重新构建并切换系统，运行时不依赖工作目录。Niri 仍会加载 `~/.config/niri/noctalia.kdl`，供 Noctalia 更新颜色。dae 的私密订阅由 sops-nix 解密，缓存保存在 `/var/lib/dae`；密钥备份与订阅编辑见 [dae 说明](modules/services/dae/README.md)。
+硬件安装步骤见 [INSTALL.md](hosts/thinkpad-t14s/INSTALL.md)。Niri 的 `modules/desktop/niri/config.kdl` 由 Home Manager 部署，仍会加载 `~/.config/niri/noctalia.kdl` 供 Noctalia 更新颜色。
 
 Niri 下按 `Print`（`PrtSc`）或 `Mod+Ctrl+Shift+5` 打开 Shotori 选区截图。`Mod+Ctrl+Shift+3` 截取整个屏幕，`Mod+Ctrl+Shift+4` 截取当前窗口。
+
+`thinkpad-t14s` 使用 `nix-packages` 的 `honk-core` 和 `doona-web`。切换到新系统代后，在 [http://127.0.0.1:9527/ui/](http://127.0.0.1:9527/ui/) 首次创建管理员。初始配置不含代理规则、节点或订阅，也不读取 dae 的配置。
+
+Doona 的「配置 → 备份与修订」可导入 `/var/lib/honk/config.dae`；Honk 读取 `.dae`，不直接读取 Mihomo YAML。自行转换后编辑该文件时保留 `global.data_dir` 和 `experimental.native_api`，再在面板确认导入。生效的配置、修订记录和登录状态保存在 `/var/lib/honk`，重启不会覆盖。
+
+Honk 从 `/var/lib/honk` 加载 `geoip.dat` 和 `geosite.dat`。服务启动时从 Nix 软件包补齐缺失的文件，Doona 更新后的文件会保留。
+
+旧 dae 模块、配置及订阅密文保留在 `modules/services/dae/`。需要恢复时，将 `modules/profiles/services.nix` 中的 `honk` 导入换回 `dae`，或切回启用 dae 的系统代。密钥备份与订阅编辑见 [dae 说明](modules/services/dae/README.md)。

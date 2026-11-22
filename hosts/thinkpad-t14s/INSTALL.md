@@ -13,10 +13,9 @@ If the 512 GB internal SSD is not `/dev/nvme0n1`, change `device` in
 
 Before formatting, safely back up the age private key from
 `/var/lib/sops-nix/key.txt` or `~/.config/sops/age/keys.txt`. The repository
-contains encrypted dae subscriptions; the original
-key is required to decrypt them. Keep the backup outside this repository and
-the disk being erased. Also back up `/var/lib/dae/` if you want to retain the
-subscription cache.
+contains encrypted dae subscriptions; the original key is needed if you roll
+back to dae. Keep the backup outside this repository and the disk being erased.
+Back up `/var/lib/honk/` to retain imported configuration and the Doona login.
 
 ## Partition and install
 
@@ -36,13 +35,13 @@ sudo install -d -m 0700 /mnt/var/lib/sops-nix
 sudo install -m 0600 /path/to/keys.txt /mnt/var/lib/sops-nix/key.txt
 ```
 
-To retain cached nodes for the first boot, optionally restore the cache too:
+To retain Honk state for the first boot, optionally restore its state directory:
 
 ```console
-sudo install -d -m 0700 /mnt/var/lib/dae
-sudo cp -a /path/to/dae-cache/. /mnt/var/lib/dae/
-sudo chown -R root:root /mnt/var/lib/dae
-sudo chmod -R go-rwx /mnt/var/lib/dae
+sudo install -d -m 0700 /mnt/var/lib/honk
+sudo cp -a /path/to/honk-state/. /mnt/var/lib/honk/
+sudo chown -R root:root /mnt/var/lib/honk
+sudo chmod -R go-rwx /mnt/var/lib/honk
 ```
 
 Then install the system:
@@ -51,9 +50,9 @@ Then install the system:
 sudo nixos-install --flake .#thinkpad-t14s
 ```
 
-Niri and dae's public configurations are included in the system generation;
-they do not require a checkout at a fixed path in the installed user's home.
-To edit subscriptions after installation, restore a user-accessible copy of
+The system generation provides Niri's configuration and Honk's initial
+configuration; neither requires a checkout in the installed user's home.
+To edit the preserved dae subscriptions, restore a user-accessible copy of
 the same age key to `~/.config/sops/age/keys.txt` with `0600` permissions.
 
 The first installation is allowed to write unsigned boot artifacts because the
