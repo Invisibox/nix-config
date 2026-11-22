@@ -95,8 +95,20 @@
 
       systems = ["x86_64-linux"];
 
-      perSystem = {pkgs, ...}: {
+      perSystem = {
+        pkgs,
+        system,
+        ...
+      }: {
         formatter = pkgs.alejandra;
+
+        # Nyx's v3 package still overrides the deprecated proton-cachyos alias.
+        packages.proton-cachyos-bin_x86_64_v3 = inputs.chaotic.packages.${system}.proton-cachyos-bin_edge.override {
+          toolTitle = "Proton-CachyOS x86-64-v3";
+          toolArch = "x86_64_v3";
+          tarballSuffix = "-x86_64_v3.tar.xz";
+          manifestFilename = "cachyos-v3-manifest.json";
+        };
       };
     };
 }

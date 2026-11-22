@@ -8,7 +8,7 @@
     protonGePackage = pkgs.proton-ge-bin.overrideAttrs (_: {
       steamDisplayName = "Proton GE";
     });
-    protonCachyos = inputs.chaotic.packages.${pkgs.stdenv.hostPlatform.system}.proton-cachyos_x86_64_v3;
+    protonCachyos = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.proton-cachyos-bin_x86_64_v3;
   in {
     home-manager.users.${localUserName} = {config, ...}: {
       home.file = {

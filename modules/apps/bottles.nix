@@ -5,7 +5,7 @@
     ...
   }: let
     localUserName = config.local.user.name;
-    protonCachyos = inputs.chaotic.packages.${pkgs.stdenv.hostPlatform.system}.proton-cachyos_x86_64_v3;
+    protonCachyos = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.proton-cachyos-bin_x86_64_v3;
     bottlesPackage = inputs.nix-packages.packages.${pkgs.stdenv.hostPlatform.system}.bottles;
     inherit
       (bottlesPackage)
