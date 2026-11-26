@@ -48,13 +48,13 @@ in {
       packages.wechat-jailed
       packages.qq-jailed
       _64gram
-      cinny-desktop
       discord
       # fluffychat
       # fluent-reader
       packages.godwit
       # keyguard
       # newsflash
+      packages.sable-next
       thunderbird
 
       # knowledge management and productivity
@@ -73,6 +73,7 @@ in {
       amberol
       packages.pilinara
       qimgv
+      rufin
       # tsukimi
 
       # desktop and system tools
